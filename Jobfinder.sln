@@ -1,0 +1,42 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{711CB66D-D025-4BF4-87CD-CEFD23B10CD1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Jobfinder.Api", "Jobfinder.Api\Jobfinder.Api.csproj", "{9CAC474A-A628-4BA8-9066-8F5799F39D12}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Jobfinder.Application", "Jobfinder.Application\Jobfinder.Application.csproj", "{477ADB66-CA76-4484-9D89-92BF06E2B803}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Jobfinder.Infrastructure", "Jobfinder.Infrastructure\Jobfinder.Infrastructure.csproj", "{E80F846F-F1C2-45FF-8B0A-422BEE278ABF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Jobfinder.Domain", "Jobfinder.Domain\Jobfinder.Domain.csproj", "{CAC2C478-3EA6-48A9-9F01-45E7B61AF91F}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{9CAC474A-A628-4BA8-9066-8F5799F39D12} = {711CB66D-D025-4BF4-87CD-CEFD23B10CD1}
+		{477ADB66-CA76-4484-9D89-92BF06E2B803} = {711CB66D-D025-4BF4-87CD-CEFD23B10CD1}
+		{E80F846F-F1C2-45FF-8B0A-422BEE278ABF} = {711CB66D-D025-4BF4-87CD-CEFD23B10CD1}
+		{CAC2C478-3EA6-48A9-9F01-45E7B61AF91F} = {711CB66D-D025-4BF4-87CD-CEFD23B10CD1}
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{9CAC474A-A628-4BA8-9066-8F5799F39D12}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9CAC474A-A628-4BA8-9066-8F5799F39D12}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9CAC474A-A628-4BA8-9066-8F5799F39D12}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9CAC474A-A628-4BA8-9066-8F5799F39D12}.Release|Any CPU.Build.0 = Release|Any CPU
+		{477ADB66-CA76-4484-9D89-92BF06E2B803}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{477ADB66-CA76-4484-9D89-92BF06E2B803}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{477ADB66-CA76-4484-9D89-92BF06E2B803}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{477ADB66-CA76-4484-9D89-92BF06E2B803}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E80F846F-F1C2-45FF-8B0A-422BEE278ABF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E80F846F-F1C2-45FF-8B0A-422BEE278ABF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E80F846F-F1C2-45FF-8B0A-422BEE278ABF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E80F846F-F1C2-45FF-8B0A-422BEE278ABF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CAC2C478-3EA6-48A9-9F01-45E7B61AF91F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CAC2C478-3EA6-48A9-9F01-45E7B61AF91F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CAC2C478-3EA6-48A9-9F01-45E7B61AF91F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CAC2C478-3EA6-48A9-9F01-45E7B61AF91F}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal

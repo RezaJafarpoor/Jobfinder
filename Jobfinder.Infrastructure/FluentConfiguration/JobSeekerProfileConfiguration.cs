@@ -1,0 +1,30 @@
+﻿using Jobfinder.Domain.Entities;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
+
+namespace Jobfinder.Infrastructure.FluentConfiguration;
+
+public class JobSeekerProfileConfiguration : IEntityTypeConfiguration<JobSeekerProfile>
+{
+    public void Configure(EntityTypeBuilder<JobSeekerProfile> builder)
+    {
+        builder.HasKey(jsp => jsp.Id);
+        
+        builder.Property(jsp => jsp.Firstname).HasMaxLength(50)
+            .IsRequired();
+        builder.Property(jsp => jsp.Lastname).HasMaxLength(100)
+            .IsRequired();
+        
+        builder.HasOne(jsp => jsp.JobSeekerCv)
+            .WithOne()
+            .HasForeignKey<JobSeekerProfile>(jsp => jsp.CvId)
+            .IsRequired()
+            .OnDelete(DeleteBehavior.Cascade);
+        
+        builder.HasOne(jsp => jsp.User)
+            .WithOne()
+            .HasForeignKey<JobSeekerProfile>(jsp => jsp.UserId)
+            .IsRequired()
+            .OnDelete(DeleteBehavior.Cascade);
+    }
+}

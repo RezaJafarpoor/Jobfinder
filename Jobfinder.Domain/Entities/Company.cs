@@ -10,4 +10,5 @@ public class Company
     public Location Location { get; set; } = new();
     public int SizeOfCompany { get; set; }
     public string Description { get; set; } = string.Empty;
+    public Guid Owner { get; set; }
 }

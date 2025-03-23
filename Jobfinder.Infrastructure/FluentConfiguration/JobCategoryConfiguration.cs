@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Jobfinder.Infrastructure.FluentConfiguration;
 
-public class JobCategoryConfiguration : IEntityTypeConfiguration<JobCategory>
+internal class JobCategoryConfiguration : IEntityTypeConfiguration<JobCategory>
 {
     public void Configure(EntityTypeBuilder<JobCategory> builder)
     {

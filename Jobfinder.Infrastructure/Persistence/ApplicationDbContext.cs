@@ -15,6 +15,9 @@ internal class ApplicationDbContext
     internal DbSet<JobCategory> JobCategories { get; set; }
     internal DbSet<JobOffer> JobOffers { get; set; }
 
-
-
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        modelBuilder.ApplyConfigurationsFromAssembly(typeof(ApplicationDbContext).Assembly);
+        base.OnModelCreating(modelBuilder);
+    }
 }

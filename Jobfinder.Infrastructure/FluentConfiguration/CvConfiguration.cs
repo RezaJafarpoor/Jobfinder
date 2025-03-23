@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Jobfinder.Infrastructure.FluentConfiguration;
 
-public class CvConfiguration : IEntityTypeConfiguration<Cv>
+internal class CvConfiguration : IEntityTypeConfiguration<Cv>
 {
     public void Configure(EntityTypeBuilder<Cv> builder)
     {

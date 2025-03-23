@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Jobfinder.Infrastructure.FluentConfiguration;
 
-public class EmployerProfileConfiguration : IEntityTypeConfiguration<EmployerProfile>
+internal class EmployerProfileConfiguration : IEntityTypeConfiguration<EmployerProfile>
 {
     public void Configure(EntityTypeBuilder<EmployerProfile> builder)
     {

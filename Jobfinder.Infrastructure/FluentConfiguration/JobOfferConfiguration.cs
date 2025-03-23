@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Jobfinder.Infrastructure.FluentConfiguration;
 
-public class JobOfferConfiguration : IEntityTypeConfiguration<JobOffer>
+internal class JobOfferConfiguration : IEntityTypeConfiguration<JobOffer>
 {
     //TODO: Configuration for value object needed
 

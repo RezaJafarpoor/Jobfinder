@@ -357,7 +357,7 @@ namespace Jobfinder.Infrastructure.Migrations
                     b.HasOne("Jobfinder.Domain.Entities.JobSeekerProfile", "JobSeekerProfile")
                         .WithMany("JobApplications")
                         .HasForeignKey("JobSeekerProfileId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.Navigation("JobOffer");

@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Jobfinder.Infrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class AddJobApplication : Migration
+    public partial class JobApplicationAdded : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -34,8 +34,7 @@ namespace Jobfinder.Infrastructure.Migrations
                         name: "FK_JobApplications_JobSeekerProfiles_JobSeekerProfileId",
                         column: x => x.JobSeekerProfileId,
                         principalTable: "JobSeekerProfiles",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateIndex(

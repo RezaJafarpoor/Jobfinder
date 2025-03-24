@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Jobfinder.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250324121120_AddJobApplication")]
-    partial class AddJobApplication
+    [Migration("20250324122400_JobApplicationAdded")]
+    partial class JobApplicationAdded
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -360,7 +360,7 @@ namespace Jobfinder.Infrastructure.Migrations
                     b.HasOne("Jobfinder.Domain.Entities.JobSeekerProfile", "JobSeekerProfile")
                         .WithMany("JobApplications")
                         .HasForeignKey("JobSeekerProfileId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.Navigation("JobOffer");

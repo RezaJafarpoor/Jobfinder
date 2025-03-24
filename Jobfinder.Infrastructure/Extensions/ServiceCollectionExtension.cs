@@ -11,7 +11,7 @@ public static class ServiceCollectionExtension
     {
         services.AddDbContext<ApplicationDbContext>(option =>
         {
-            option.UseSqlServer(configuration.GetConnectionString("Database"))
+            option.UseSqlServer(configuration.GetConnectionString("AppDbConnection"))
                 .EnableSensitiveDataLogging();   // WARNING: Remove this this line in production
         });
     }

@@ -14,6 +14,7 @@ internal class ApplicationDbContext
     internal DbSet<Company> Companies { get; set; }
     internal DbSet<JobCategory> JobCategories { get; set; }
     internal DbSet<JobOffer> JobOffers { get; set; }
+    internal DbSet<JobApplication> JobApplications { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

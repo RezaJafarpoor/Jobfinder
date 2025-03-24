@@ -14,9 +14,13 @@ internal class CompanyConfiguration : IEntityTypeConfiguration<Company>
         builder.Property(c => c.Description).HasMaxLength(1500).IsRequired();
         builder.Property(c => c.WebsiteAddress).HasMaxLength(200).IsRequired();
         builder.Property(c => c.SizeOfCompany).IsRequired();
-        builder.Property(c => c.Location.Address).HasMaxLength(1500).IsRequired();
-        builder.Property(c => c.Location.City).HasMaxLength(200).IsRequired();
-        builder.Property(c => c.Location.Province).HasMaxLength(50).IsRequired();
+        
+        builder.OwnsOne(c => c.Location, loc =>
+        {
+            loc.Property(c => c.Address).HasMaxLength(1500).IsRequired();
+            loc.Property(c => c.City).HasMaxLength(200).IsRequired();
+            loc.Property(c => c.Province).HasMaxLength(50).IsRequired();
+        });
 
         builder.HasOne<EmployerProfile>()
             .WithOne(ep => ep.Company)

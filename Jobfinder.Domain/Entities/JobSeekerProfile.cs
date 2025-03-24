@@ -8,5 +8,6 @@ public class JobSeekerProfile
     public Cv JobSeekerCv { get; set; } = new();
     public Guid CvId { get; set; }
     public User User { get; set; } = new();
+    public List<JobApplication> JobApplications { get; set; } = [];
     public Guid UserId { get; set; }
 }

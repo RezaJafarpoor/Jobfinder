@@ -8,5 +8,8 @@ public class RefreshToken
     public User User { get; set; } = new();
     public Guid UserId { get; set; }
 
+    public bool IsExpired()
+        => ExpirationDate > DateTime.UtcNow;
+
 
 }

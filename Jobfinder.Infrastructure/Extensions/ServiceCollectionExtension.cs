@@ -1,19 +1,28 @@
 ﻿using Jobfinder.Infrastructure.Identity;
 using Jobfinder.Infrastructure.Persistence;
+using Jobfinder.Infrastructure.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
-using System.Text.Unicode;
 
 namespace Jobfinder.Infrastructure.Extensions;
 
 public static class ServiceCollectionExtension  
 {
-    public static void AddPersistence(this IServiceCollection services, IConfiguration configuration)
+
+    public static void AddInfrastructureServices(this IServiceCollection services, IConfiguration configuration)
+    {
+        services.AddPersistence(configuration);
+        services.AddIdentity(configuration);
+        services.AddScoped<AuthService>();
+    }
+    
+    
+    
+    private static void AddPersistence(this IServiceCollection services, IConfiguration configuration)
     {
         services.AddDbContext<ApplicationDbContext>(option =>
         {
@@ -22,7 +31,7 @@ public static class ServiceCollectionExtension
         });
     }
 
-    public static void AddIdentity(this IServiceCollection services, IConfiguration configuration)
+    private static void AddIdentity(this IServiceCollection services, IConfiguration configuration)
     {
         services.AddScoped<TokenProvider>();
         services.AddOptions<JwtSetting>()

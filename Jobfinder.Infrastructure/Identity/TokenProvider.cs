@@ -30,9 +30,7 @@ public sealed class TokenProvider(IOptions<JwtSetting> jwtSetting)
         );
         return new JwtSecurityTokenHandler().WriteToken(token);
     }
-
-
-
+    
     public string GenerateRefreshToken()
         => Convert.ToBase64String(RandomNumberGenerator.GetBytes(32));
 }

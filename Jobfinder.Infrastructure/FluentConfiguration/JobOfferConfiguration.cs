@@ -6,7 +6,7 @@ namespace Jobfinder.Infrastructure.FluentConfiguration;
 
 internal class JobOfferConfiguration : IEntityTypeConfiguration<JobOffer>
 {
-    //TODO: Configuration for value object needed
+   
 
     public void Configure(EntityTypeBuilder<JobOffer> builder)
     {

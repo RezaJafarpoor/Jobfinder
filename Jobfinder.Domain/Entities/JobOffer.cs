@@ -4,7 +4,7 @@ namespace Jobfinder.Domain.Entities;
 
 public class JobOffer
 {
-    //TODO: Need a way to apply to JobOffer
+   
     public Guid Id { get; set; }
     public string JobName { get; set; } = string.Empty;
     public string JobDescription { get; set; } = string.Empty;

@@ -20,4 +20,8 @@
       <ProjectReference Include="..\Jobfinder.Infrastructure\Jobfinder.Infrastructure.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="Endpoints\" />
+    </ItemGroup>
+
 </Project>

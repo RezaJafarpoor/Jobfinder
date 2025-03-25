@@ -24,6 +24,7 @@ public static class ServiceCollectionExtension
 
     public static void AddIdentity(this IServiceCollection services, IConfiguration configuration)
     {
+        services.AddScoped<TokenProvider>();
         services.AddOptions<JwtSetting>()
             .Bind(config: configuration.GetSection("JwtSetting"));
         

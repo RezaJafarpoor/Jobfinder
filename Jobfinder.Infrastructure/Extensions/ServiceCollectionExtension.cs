@@ -17,7 +17,7 @@ public static class ServiceCollectionExtension
     {
         services.AddPersistence(configuration);
         services.AddIdentity(configuration);
-        services.AddScoped<AuthService>();
+       
     }
     
     

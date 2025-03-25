@@ -1,6 +1,6 @@
 ﻿namespace Jobfinder.Infrastructure.Identity;
 
-public record JwtOption
+public record JwtSetting
 {
     public required string Secret { get; set; } 
     public required string Issuer { get; set; }

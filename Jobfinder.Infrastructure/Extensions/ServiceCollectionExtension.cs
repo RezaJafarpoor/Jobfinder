@@ -24,7 +24,7 @@ public static class ServiceCollectionExtension
 
     public static void AddIdentity(this IServiceCollection services, IConfiguration configuration)
     {
-        services.AddOptions<JwtOption>()
+        services.AddOptions<JwtSetting>()
             .Bind(config: configuration.GetSection("JwtSetting"));
         
         services.AddAuthorization();
@@ -35,7 +35,7 @@ public static class ServiceCollectionExtension
             })
             .AddJwtBearer(option =>
             {
-                var jwtOption = configuration.GetSection("JwtSetting").Get<JwtOption>();
+                var jwtOption = configuration.GetSection("JwtSetting").Get<JwtSetting>();
                 if (jwtOption is null)
                 {
                     throw new Exception("Something is wrong with Jwt Settings");

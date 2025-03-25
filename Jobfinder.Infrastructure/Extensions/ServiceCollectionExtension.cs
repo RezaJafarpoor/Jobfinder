@@ -1,6 +1,5 @@
 ﻿using Jobfinder.Infrastructure.Identity;
 using Jobfinder.Infrastructure.Persistence;
-using Jobfinder.Infrastructure.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;

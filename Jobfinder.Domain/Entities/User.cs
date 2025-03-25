@@ -1,9 +1,8 @@
 ﻿
+using Microsoft.AspNetCore.Identity;
+
 namespace Jobfinder.Domain.Entities;
 
-public  class User
+public  class User : IdentityUser<Guid>  
 {
-    public Guid Id { get; set; }
-    public string Email { set; get; } = string.Empty;
-    public string  Password { get; set; } = string.Empty;
 }

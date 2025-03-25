@@ -1,6 +1,8 @@
-﻿using Jobfinder.Infrastructure.Identity;
+﻿using Jobfinder.Domain.Entities;
+using Jobfinder.Infrastructure.Identity;
 using Jobfinder.Infrastructure.Persistence;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -12,11 +14,12 @@ namespace Jobfinder.Infrastructure.Extensions;
 public static class ServiceCollectionExtension  
 {
 
-    public static void AddInfrastructureServices(this IServiceCollection services, IConfiguration configuration)
+    public static IServiceCollection AddInfrastructureServices(this IServiceCollection services, IConfiguration configuration)
     {
         services.AddPersistence(configuration);
         services.AddIdentity(configuration);
-       
+        return services;
+
     }
     
     
@@ -37,6 +40,9 @@ public static class ServiceCollectionExtension
             .Bind(config: configuration.GetSection("JwtSetting"));
         
         services.AddAuthorization();
+        services.AddIdentity<User, IdentityRole<System.Guid>>()
+            .AddEntityFrameworkStores<ApplicationDbContext>()
+            .AddDefaultTokenProviders();
         services.AddAuthentication(option =>
             {
                 option.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;

@@ -15,7 +15,7 @@ internal class LoginService(SignInManager<User> signInManager
 {
     public async Task<Response<TokenResponse>> Login(LoginDto login, CancellationToken cancellationToken)
     {
-        var user = await userManager.FindByEmailAsync(login.Username);
+        var user = await userManager.FindByEmailAsync(login.Email);
         if (user is null)
             return Response<TokenResponse>.Failure("Email or password is wrong");
         var result = await signInManager.CheckPasswordSignInAsync(user, login.Password, false);

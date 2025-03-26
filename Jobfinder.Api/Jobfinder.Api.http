@@ -18,3 +18,12 @@ Content-Type: application/json
    "email":"reza5@gmail.com",
    "password":"Reza1234@"
 }
+###
+POST {{Host}}/api/identity/login
+Accept: application/json
+Content-Type: application/json
+
+{
+   "email":"reza5@gmail.com",
+   "password":"Reza1234@"
+}

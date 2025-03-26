@@ -24,6 +24,7 @@ public static class ServiceCollectionExtension
         services.AddIdentity(configuration);
         services.AddScoped<IJobSeekerRepository, JobSeekerRepository>();
         services.AddScoped<IRegisterService,RegisterService>();
+        services.AddScoped<ILoginService, LoginService>();
         return services;
 
     }

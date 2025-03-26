@@ -27,7 +27,14 @@ public static class IdentityEndpoints
                 Results.Ok(result.Data) :
                 Results.BadRequest(result.Errors);
         });
-
+        
+        root.MapPost("login", async ([FromBody]LoginDto login, ILoginService loginService, CancellationToken cancellationToken) =>
+        {
+            var result = await loginService.Login(login, cancellationToken);
+            return result.Errors.Count == 0 ?
+                Results.Ok(result.Data) :
+                Results.BadRequest(result.Errors);
+        });
 
     }
 }

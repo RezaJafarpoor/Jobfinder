@@ -1,6 +1,12 @@
-@Jobfinder.Api_HostAddress = http://localhost:5058
+@Host=https://localhost:7093
 
-GET {{Jobfinder.Api_HostAddress}}/weatherforecast/
+POST {{Host}}/api/identity/register
 Accept: application/json
+Content-Type: application/json
+
+{
+   "email":"reza4@gmail.com",
+   "password":"Reza1234@"
+}
 
 ###

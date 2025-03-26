@@ -1,6 +1,10 @@
-﻿using Jobfinder.Domain.Entities;
+﻿using Jobfinder.Application.Interfaces;
+using Jobfinder.Domain.Entities;
+using Jobfinder.Domain.Interfaces;
 using Jobfinder.Infrastructure.Identity;
 using Jobfinder.Infrastructure.Persistence;
+using Jobfinder.Infrastructure.Repositories;
+using Jobfinder.Infrastructure.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -18,6 +22,8 @@ public static class ServiceCollectionExtension
     {
         services.AddPersistence(configuration);
         services.AddIdentity(configuration);
+        services.AddScoped<IJobSeekerRepository, JobSeekerRepository>();
+        services.AddScoped<IAuthService,AuthService>();
         return services;
 
     }

@@ -1,4 +1,5 @@
 
+using Jobfinder.Api.Extensions;
 using Jobfinder.Infrastructure.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -20,6 +21,6 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-
+app.AddEndpoints();
 app.Run();
 

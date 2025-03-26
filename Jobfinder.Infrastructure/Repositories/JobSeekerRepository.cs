@@ -6,10 +6,18 @@ namespace Jobfinder.Infrastructure.Repositories;
 
 internal class JobSeekerRepository(ApplicationDbContext dbContext) : IJobSeekerRepository
 {
-    public async Task<bool> CreateJobSeekerProfile(User user, CancellationToken cancellationToken)
+    public Task<JobSeekerProfile> GetJobSeekerById(Guid id)
     {
-        var profile = new JobSeekerProfile { User = user};
-        dbContext.JobSeekerProfiles.Add(profile);
-        return await dbContext.SaveChangesAsync(cancellationToken) > 0; 
+        throw new NotImplementedException();
+    }
+
+    public Task<List<JobSeekerProfile>> GetJobSeekers()
+    {
+        throw new NotImplementedException();
+    }
+
+    public Task<bool> UpdateJobSeeker()
+    {
+        throw new NotImplementedException();
     }
 }

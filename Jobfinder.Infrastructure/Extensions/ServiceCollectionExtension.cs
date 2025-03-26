@@ -23,7 +23,7 @@ public static class ServiceCollectionExtension
         services.AddPersistence(configuration);
         services.AddIdentity(configuration);
         services.AddScoped<IJobSeekerRepository, JobSeekerRepository>();
-        services.AddScoped<IAuthService,AuthService>();
+        services.AddScoped<IRegisterService,RegisterService>();
         return services;
 
     }

@@ -22,9 +22,12 @@ public static class ServiceCollectionExtension
     {
         services.AddPersistence(configuration);
         services.AddIdentity(configuration);
-        services.AddScoped<IJobSeekerRepository, JobSeekerRepository>();
         services.AddScoped<IRegisterService,RegisterService>();
         services.AddScoped<ILoginService, LoginService>();
+        services.AddScoped<ICompanyRepository, CompanyRepository>();
+        services.AddScoped<ICvRepository, CvRepository>();
+        services.AddScoped<IJobCategoryRepository, JobCategoryRepository>();
+        services.AddScoped<IJobOfferRepository, JobOfferRepository>();
         return services;
 
     }

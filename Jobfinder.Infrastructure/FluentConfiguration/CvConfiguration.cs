@@ -13,9 +13,9 @@ internal class CvConfiguration : IEntityTypeConfiguration<Cv>
 
         builder.OwnsOne(c => c.Location, loc =>
         {
-            loc.Property(c => c.Address).HasMaxLength(1500).IsRequired();
-            loc.Property(c => c.City).HasMaxLength(200).IsRequired();
-            loc.Property(c => c.Province).HasMaxLength(50).IsRequired();
+            loc.Property(c => c.Address).HasMaxLength(1500);
+            loc.Property(c => c.City).HasMaxLength(200);
+            loc.Property(c => c.Province).HasMaxLength(50);
         });
         builder.Property(c => c.ServiceStatus).HasDefaultValue(MilitaryServiceStatus.NotServedYet);
 

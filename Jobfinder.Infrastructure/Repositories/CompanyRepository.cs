@@ -7,6 +7,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Jobfinder.Infrastructure.Repositories;
 
+
+//TODO: Add Result pattern to this class
+
 internal class CompanyRepository(ApplicationDbContext dbContext) : ICompanyRepository
 {
     public async Task<bool> CreateCompany(Guid userId,CreateCompanyDto companyDto, CancellationToken cancellationToken)

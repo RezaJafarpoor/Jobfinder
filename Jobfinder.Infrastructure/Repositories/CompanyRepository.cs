@@ -12,11 +12,11 @@ namespace Jobfinder.Infrastructure.Repositories;
 
 internal class CompanyRepository(ApplicationDbContext dbContext) : ICompanyRepository
 {
-    public async Task<bool> CreateCompany(Guid userId,CreateCompanyDto companyDto, CancellationToken cancellationToken)
+    public async Task<bool> CreateCompany(Guid employerId,CreateCompanyDto companyDto, CancellationToken cancellationToken)
     {
 
         var company = await dbContext.Companies
-            .FirstOrDefaultAsync(c => c.Owner == userId || c.CompanyName == companyDto.CompanyName, cancellationToken );
+            .FirstOrDefaultAsync(c => c.Owner == employerId || c.CompanyName == companyDto.CompanyName, cancellationToken );
         if (company is null)
             return false;
         
@@ -27,7 +27,7 @@ internal class CompanyRepository(ApplicationDbContext dbContext) : ICompanyRepos
             Location = companyDto.Location,
             SizeOfCompany = companyDto.SizeOfCompany,
             Description = companyDto.Description,
-            Owner  = userId
+            Owner  = employerId
         };
 
         dbContext.Add(company);
@@ -35,10 +35,10 @@ internal class CompanyRepository(ApplicationDbContext dbContext) : ICompanyRepos
 
     }
 
-    public async Task<bool> UpdateCompany(Guid userId, UpdateCompanyDto companyDto, CancellationToken cancellationToken)
+    public async Task<bool> UpdateCompany(Guid employerId, UpdateCompanyDto companyDto, CancellationToken cancellationToken)
     {
         var userCompany = await dbContext.Companies
-            .FirstOrDefaultAsync(c => c.Owner == userId, cancellationToken);
+            .FirstOrDefaultAsync(c => c.Owner == employerId, cancellationToken);
         if (userCompany is null)
             return false;
         userCompany.WebsiteAddress = companyDto.WebsiteAddress ?? userCompany.WebsiteAddress;

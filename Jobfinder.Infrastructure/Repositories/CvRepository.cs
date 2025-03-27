@@ -13,9 +13,9 @@ namespace Jobfinder.Infrastructure.Repositories;
 internal class CvRepository
     (ApplicationDbContext dbContext) : ICvRepository
 {
-    public async Task<bool> CreateCv(Guid userId, CreateCvDto createCvDto, CancellationToken cancellationToken)
+    public async Task<bool> CreateCv(Guid jobSeekerId, CreateCvDto createCvDto, CancellationToken cancellationToken)
     {
-        var userCv = await dbContext.Cvs.FirstOrDefaultAsync(c => c.JobSeekerId == userId, cancellationToken);
+        var userCv = await dbContext.Cvs.FirstOrDefaultAsync(c => c.JobSeekerId == jobSeekerId, cancellationToken);
         if (userCv is not null) 
             return false;
         var cv = new Cv
@@ -25,16 +25,16 @@ internal class CvRepository
             MinimumExpectedSalary = createCvDto.MinimumSalary ?? null,
             MaximumExpectedSalary = createCvDto.MaximumSalary ?? null,
             ServiceStatus = createCvDto.Status ?? MilitaryServiceStatus.NotServedYet,
-            JobSeekerId = userId
+            JobSeekerId = jobSeekerId
         };
 
         dbContext.Add(cv);
         return await dbContext.SaveChangesAsync(cancellationToken) > 0;
     }
 
-    public async Task<bool> UpdateCv(Guid userId, CreateCvDto cvDto, CancellationToken cancellationToken)
+    public async Task<bool> UpdateCv(Guid jobSeekerId, CreateCvDto cvDto, CancellationToken cancellationToken)
     {
-        var userCv = await dbContext.Cvs.FirstOrDefaultAsync(c => c.JobSeekerId == userId, cancellationToken);
+        var userCv = await dbContext.Cvs.FirstOrDefaultAsync(c => c.JobSeekerId == jobSeekerId, cancellationToken);
         if (userCv is null)
             return false;
         userCv.Location = cvDto.Location ?? userCv.Location;
@@ -52,9 +52,9 @@ internal class CvRepository
         return cvs;
     }
 
-    public async Task<Cv?> GetCvByUserId(Guid userId, CancellationToken cancellationToken)
+    public async Task<Cv?> GetCvByUserId(Guid jobSeekerId, CancellationToken cancellationToken)
     {
-        var cv = await dbContext.Cvs.FirstOrDefaultAsync(c => c.JobSeekerId == userId, cancellationToken);
+        var cv = await dbContext.Cvs.FirstOrDefaultAsync(c => c.JobSeekerId == jobSeekerId, cancellationToken);
         return cv;
     }
 }

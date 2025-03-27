@@ -1,3 +1,3 @@
-﻿namespace Jobfinder.Domain.Dtos;
+﻿namespace Jobfinder.Domain.Dtos.Identity;
 
 public record RegisterDto(string Email, string Password);

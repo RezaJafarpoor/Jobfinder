@@ -1,11 +1,12 @@
-﻿using Jobfinder.Domain.Entities;
+﻿using Jobfinder.Domain.Dtos.Company;
+using Jobfinder.Domain.Entities;
 
 namespace Jobfinder.Domain.Interfaces;
 
 public interface ICompanyRepository
 {
-    Task<bool> CreateCompany();
-    Task<bool> UpdateCompany();
-    Task<List<Company>> GetCompanies();
-    Task<Company> GetCompanyById(Guid id);
+    Task<bool> CreateCompany(Guid userId,CreateCompanyDto companyDto, CancellationToken cancellationToken);
+    Task<bool> UpdateCompany(Guid userId,UpdateCompanyDto companyDto, CancellationToken cancellationToken);
+    Task<List<Company>> GetCompanies(CancellationToken cancellationToken);
+    Task<Company?> GetCompanyById(Guid companyId, CancellationToken cancellationToken);
 }

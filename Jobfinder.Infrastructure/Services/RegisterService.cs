@@ -1,6 +1,7 @@
 ﻿using Jobfinder.Application.Common.Models;
 using Jobfinder.Application.Interfaces;
 using Jobfinder.Domain.Dtos;
+using Jobfinder.Domain.Dtos.Identity;
 using Jobfinder.Domain.Entities;
 using Jobfinder.Domain.Interfaces;
 using Jobfinder.Infrastructure.Identity;

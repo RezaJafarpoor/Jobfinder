@@ -3,6 +3,7 @@ using Jobfinder.Domain.Dtos.Company;
 using Jobfinder.Domain.Entities;
 using Jobfinder.Domain.Interfaces;
 using Jobfinder.Infrastructure.Persistence;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 namespace Jobfinder.Infrastructure.Repositories;

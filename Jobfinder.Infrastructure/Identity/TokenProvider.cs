@@ -1,4 +1,5 @@
-﻿using Jobfinder.Domain.Entities;
+﻿using Jobfinder.Application.Interfaces;
+using Jobfinder.Domain.Entities;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
@@ -8,7 +9,7 @@ using System.Text;
 
 namespace Jobfinder.Infrastructure.Identity;
 
-public sealed class TokenProvider(IOptions<JwtSetting> jwtSetting)
+internal sealed class TokenProvider(IOptions<JwtSetting> jwtSetting) : ITokenProvider
 {
     public string GenerateJwtToken(User user)
     {

@@ -13,10 +13,10 @@ public class JobSeekerProfile
 
     public JobSeekerProfile() {}
 
-    public JobSeekerProfile(string firstname, string lastname, User user)
+    public JobSeekerProfile(User user, string? firstname, string? lastname)
     {
-        Firstname = firstname;
-        Lastname = lastname;
+        Firstname = firstname ?? string.Empty;
+        Lastname = lastname ?? string.Empty;
         User = user;
     }
 

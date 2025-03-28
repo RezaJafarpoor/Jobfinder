@@ -1,6 +1,4 @@
-﻿using Jobfinder.Domain.Dtos;
-
-namespace Jobfinder.Application.Common.Models;
+﻿namespace Jobfinder.Domain.Commons;
 
 public class Response<TResult>
 {

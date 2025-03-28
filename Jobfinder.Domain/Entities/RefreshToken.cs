@@ -10,12 +10,13 @@ public class RefreshToken
 
     public RefreshToken() {}
 
-    public RefreshToken(string token, User user, DateTime expirationDate)
+    public RefreshToken(string token, User user)
     {
         Token = token;
         User = user;
-        ExpirationDate = expirationDate;
+        ExpirationDate = DateTime.UtcNow.AddDays(7);
     }
+
     public bool IsExpired()
         => ExpirationDate > DateTime.UtcNow;
 

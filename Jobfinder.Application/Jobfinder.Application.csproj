@@ -10,8 +10,4 @@
       <ProjectReference Include="..\Jobfinder.Domain\Jobfinder.Domain.csproj" />
     </ItemGroup>
 
-    <ItemGroup>
-      <Folder Include="Extensions\" />
-    </ItemGroup>
-
 </Project>

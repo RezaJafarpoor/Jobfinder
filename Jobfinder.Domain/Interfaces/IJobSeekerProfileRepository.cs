@@ -5,9 +5,8 @@ namespace Jobfinder.Domain.Interfaces;
 
 public interface IJobSeekerProfileRepository
 {
-    Task<JobSeekerProfile> GetJobSeekerById(Guid jobSeekerId, CancellationToken cancellationToken);
-    Task<bool> ApplyToJobOffer(Guid jobSeekerId, Guid jobOffer, CancellationToken cancellationToken);
-    Task<List<JobSeekerProfile>> GetJobSeekers(CancellationToken cancellationToken);
-    Task<bool> UpdateJobSeeker(Guid jobSeekerId);
-    Task<List<JobApplication>> GetJobSeekerApplications(Guid jobSeekerId, CancellationToken cancellationToken);
+    Task CreateProfile(User user);
+    Task<User?> GetUserById(Guid jobSeekerId, CancellationToken cancellationToken);
+    Task Update(User user);
+    Task<bool> SaveChangesAsync(CancellationToken cancellationToken);
 }

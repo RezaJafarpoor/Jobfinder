@@ -1,5 +1,6 @@
 
 using Jobfinder.Api.Extensions;
+using Jobfinder.Application.Extensions;
 using Jobfinder.Infrastructure.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -9,7 +10,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddInfrastructureServices(builder.Configuration);
-
+builder.Services.AddApplicationServices();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

@@ -1,4 +1,4 @@
-﻿using Jobfinder.Application.Common.Models;
+﻿using Jobfinder.Domain.Commons;
 using Jobfinder.Domain.Dtos;
 using Jobfinder.Domain.Dtos.Identity;
 

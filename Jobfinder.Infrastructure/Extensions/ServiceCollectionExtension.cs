@@ -4,7 +4,7 @@ using Jobfinder.Domain.Interfaces;
 using Jobfinder.Infrastructure.Identity;
 using Jobfinder.Infrastructure.Persistence;
 using Jobfinder.Infrastructure.Repositories;
-using Jobfinder.Infrastructure.Services;
+using Jobfinder.Infrastructure.UnitOfWorks;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -18,18 +18,22 @@ namespace Jobfinder.Infrastructure.Extensions;
 public static class ServiceCollectionExtension  
 {
 
-    public static IServiceCollection AddInfrastructureServices(this IServiceCollection services, IConfiguration configuration)
+    public static void AddInfrastructureServices(this IServiceCollection services, IConfiguration configuration)
     {
-        services.AddPersistence(configuration);
-        services.AddIdentity(configuration);
-        services.AddScoped<IRegisterService,RegisterService>();
-        services.AddScoped<ILoginService, LoginService>();
+        services.AddScoped<IIdentityRepository, IdentityRepository>();
         services.AddScoped<ICompanyRepository, CompanyRepository>();
         services.AddScoped<ICvRepository, CvRepository>();
         services.AddScoped<IJobCategoryRepository, JobCategoryRepository>();
         services.AddScoped<IJobOfferRepository, JobOfferRepository>();
-        return services;
-
+        services.AddScoped<IJobSeekerProfileRepository, JobSeekerProfileRepository>();
+        services.AddScoped<ITokenProvider, TokenProvider>();
+        services.AddScoped<IEmployerProfileRepository, EmployerProfileRepository>();
+        services.AddScoped<IRefreshTokenRepository, RefreshTokenRepository>();
+        services.AddScoped<IJobSeekerIdentityUnitOfWork, JobSeekerIdentityUnitOfWork>();
+        services.AddScoped<IEmployerIdentityUnitOfWork, EmployerIdentityUnitOfWork>();
+        services.AddPersistence(configuration);
+        services.AddIdentity(configuration);
+       
     }
     
     

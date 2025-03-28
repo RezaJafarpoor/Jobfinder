@@ -6,7 +6,6 @@ namespace Jobfinder.Application.Interfaces;
 
 public interface ILoginService
 {
-    Task<Response<TokenResponse>> Login(LoginDto login, CancellationToken cancellationToken);
-
+    Task<Response<TokenResponse>> LoginWithPassword(LoginDto loginDto);
 
 }

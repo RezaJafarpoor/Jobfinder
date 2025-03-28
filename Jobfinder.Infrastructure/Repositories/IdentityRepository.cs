@@ -25,8 +25,7 @@ internal class IdentityRepository
         var user = await userManager.FindByEmailAsync(email);
         if (user is null)
             return Response<User>.Failure("user or password is wrong.");
-        var signInResult = await signInManager.CheckPasswordSignInAsync
-        (new User { UserName = email, Email = email }, password,false);
+        var signInResult = await signInManager.CheckPasswordSignInAsync(user, password, false);
         
         return signInResult.Succeeded 
             ? Response<User>.Success(user)

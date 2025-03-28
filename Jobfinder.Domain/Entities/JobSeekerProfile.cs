@@ -10,4 +10,22 @@ public class JobSeekerProfile
     public User User { get; set; } = new();
     public List<JobApplication> JobApplications { get; set; } = [];
     public Guid UserId { get; set; }
+
+    public JobSeekerProfile() {}
+
+    public JobSeekerProfile(string firstname, string lastname, User user)
+    {
+        Firstname = firstname;
+        Lastname = lastname;
+        User = user;
+    }
+
+    public void UpdateProfile(string? firstname, string? lastname)
+    {
+        Firstname = firstname ?? Firstname;
+        Lastname = lastname ?? Lastname;
+    }
+
+    public void ApplyToJobOffer(JobApplication jobApplication)
+        => JobApplications.Add(jobApplication);
 }

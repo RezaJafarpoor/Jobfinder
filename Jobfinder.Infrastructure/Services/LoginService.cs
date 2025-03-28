@@ -22,13 +22,14 @@ internal class LoginService(SignInManager<User> signInManager
         var result = await signInManager.CheckPasswordSignInAsync(user, login.Password, false);
         if (!result.Succeeded)
             return Response<TokenResponse>.Failure("Email or password is wrong");
-
-        var refreshToken = new RefreshToken
-        {
-            Token = tokenProvider.GenerateRefreshToken(),
-            ExpirationDate = DateTime.UtcNow.AddDays(7),
-            User = user,
-        };
+            
+        // var refreshToken = new RefreshToken
+        // {
+        //     Token = tokenProvider.GenerateRefreshToken(),
+        //     ExpirationDate = DateTime.UtcNow.AddDays(7),
+        //     User = user,
+        // };
+        var refreshToken = new RefreshToken(tokenProvider.GenerateRefreshToken(), user, DateTime.UtcNow.AddDays(7));
         dbContext.RefreshTokens.Add(refreshToken);
         if (await dbContext.SaveChangesAsync(cancellationToken) < 0)
             return Response<TokenResponse>.Failure("Something went wrong!");

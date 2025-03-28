@@ -12,4 +12,15 @@ public class JobApplication
     public DateTime AppliedOn { get; set; }
     public JobApplicationStatus Status { get; set; }
 
+    public JobApplication() {}
+
+    public JobApplication(JobSeekerProfile jobSeekerProfile, JobOffer jobOffer)
+    {
+        JobSeekerProfile = jobSeekerProfile;
+        JobOffer = jobOffer;
+        AppliedOn = DateTime.UtcNow;
+        Status = JobApplicationStatus.Pending;
+    }
+
+    public void UpdateJobStatus(JobApplicationStatus status) => Status = status;
 }

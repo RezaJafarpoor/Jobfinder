@@ -28,12 +28,13 @@ internal class RegisterService(ApplicationDbContext dbContext,
 
         var profile = new JobSeekerProfile { User = newUser };
         dbContext.JobSeekerProfiles.Add(profile);
-        var refreshToken = new RefreshToken
-        {
-            User = newUser,
-            ExpirationDate = DateTime.UtcNow.AddDays(7),
-            Token = tokenProvider.GenerateRefreshToken()
-        };
+        // var refreshToken = new RefreshToken
+        // {
+        //     User = newUser,
+        //     ExpirationDate = DateTime.UtcNow.AddDays(7),
+        //     Token = tokenProvider.GenerateRefreshToken()
+        // };
+        var refreshToken = new RefreshToken(tokenProvider.GenerateRefreshToken(), newUser, DateTime.UtcNow.AddDays(7));
          dbContext.RefreshTokens.Add(refreshToken);
          if (await dbContext.SaveChangesAsync(cancellationToken) <= 0)
              return Response<TokenResponse>.Failure("Something Went Wrong");
@@ -58,12 +59,14 @@ internal class RegisterService(ApplicationDbContext dbContext,
 
         var profile = new EmployerProfile { User = newUser };
         dbContext.EmployerProfiles.Add(profile);
-        var refreshToken = new RefreshToken
-        {
-            Token = tokenProvider.GenerateRefreshToken(),
-            ExpirationDate = DateTime.UtcNow.AddDays(7),
-            User = newUser,
-        };
+        // var refreshToken = new RefreshToken
+        // {
+        //     Token = tokenProvider.GenerateRefreshToken(),
+        //     ExpirationDate = DateTime.UtcNow.AddDays(7),
+        //     User = newUser,
+        // };
+        var refreshToken = new RefreshToken(tokenProvider.GenerateRefreshToken(), newUser, DateTime.UtcNow.AddDays(7));
+
         dbContext.RefreshTokens.Add(refreshToken);
         if (await dbContext.SaveChangesAsync(cancellationToken)< 0)
         {

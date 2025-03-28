@@ -15,4 +15,28 @@ public class Cv
     public JobSeekerProfile JobSeeker { get; } = new();
     public Guid JobSeekerId { get; set; }
     public string FullName => $"{JobSeeker.Firstname} {JobSeeker.Lastname}";
+
+    public Cv() {}
+
+    public Cv(Location location, DateOnly? birthDay, int? minimumExpectedSalary, int? maximumExpectedSalary,
+        MilitaryServiceStatus? serviceStatus, JobSeekerProfile jobSeeker)
+    {
+        Location = location;
+        BirthDay = birthDay;
+        MinimumExpectedSalary = minimumExpectedSalary;
+        MaximumExpectedSalary = maximumExpectedSalary;
+        ServiceStatus = serviceStatus ?? MilitaryServiceStatus.NotServedYet;
+        JobSeeker = jobSeeker;
+    }
+
+
+    public void UpdateCv(Location? location, DateOnly? birthDay, int? minimumExpectedSalary, int? maximumExpectedSalary,
+        MilitaryServiceStatus? serviceStatus)
+    {
+        Location = location ?? Location;
+        BirthDay = birthDay ?? BirthDay;
+        MinimumExpectedSalary = minimumExpectedSalary ?? MinimumExpectedSalary;
+        MaximumExpectedSalary = maximumExpectedSalary ?? MaximumExpectedSalary;
+        ServiceStatus = serviceStatus ?? ServiceStatus;
+    }
 }

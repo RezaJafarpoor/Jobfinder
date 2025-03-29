@@ -1,16 +1,17 @@
-﻿using Jobfinder.Application.Interfaces;
-using Jobfinder.Domain.Commons;
-using Jobfinder.Domain.Dtos.Identity;
+﻿using Jobfinder.Application.Commons;
+using Jobfinder.Application.Dtos.Identity;
+using Jobfinder.Application.Interfaces.Identity;
+using Jobfinder.Application.Interfaces.Repositories;
+using Jobfinder.Application.Interfaces.UnitOfWorks;
 using Jobfinder.Domain.Entities;
-using Jobfinder.Domain.Interfaces;
 
 namespace Jobfinder.Application.Services;
 
-public class RegisterService
+public sealed class RegisterService
     (IJobSeekerIdentityUnitOfWork jobSeekerUnitOfWork,
         ITokenProvider tokenProvider,
         IRefreshTokenRepository refreshTokenRepository,
-        IEmployerIdentityUnitOfWork employerUnitOfWork) : IRegisterService
+        IEmployerIdentityUnitOfWork employerUnitOfWork)
 {
 
     public async Task<Response<TokenResponse>> RegisterJobSeekerProfile(RegisterDto register, CancellationToken cancellationToken)

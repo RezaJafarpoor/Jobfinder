@@ -1,5 +1,5 @@
-﻿using  Jobfinder.Domain.Entities;
-using Jobfinder.Domain.Interfaces;
+﻿using Jobfinder.Application.Interfaces.Repositories;
+using  Jobfinder.Domain.Entities;
 using Jobfinder.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore; 
 
@@ -8,24 +8,28 @@ namespace Jobfinder.Infrastructure.Repositories;
 internal class JobSeekerProfileRepository
     (ApplicationDbContext dbContext) : IJobSeekerProfileRepository
 {
-    public Task CreateProfile(User user)
+    public Task CreateProfile(JobSeekerProfile jobSeekerProfile)
     {
-        var profile = new JobSeekerProfile(user, null, null);
-        dbContext.JobSeekerProfiles.Add(profile);
+        dbContext.JobSeekerProfiles.Add(jobSeekerProfile);
         return Task.CompletedTask;
     }
 
-    public async Task<User?> GetUserById(Guid jobSeekerId, CancellationToken cancellationToken)
+    public async Task<JobSeekerProfile?> GetUserById(Guid jobSeekerId, CancellationToken cancellationToken)
     {
-        return await dbContext.JobSeekerProfiles.AsNoTracking()
-            .Where(jsp => jsp.Id == jobSeekerId)
-            .Select(jsp => jsp.User).FirstOrDefaultAsync(cancellationToken);
+        return await dbContext.JobSeekerProfiles
+            .FirstOrDefaultAsync(jsp => jsp.Id == jobSeekerId, cancellationToken);
     }
 
-    public Task Update(User user)
+    public Task Update(JobSeekerProfile jobSeekerProfile)
     {
-        dbContext.Update(user);
+        dbContext.Update(jobSeekerProfile);
         return Task.CompletedTask;
+    }
+
+    public async Task<List<JobSeekerProfile>> GetJobSeekers(CancellationToken cancellationToken)
+    {
+        var jobSeekers = await dbContext.JobSeekerProfiles.AsNoTracking().ToListAsync(cancellationToken);
+        return jobSeekers;
     }
 
     public async Task<bool> SaveChangesAsync(CancellationToken cancellationToken)

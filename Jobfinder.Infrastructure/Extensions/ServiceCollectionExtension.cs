@@ -1,6 +1,8 @@
 ﻿using Jobfinder.Application.Interfaces;
+using Jobfinder.Application.Interfaces.Identity;
+using Jobfinder.Application.Interfaces.Repositories;
+using Jobfinder.Application.Interfaces.UnitOfWorks;
 using Jobfinder.Domain.Entities;
-using Jobfinder.Domain.Interfaces;
 using Jobfinder.Infrastructure.Identity;
 using Jobfinder.Infrastructure.Persistence;
 using Jobfinder.Infrastructure.Repositories;
@@ -54,7 +56,7 @@ public static class ServiceCollectionExtension
             .Bind(config: configuration.GetSection("JwtSetting"));
         
         services.AddAuthorization();
-        services.AddIdentity<User, IdentityRole<System.Guid>>()
+        services.AddIdentity<User, IdentityRole<Guid>>()
             .AddEntityFrameworkStores<ApplicationDbContext>()
             .AddDefaultTokenProviders();
         services.AddAuthentication(option =>
@@ -77,6 +79,8 @@ public static class ServiceCollectionExtension
                     RequireExpirationTime = true,
                     ClockSkew = TimeSpan.FromMinutes(jwtOption.ExpirationTimeInMinute),
                     ValidIssuer = jwtOption.Issuer,
+                    ValidateAudience = true,
+                    ValidAudience = jwtOption.Audience,
                     IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtOption.Secret))
                 };
             });

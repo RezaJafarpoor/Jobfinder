@@ -1,9 +1,6 @@
-﻿using Azure.Core;
-using Jobfinder.Domain.Dtos.Company;
+﻿using Jobfinder.Application.Interfaces.Repositories;
 using Jobfinder.Domain.Entities;
-using Jobfinder.Domain.Interfaces;
 using Jobfinder.Infrastructure.Persistence;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 namespace Jobfinder.Infrastructure.Repositories;
@@ -13,47 +10,22 @@ namespace Jobfinder.Infrastructure.Repositories;
 
 internal class CompanyRepository(ApplicationDbContext dbContext) : ICompanyRepository
 {
-    public async Task<bool> CreateCompany(Guid employerId,CreateCompanyDto companyDto, CancellationToken cancellationToken)
+    public  Task CreateCompany(Company userCompany)
     {
-
-        var company = await dbContext.Companies
-            .FirstOrDefaultAsync(c => c.Owner == employerId || c.CompanyName == companyDto.CompanyName, cancellationToken );
-        if (company is null)
-            return false;
-        
-        var newCompany = new Company
-        {
-            CompanyName = companyDto.CompanyName,
-            WebsiteAddress = companyDto.WebsiteAddress,
-            Location = companyDto.Location,
-            SizeOfCompany = companyDto.SizeOfCompany,
-            Description = companyDto.Description,
-            Owner  = employerId
-        };
-
-        dbContext.Add(company);
-        return await dbContext.SaveChangesAsync(cancellationToken) > 0;
+        dbContext.Add(userCompany);
+        return Task.CompletedTask;
 
     }
 
-    public async Task<bool> UpdateCompany(Guid employerId, UpdateCompanyDto companyDto, CancellationToken cancellationToken)
+    public Task UpdateCompany( Company company)
     {
-        var userCompany = await dbContext.Companies
-            .FirstOrDefaultAsync(c => c.Owner == employerId, cancellationToken);
-        if (userCompany is null)
-            return false;
-        userCompany.WebsiteAddress = companyDto.WebsiteAddress ?? userCompany.WebsiteAddress;
-        userCompany.Location = companyDto.Location ?? userCompany.Location;
-        userCompany.SizeOfCompany = companyDto.SizeOfCompany ?? userCompany.SizeOfCompany;
-        userCompany.Description = companyDto.Description ?? userCompany.Description;
-
-        return await dbContext.SaveChangesAsync(cancellationToken) > 0;
-
+        dbContext.Update(company);
+        return Task.CompletedTask;
     }
 
     public async  Task<List<Company>> GetCompanies(CancellationToken cancellationToken)
     {
-        var companies = await dbContext.Companies.ToListAsync(cancellationToken);
+        var companies = await dbContext.Companies.AsNoTracking().ToListAsync(cancellationToken);
         return companies;
     }
 

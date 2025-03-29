@@ -5,7 +5,7 @@ Accept: application/json
 Content-Type: application/json
 
 {
-   "email":"reza@gmail.com",
+   "email":"reza1@gmail.com",
    "password":"Reza1234@"
 }
 
@@ -24,6 +24,29 @@ Accept: application/json
 Content-Type: application/json
 
 {
-   "email":"reza@gmail.com",
+   "email":"reza1@gmail.com",
    "password":"Reza1234@"
 }
+###
+POST {{Host}}/api/cv
+Accept: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJiODNiZDUzNS1kODAzLTQ0MTYtZGE0Zi0wOGRkNmU0YTE5OTIiLCJqdGkiOiI1ZTRmZTY5Ny01MzE4LTQ2ZWQtOTQxMC0zNzgxZWEwNmJmYzYiLCJhdWQiOiJodHRwczovL2xvY2FsaG9zdDo3MDkzIiwiZXhwIjoxNzQzMjAzOTk0LCJpc3MiOiJodHRwczovL2xvY2FsaG9zdDo3MDkzIn0.eBjsiw3BWyqZg3-fyyut3zauxyMUES5jxiHxBDjbYrU
+Content-Type: application/json
+
+{
+  "location": {
+    "province": "khosezstan",
+    "city": "ahvaz",
+    "address": "golestan"
+  },
+  "birthDay": {
+    "year": 1999,
+    "month": 12,
+    "day": 1,
+    "dayOfWeek": 3
+  },
+  "maximumSalary": 16,
+  "minimumSalary": 12,
+  "status":0
+}
+###

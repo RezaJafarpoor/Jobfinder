@@ -19,14 +19,14 @@ public class Cv
     public Cv() {}
 
     public Cv(Location location, DateOnly? birthDay, int? minimumExpectedSalary, int? maximumExpectedSalary,
-        MilitaryServiceStatus? serviceStatus, JobSeekerProfile jobSeeker)
+        MilitaryServiceStatus? serviceStatus, Guid jobSeekerId)
     {
         Location = location;
         BirthDay = birthDay;
         MinimumExpectedSalary = minimumExpectedSalary;
         MaximumExpectedSalary = maximumExpectedSalary;
         ServiceStatus = serviceStatus ?? MilitaryServiceStatus.NotServedYet;
-        JobSeeker = jobSeeker;
+        JobSeekerId = jobSeekerId;
     }
 
 

@@ -1,7 +1,8 @@
-﻿using Jobfinder.Application.Interfaces;
-using Jobfinder.Domain.Commons;
+﻿using Jobfinder.Application.Commons;
+using Jobfinder.Application.Interfaces;
+using Jobfinder.Application.Interfaces.Repositories;
+using Jobfinder.Application.Interfaces.UnitOfWorks;
 using Jobfinder.Domain.Entities;
-using Jobfinder.Domain.Interfaces;
 using Jobfinder.Infrastructure.Persistence;
 
 namespace Jobfinder.Infrastructure.UnitOfWorks;

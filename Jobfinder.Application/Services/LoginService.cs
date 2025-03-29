@@ -1,19 +1,19 @@
-﻿using Jobfinder.Application.Interfaces;
-using Jobfinder.Domain.Commons;
-using Jobfinder.Domain.Dtos.Identity;
+﻿using Jobfinder.Application.Commons;
+using Jobfinder.Application.Dtos.Identity;
+using Jobfinder.Application.Interfaces.Identity;
+using Jobfinder.Application.Interfaces.Repositories;
 using Jobfinder.Domain.Entities;
-using Jobfinder.Domain.Interfaces;
 
 namespace Jobfinder.Application.Services;
 
-public class LoginService
+public sealed class LoginService
     (IIdentityRepository identityRepository,
         ITokenProvider tokenProvider,
-        IRefreshTokenRepository refreshTokenRepository) : ILoginService
+        IRefreshTokenRepository refreshTokenRepository) 
 {
-    public async Task<Response<TokenResponse>> LoginWithPassword(LoginDto loginDto)
+    public async Task<Response<TokenResponse>> LoginWithPassword(User user, string password)
     {
-        var result  = await identityRepository.LoginUser(loginDto.Email, loginDto.Password);
+        var result  = await identityRepository.LoginUser(user, password);
         if (!result.IsSuccess)
             return Response<TokenResponse>.Failure(result.Errors);
         var accessToken = tokenProvider.GenerateJwtToken(result.Data!);

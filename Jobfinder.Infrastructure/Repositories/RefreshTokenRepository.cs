@@ -1,5 +1,5 @@
-﻿using Jobfinder.Domain.Entities;
-using Jobfinder.Domain.Interfaces;
+﻿using Jobfinder.Application.Interfaces.Repositories;
+using Jobfinder.Domain.Entities;
 using Jobfinder.Infrastructure.Persistence;
 
 namespace Jobfinder.Infrastructure.Repositories;

@@ -1,6 +1,7 @@
-﻿using Jobfinder.Domain.Commons;
+﻿using  Jobfinder.Application.Commons;
+using Jobfinder.Application.Interfaces.Repositories;
+using Jobfinder.Application.Interfaces.UnitOfWorks;
 using Jobfinder.Domain.Entities;
-using Jobfinder.Domain.Interfaces;
 using Jobfinder.Infrastructure.Persistence;
 
 namespace Jobfinder.Infrastructure.UnitOfWorks;
@@ -22,7 +23,8 @@ internal class JobSeekerIdentityUnitOfWork(
                 case false:
                     return Response<User>.Failure(createdUser.Errors);
                 case true:
-                    await jobSeekerProfileRepository.CreateProfile(user);
+                    var profile = new JobSeekerProfile(new User(createdUser.Data!.Email!),null,null);
+                    await jobSeekerProfileRepository.CreateProfile(profile);
                     await dbContext.SaveChangesAsync();
                     await transaction.CommitAsync();
                     return Response<User>.Success(createdUser.Data!);

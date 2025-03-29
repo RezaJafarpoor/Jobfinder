@@ -1,6 +1,6 @@
-﻿using Jobfinder.Application.Interfaces;
-using Jobfinder.Domain.Dtos;
-using Jobfinder.Domain.Dtos.Identity;
+﻿using  Jobfinder.Application.Dtos.Identity;
+using Jobfinder.Application.Services;
+using Jobfinder.Domain.Entities;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Jobfinder.Api.Endpoints;
@@ -13,7 +13,7 @@ public static class IdentityEndpoints
         var registration = root.MapGroup("register");
 
         registration.MapPost("jobSeeker",
-            async ([FromBody] RegisterDto register, IRegisterService registerService, CancellationToken cancellationToken) =>
+            async ([FromBody] RegisterDto register, RegisterService registerService, CancellationToken cancellationToken) =>
             {
                 var result = await registerService.RegisterJobSeekerProfile(register, cancellationToken);
                 return result.Errors.Count == 0 ? 
@@ -21,7 +21,7 @@ public static class IdentityEndpoints
                     : Results.BadRequest(result.Errors);
             });
 
-        registration.MapPost("employer", async ([FromBody]RegisterDto register,IRegisterService registerService, CancellationToken cancellationToken ) =>
+        registration.MapPost("employer", async ([FromBody]RegisterDto register,RegisterService registerService, CancellationToken cancellationToken ) =>
         {
             var result =  await registerService.RegisterEmployerProfile(register, cancellationToken);
             return result.Errors.Count == 0 ?
@@ -29,9 +29,10 @@ public static class IdentityEndpoints
                 Results.BadRequest(result.Errors);
         });
 
-        root.MapPost("login", async ([FromBody]LoginDto loginDto, ILoginService loginService) =>
+        root.MapPost("login", async ([FromBody]LoginDto loginDto, LoginService loginService) =>
         {
-            var result = await loginService.LoginWithPassword(loginDto);
+            var user = new User(loginDto.Email);
+            var result = await loginService.LoginWithPassword(user, loginDto.Password);
            return  result.Errors.Count == 0 ?
                Results.Ok(result.Data) :
                Results.BadRequest(result.Errors);

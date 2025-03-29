@@ -1,6 +1,6 @@
-﻿using  Jobfinder.Domain.Commons;
+﻿using Jobfinder.Application.Commons;
+using Jobfinder.Application.Interfaces.Repositories;
 using Jobfinder.Domain.Entities;
-using Jobfinder.Domain.Interfaces;
 using Microsoft.AspNetCore.Identity;
 
 namespace Jobfinder.Infrastructure.Repositories;
@@ -20,15 +20,15 @@ internal class IdentityRepository
 
     }
 
-    public async Task<Response<User>> LoginUser(string email, string password)
+    public async Task<Response<User>> LoginUser(User user, string password)
     {
-        var user = await userManager.FindByEmailAsync(email);
-        if (user is null)
+        var currentUser = await userManager.FindByEmailAsync(user.Email);
+        if (currentUser is null)
             return Response<User>.Failure("user or password is wrong.");
-        var signInResult = await signInManager.CheckPasswordSignInAsync(user, password, false);
+        var signInResult = await signInManager.CheckPasswordSignInAsync(currentUser, password, false);
         
         return signInResult.Succeeded 
-            ? Response<User>.Success(user)
+            ? Response<User>.Success(currentUser)
             : Response<User>.Failure("user or password is wrong.");
     }
 }

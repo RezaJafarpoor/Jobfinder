@@ -1,30 +1,23 @@
-﻿using Jobfinder.Domain.Dtos.Category;
+﻿using Jobfinder.Application.Interfaces.Repositories;
 using Jobfinder.Domain.Entities;
-using Jobfinder.Domain.Interfaces;
 using Jobfinder.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 
 namespace Jobfinder.Infrastructure.Repositories;
 
-//TODO: Add Result pattern to this class
-
 internal class JobCategoryRepository
     (ApplicationDbContext dbContext)
     : IJobCategoryRepository
 {
-    public async Task<bool> AddCategory(CategoryDto categoryDto, CancellationToken cancellationToken)
+    public async Task<bool> AddCategory(JobCategory jobCategory, CancellationToken cancellationToken)
     {
         var category =
-            await dbContext.JobCategories.FirstOrDefaultAsync(jc => jc.Category == categoryDto.CategoryName,
+            await dbContext.JobCategories.FirstOrDefaultAsync(jc => jc.Category == jobCategory.Category,
                 cancellationToken);
-        if (category is null)
+        if (category is not null)
             return false;
-        var newCategory = new JobCategory
-        {
-            Category = categoryDto.CategoryName
-        };
-        dbContext.Add(newCategory);
-        return await dbContext.SaveChangesAsync(cancellationToken) > 0;
+        dbContext.Add(jobCategory);
+        return true;
     }
 
     public async Task<bool> DeleteCategoryById(Guid id)
@@ -33,17 +26,13 @@ internal class JobCategoryRepository
         if (category is null)
             return false;
         dbContext.JobCategories.Remove(category);
-        return await dbContext.SaveChangesAsync() > 0;
+        return true;
     }
-
-    public async Task<bool> UpdateCategoryById(CategoryDto categoryDto, Guid categoryId, CancellationToken cancellationToken)
+    
+    public Task UpdateCategory(JobCategory jobCategory)
     {
-        var category = await dbContext.JobCategories.FirstOrDefaultAsync(jc => jc.Id == categoryId, cancellationToken);
-        if (category is null)
-            return false;
-        category.Category = categoryDto.CategoryName;
-
-        return await dbContext.SaveChangesAsync(cancellationToken) > 0;
+        dbContext.Update(jobCategory);
+        return Task.CompletedTask;
     }
 
     public async Task<JobCategory?> GetCategoryById(Guid categoryId, CancellationToken cancellationToken)
@@ -54,7 +43,11 @@ internal class JobCategoryRepository
 
     public async Task<List<JobCategory>?> GetCategories(CancellationToken cancellationToken)
     {
-        var categories = await dbContext.JobCategories.ToListAsync(cancellationToken);
+        var categories = await dbContext.JobCategories.AsNoTracking().ToListAsync(cancellationToken);
         return categories;
     }
+    
+    public async Task<bool> SaveChangesAsync(CancellationToken cancellationToken)
+    => await dbContext.SaveChangesAsync(cancellationToken) > 0;
+
 }

@@ -1,4 +1,4 @@
-﻿using Jobfinder.Application.Interfaces;
+﻿using Jobfinder.Application.Interfaces.Identity;
 using Jobfinder.Domain.Entities;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
@@ -16,8 +16,9 @@ internal sealed class TokenProvider(IOptions<JwtSetting> jwtSetting) : ITokenPro
         var secretKey = jwtSetting.Value.Secret;
         var claims = new List<Claim>
         {
-            new Claim(Microsoft.IdentityModel.JsonWebTokens.JwtRegisteredClaimNames.Sub, user.Id.ToString()),
-            new Claim(Microsoft.IdentityModel.JsonWebTokens.JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+            new Claim(JwtRegisteredClaimNames.Sub, user.Id.ToString()),
+            new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+            new Claim(JwtRegisteredClaimNames.Aud, jwtSetting.Value.Audience)
             
         };
 

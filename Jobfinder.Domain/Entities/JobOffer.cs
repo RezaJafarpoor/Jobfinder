@@ -1,5 +1,4 @@
-﻿using Jobfinder.Domain.Dtos.JobOffer;
-using Jobfinder.Domain.ValueObjects;
+﻿using Jobfinder.Domain.ValueObjects;
 
 namespace Jobfinder.Domain.Entities;
 

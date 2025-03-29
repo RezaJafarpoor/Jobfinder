@@ -12,5 +12,6 @@ public static class ServiceCollectionExtension
     public static void AddEndpoints(this IEndpointRouteBuilder builder)
     {
         builder.AddIdentityEndpoints();
+        builder.AddCvEndpoints();
     }
 }

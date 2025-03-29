@@ -1,5 +1,6 @@
 ﻿using Jobfinder.Application.Dtos.Cv;
 using Jobfinder.Application.Interfaces.Repositories;
+using Jobfinder.Application.Interfaces.UnitOfWorks;
 using Jobfinder.Application.Services;
 using Microsoft.AspNetCore.Mvc;
 using System.IdentityModel.Tokens.Jwt;
@@ -14,25 +15,19 @@ public static class CvEndpoints
         var root = builder.MapGroup("api");
 
         root.MapPost("cvs",
-            async ([FromBody] CreateCvDto createCvDto, CvService service, HttpContext context,
+            async ([FromBody] CreateCvDto createCvDto, IJobSeekerCvUnitOfWork unitOfWork, HttpContext context,
                     CancellationToken cancellationToken)
                 =>
             {
                 var subClaim = context.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
                 if (Guid.TryParse(subClaim, out Guid userId))
                 {
-                    var result = await service.CreateCv(createCvDto, userId, cancellationToken);
+                    var result = await unitOfWork.CreateCvAndUpdateUsername(createCvDto, userId, cancellationToken);
                     return result.IsSuccess ? Results.Ok(result.Data) : Results.BadRequest();
                 }
 
                 return Results.Unauthorized();
             });
         
-        root.MapGet("cvs", async (ICvRepository cvRepository, CancellationToken cancellationToken) =>
-        {
-            var cvs = await cvRepository.GetCvs(cancellationToken);
-            return Results.Ok(cvs);
-
-        });
     }
 }

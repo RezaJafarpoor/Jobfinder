@@ -14,10 +14,10 @@ internal class JobSeekerProfileRepository
         return Task.CompletedTask;
     }
 
-    public async Task<JobSeekerProfile?> GetUserById(Guid jobSeekerId, CancellationToken cancellationToken)
+    public async Task<JobSeekerProfile?> GetUserById(Guid userId, CancellationToken cancellationToken)
     {
         return await dbContext.JobSeekerProfiles
-            .FirstOrDefaultAsync(jsp => jsp.Id == jobSeekerId, cancellationToken);
+            .FirstOrDefaultAsync(jsp => jsp.UserId == userId, cancellationToken);
     }
 
     public Task Update(JobSeekerProfile jobSeekerProfile)

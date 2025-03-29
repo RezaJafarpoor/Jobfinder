@@ -10,24 +10,16 @@ public static class IdentityEndpoints
     public static void AddIdentityEndpoints(this IEndpointRouteBuilder builder)
     {
         var root = builder.MapGroup("api/identity");
-        var registration = root.MapGroup("register");
 
-        registration.MapPost("jobSeeker",
+        root.MapPost("register",
             async ([FromBody] RegisterDto register, RegisterService registerService, CancellationToken cancellationToken) =>
             {
-                var result = await registerService.RegisterJobSeekerProfile(register, cancellationToken);
+                var result = await registerService.Register(register, cancellationToken);
                 return result.Errors.Count == 0 ? 
                     Results.Ok(result.Data) 
                     : Results.BadRequest(result.Errors);
             });
-
-        registration.MapPost("employer", async ([FromBody]RegisterDto register,RegisterService registerService, CancellationToken cancellationToken ) =>
-        {
-            var result =  await registerService.RegisterEmployerProfile(register, cancellationToken);
-            return result.Errors.Count == 0 ?
-                Results.Ok(result.Data) :
-                Results.BadRequest(result.Errors);
-        });
+        
 
         root.MapPost("login", async ([FromBody]LoginDto loginDto, LoginService loginService) =>
         {

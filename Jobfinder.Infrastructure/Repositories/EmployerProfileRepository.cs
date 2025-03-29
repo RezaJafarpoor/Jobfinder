@@ -7,9 +7,8 @@ namespace Jobfinder.Infrastructure.Repositories;
 internal class EmployerProfileRepository
     (ApplicationDbContext dbContext) : IEmployerProfileRepository
 {
-    public Task CreateProfile(User user)
+    public Task CreateProfile(EmployerProfile profile)
     {
-        var profile = new EmployerProfile(user);
          dbContext.Add(profile);
          return Task.CompletedTask;
     }

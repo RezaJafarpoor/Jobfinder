@@ -32,8 +32,8 @@ public static class ServiceCollectionExtension
         services.AddScoped<ITokenProvider, TokenProvider>();
         services.AddScoped<IEmployerProfileRepository, EmployerProfileRepository>();
         services.AddScoped<IRefreshTokenRepository, RefreshTokenRepository>();
-        services.AddScoped<IJobSeekerIdentityUnitOfWork, JobSeekerIdentityUnitOfWork>();
-        services.AddScoped<IEmployerIdentityUnitOfWork, EmployerIdentityUnitOfWork>();
+        services.AddScoped<IJobSeekerCvUnitOfWork, JobSeekerCvUnitOfWork>();
+        services.AddScoped<IUserProfileUnitOfWork, UserProfileUnitOfWork>();
         services.AddPersistence(configuration);
         services.AddIdentity(configuration);
        

@@ -8,7 +8,9 @@ public record CreateCvDto
     (
         [property:JsonPropertyName("location")] Location Location,
         [property:JsonPropertyName("birthDay")] DateOnly BirthDay,
-         [property:JsonPropertyName("maxmimumSalary")] int? MaximumSalary,
-         [property:JsonPropertyName("minimumSalary")] int? MinimumSalary,
-        [property:JsonPropertyName("status")] MilitaryServiceStatus? Status
+        [property:JsonPropertyName("maxmimumSalary")] int? MaximumSalary,
+        [property:JsonPropertyName("minimumSalary")] int? MinimumSalary,
+        [property:JsonPropertyName("status")] MilitaryServiceStatus? Status,
+        [property:JsonPropertyName("firstName")] string Firstname,
+        [property:JsonPropertyName("lastName")] string Lastname
         );

@@ -4,7 +4,7 @@ namespace Jobfinder.Application.Interfaces.Repositories;
 
 public interface IEmployerProfileRepository
 {
-    Task CreateProfile(User user);
+    Task CreateProfile(EmployerProfile profile);
     Task SaveChangesAsync(CancellationToken cancellationToken);
 
 

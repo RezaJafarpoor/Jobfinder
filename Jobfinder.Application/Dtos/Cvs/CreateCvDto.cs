@@ -2,7 +2,7 @@
 using Jobfinder.Domain.ValueObjects;
 using System.Text.Json.Serialization;
 
-namespace Jobfinder.Application.Dtos.Cv;
+namespace Jobfinder.Application.Dtos.Cvs;
 
 public record CreateCvDto
     (

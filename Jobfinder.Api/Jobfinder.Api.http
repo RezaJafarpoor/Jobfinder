@@ -5,7 +5,7 @@ Accept: application/json
 Content-Type: application/json
 
 {
-   "email":"reza10@gmail.com",
+   "email":"reza@gmail.com",
    "password":"Reza1234@",
    "userType":"JobSeeker"
 }
@@ -24,7 +24,7 @@ POST {{Host}}/api/cvs
 Accept: application/json
 Authorization: Bearer 
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjYzIwMjE4MC1iYmYxLTQ0MzItY2RkZi0wOGRkNmVlOTY1ZTQiLCJqdGkiOiI1OWFkMWYxMy0wODA4LTQwNDAtYTY4Yy0wZjc3Y2M0YjlhMTgiLCJhdWQiOiJodHRwczovL2xvY2FsaG9zdDo3MDkzIiwiZXhwIjoxNzQzMjcyMDg3LCJpc3MiOiJodHRwczovL2xvY2FsaG9zdDo3MDkzIn0.oCfLT0IPZxDMlLAZs_pYjQNHZvNVXqcPPXbxF5w54jg
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3OTQxN2Y2NS03ODJjLTRjNzItYzIwOS0wOGRkNmYxNTU4MjUiLCJqdGkiOiI1ZGM5NzUwNS04MWFiLTRlOGQtYmYzOS01ZTBlMWEyOTYyMWYiLCJhdWQiOiJodHRwczovL2xvY2FsaG9zdDo3MDkzIiwiZXhwIjoxNzQzMjkwOTYyLCJpc3MiOiJodHRwczovL2xvY2FsaG9zdDo3MDkzIn0.JkFast83klAiO4TMlblM-dHHuIxGaNoxs7kmmY1LWQM
 
 {
   "location": {
@@ -43,3 +43,5 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjYzIwMjE4M
 ###
 GET {{Host}}/api/cvs
 Accept: application/json
+###
+GET {{Host}}/api/cvs/79417f65-782c-4c72-c209-08dd6f155825

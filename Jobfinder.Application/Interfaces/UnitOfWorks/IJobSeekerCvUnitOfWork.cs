@@ -1,5 +1,5 @@
 ﻿using Jobfinder.Application.Commons;
-using Jobfinder.Application.Dtos.Cv;
+using Jobfinder.Application.Dtos.Cvs;
 
 namespace Jobfinder.Application.Interfaces.UnitOfWorks;
 

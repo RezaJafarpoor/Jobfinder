@@ -9,4 +9,5 @@ public interface ICvRepository
     Task<List<Cv>?> GetCvs(CancellationToken cancellationToken);
     Task<Cv?> GetCvById(Guid cvId, CancellationToken cancellationToken);
     Task<bool> SaveChangesAsync(CancellationToken cancellationToken);
+    Task<Cv?> GetCvByUserId(Guid userId, CancellationToken cancellationToken);
 }

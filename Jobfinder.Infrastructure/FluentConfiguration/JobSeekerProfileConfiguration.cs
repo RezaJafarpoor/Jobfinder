@@ -16,8 +16,8 @@ internal class JobSeekerProfileConfiguration : IEntityTypeConfiguration<JobSeeke
             .IsRequired();
         
         builder.HasOne(jsp => jsp.JobSeekerCv) 
-            .WithOne()
-            .HasForeignKey<JobSeekerProfile>(jsp => jsp.CvId)
+            .WithOne(c =>c.JobSeeker)
+            .HasForeignKey<Cv>(c => c.JobSeekerId)
             .OnDelete(DeleteBehavior.Cascade);
         
         builder.HasOne(jsp => jsp.User)

@@ -1,9 +1,10 @@
 ﻿using Jobfinder.Application.Commons;
-using Jobfinder.Application.Dtos.Cv;
+using Jobfinder.Application.Dtos.Cvs;
 using Jobfinder.Application.Interfaces.Repositories;
 using Jobfinder.Application.Interfaces.UnitOfWorks;
 using Jobfinder.Domain.Entities;
 using Jobfinder.Infrastructure.Persistence;
+using Microsoft.EntityFrameworkCore;
 
 namespace Jobfinder.Infrastructure.UnitOfWorks;
 
@@ -20,13 +21,17 @@ internal class JobSeekerCvUnitOfWork(
             var profile = await jobSeekerProfileRepository.GetUserById(jobSeekerId, cancellationToken);
             if (profile is null)
                 return Response<string>.Failure("User does not exist");
-            
+
             var cv = new Cv(cvDto.Location, cvDto.BirthDay, cvDto.MaximumSalary, cvDto.MaximumSalary, cvDto.Status,
-                jobSeekerId);
-            await cvRepository.CreateCv(cv);
+                profile.Id)
+            {
+                JobSeeker = profile
+                
+            };
             profile.Firstname = cvDto.Firstname;
             profile.Lastname = cvDto.Lastname;
-            await jobSeekerProfileRepository.Update(profile);
+            await cvRepository.CreateCv(cv);
+            await dbContext.SaveChangesAsync(cancellationToken);
             await transaction.CommitAsync(cancellationToken);
             return Response<string>.Success("Cv added");        //WARNING: remove the message in the Success()
         }

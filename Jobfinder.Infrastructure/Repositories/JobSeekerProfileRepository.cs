@@ -16,8 +16,9 @@ internal class JobSeekerProfileRepository
 
     public async Task<JobSeekerProfile?> GetUserById(Guid userId, CancellationToken cancellationToken)
     {
-        return await dbContext.JobSeekerProfiles
+        var profile = await dbContext.JobSeekerProfiles
             .FirstOrDefaultAsync(jsp => jsp.UserId == userId, cancellationToken);
+        return profile;
     }
 
     public Task Update(JobSeekerProfile jobSeekerProfile)

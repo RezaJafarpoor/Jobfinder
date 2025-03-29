@@ -24,7 +24,9 @@ internal class CvRepository
 
     public async Task<List<Cv>?> GetCvs(CancellationToken cancellationToken)
     {
-        var cvs = await dbContext.Cvs.AsNoTracking().ToListAsync(cancellationToken);
+        var cvs = await dbContext.Cvs
+            .Include(c => c.JobSeeker)
+            .AsNoTracking().ToListAsync(cancellationToken);
         return cvs;
     }
 
@@ -32,10 +34,19 @@ internal class CvRepository
 
     public async Task<Cv?> GetCvById(Guid cvId, CancellationToken cancellationToken)
     {
-        var cv = await dbContext.Cvs.FirstOrDefaultAsync(c => c.Id == cvId, cancellationToken);
+        var cv = await dbContext.Cvs
+            .FirstOrDefaultAsync(c=> c.Id == cvId, cancellationToken);
         return cv;
     }
 
     public async Task<bool> SaveChangesAsync(CancellationToken cancellationToken)
         => await dbContext.SaveChangesAsync(cancellationToken) > 0;
+
+    public async Task<Cv?> GetCvByUserId(Guid userId, CancellationToken cancellationToken)
+    {
+        var cv = await dbContext.Cvs.Include(c => c.JobSeeker)
+            .Where(u => u.JobSeeker.UserId == userId)
+            .FirstOrDefaultAsync(cancellationToken);
+        return cv;
+    }
 }

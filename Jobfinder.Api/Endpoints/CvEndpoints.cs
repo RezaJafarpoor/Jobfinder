@@ -1,9 +1,7 @@
-﻿using Jobfinder.Application.Dtos.Cv;
+﻿using Jobfinder.Application.Dtos.Cvs;
 using Jobfinder.Application.Interfaces.Repositories;
 using Jobfinder.Application.Interfaces.UnitOfWorks;
-using Jobfinder.Application.Services;
 using Microsoft.AspNetCore.Mvc;
-using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 
 namespace Jobfinder.Api.Endpoints;
@@ -28,6 +26,23 @@ public static class CvEndpoints
 
                 return Results.Unauthorized();
             });
-        
+
+        root.MapGet("cvs", async (ICvRepository cvRepository, CancellationToken cancellationToken ) =>
+        {
+            var cvs = await cvRepository.GetCvs(cancellationToken);
+            return cvs is null ?Results.NotFound()
+                :Results.Ok(cvs.Select(cv => (CvDto)cv));
+        });
+
+        root.MapGet("cvs/{userId}", async ([FromRoute]string userId, ICvRepository cvRepository, CancellationToken cancellationToken) =>
+        {
+            if (Guid.TryParse(userId, out Guid id))
+            {
+                var cv = await cvRepository.GetCvByUserId(id,cancellationToken);
+                return cv is null ? Results.NotFound() : Results.Ok(cv);
+            }
+
+            return Results.BadRequest();
+        });
     }
 }

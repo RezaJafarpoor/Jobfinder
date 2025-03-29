@@ -1,5 +1,6 @@
 ﻿using Jobfinder.Domain.Enums;
 using Jobfinder.Domain.ValueObjects;
+using System.Text.Json.Serialization;
 
 namespace Jobfinder.Domain.Entities;
 
@@ -12,7 +13,9 @@ public class Cv
     public int? MaximumExpectedSalary { get; set; }
 
     public MilitaryServiceStatus ServiceStatus { get; set; }
-    public JobSeekerProfile JobSeeker { get; } = new();
+    [JsonIgnore]
+    
+    public JobSeekerProfile JobSeeker { get; set; } = new();
     public Guid JobSeekerId { get; set; }
     public string FullName => $"{JobSeeker.Firstname} {JobSeeker.Lastname}";
 

@@ -13,6 +13,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
+using System.IdentityModel.Tokens.Jwt;
 using System.Text;
 
 namespace Jobfinder.Infrastructure.Extensions;
@@ -73,6 +74,7 @@ public static class ServiceCollectionExtension
                 }
                 option.TokenValidationParameters = new TokenValidationParameters
                 {
+                 
                     ValidateIssuer = true,
                     ValidateIssuerSigningKey = true,
                     ValidateLifetime = true,

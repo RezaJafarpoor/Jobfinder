@@ -6,8 +6,8 @@ using Jobfinder.Infrastructure.Persistence;
 
 namespace Jobfinder.Infrastructure.UnitOfWorks;
 
-internal class JobSeekerIdentityUnitOfWork(
-    IIdentityRepository identityRepository,
+internal class JobSeekerIdentityUnitOfWork
+(   IIdentityRepository identityRepository,
     IJobSeekerProfileRepository jobSeekerProfileRepository,
     ApplicationDbContext dbContext) : IJobSeekerIdentityUnitOfWork
 {
@@ -34,6 +34,7 @@ internal class JobSeekerIdentityUnitOfWork(
         {
             await transaction.RollbackAsync();
             return Response<User>.Failure($"Transaction failed: {e.Message}");
+            
         }
     }
 }

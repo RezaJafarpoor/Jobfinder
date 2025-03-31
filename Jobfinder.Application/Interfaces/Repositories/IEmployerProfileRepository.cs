@@ -6,6 +6,7 @@ public interface IEmployerProfileRepository
 {
     Task CreateProfile(EmployerProfile profile);
     Task SaveChangesAsync(CancellationToken cancellationToken);
+    Task<EmployerProfile?> GetProfileByUserId(Guid userId, CancellationToken cancellationToken);
 
 
 }

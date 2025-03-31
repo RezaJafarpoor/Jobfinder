@@ -23,8 +23,7 @@ public static class IdentityEndpoints
 
         root.MapPost("login", async ([FromBody]LoginDto loginDto, LoginService loginService) =>
         {
-            var user = new User(loginDto.Email);
-            var result = await loginService.LoginWithPassword(user, loginDto.Password);
+            var result = await loginService.LoginWithPassword(loginDto);
            return  result.Errors.Count == 0 ?
                Results.Ok(result.Data) :
                Results.BadRequest(result.Errors);

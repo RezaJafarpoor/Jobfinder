@@ -11,12 +11,12 @@ namespace Jobfinder.Infrastructure.Identity;
 
 internal sealed class TokenProvider(IOptions<JwtSetting> jwtSetting) : ITokenProvider
 {
-    public string GenerateJwtToken(User user)
+    public string GenerateJwtToken( Guid userId)
     {
         var secretKey = jwtSetting.Value.Secret;
         var claims = new List<Claim>
         {
-            new Claim(JwtRegisteredClaimNames.Sub, user.Id.ToString()),
+            new Claim(JwtRegisteredClaimNames.Sub, userId.ToString()),
             new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
             new Claim(JwtRegisteredClaimNames.Aud, jwtSetting.Value.Audience)
             

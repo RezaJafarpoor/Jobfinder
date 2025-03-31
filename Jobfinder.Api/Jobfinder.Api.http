@@ -24,7 +24,7 @@ POST {{Host}}/api/cvs
 Accept: application/json
 Authorization: Bearer 
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3OTQxN2Y2NS03ODJjLTRjNzItYzIwOS0wOGRkNmYxNTU4MjUiLCJqdGkiOiI1ZGM5NzUwNS04MWFiLTRlOGQtYmYzOS01ZTBlMWEyOTYyMWYiLCJhdWQiOiJodHRwczovL2xvY2FsaG9zdDo3MDkzIiwiZXhwIjoxNzQzMjkwOTYyLCJpc3MiOiJodHRwczovL2xvY2FsaG9zdDo3MDkzIn0.JkFast83klAiO4TMlblM-dHHuIxGaNoxs7kmmY1LWQM
+Authorization: Bearer 
 
 {
   "location": {
@@ -44,4 +44,8 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3OTQxN2Y2N
 GET {{Host}}/api/cvs
 Accept: application/json
 ###
-GET {{Host}}/api/cvs/79417f65-782c-4c72-c209-08dd6f155825
+GET {{Host}}/api/cvs/{id}
+###
+GET {{Host}}/api/Profile
+###
+

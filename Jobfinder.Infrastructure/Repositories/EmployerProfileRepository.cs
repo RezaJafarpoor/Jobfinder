@@ -1,6 +1,7 @@
 ﻿using Jobfinder.Application.Interfaces.Repositories;
 using Jobfinder.Domain.Entities;
 using Jobfinder.Infrastructure.Persistence;
+using Microsoft.EntityFrameworkCore;
 
 namespace Jobfinder.Infrastructure.Repositories;
 
@@ -15,4 +16,11 @@ internal class EmployerProfileRepository
 
     public async Task SaveChangesAsync(CancellationToken cancellationToken)
         => await dbContext.SaveChangesAsync(cancellationToken);
+
+    public async Task<EmployerProfile?> GetProfileByUserId(Guid userId, CancellationToken cancellationToken)
+    {
+        var profile = await dbContext.EmployerProfiles.Include(u => u.User)
+            .FirstOrDefaultAsync(ep => ep.UserId == userId, cancellationToken);
+        return profile;
+    }
 }

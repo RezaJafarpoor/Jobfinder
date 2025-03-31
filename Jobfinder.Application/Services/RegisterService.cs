@@ -14,18 +14,19 @@ public sealed class RegisterService
         IUserProfileUnitOfWork unitOfWork)
 {
 
-    public async Task<Response<TokenResponse>> Register(RegisterDto register, CancellationToken cancellationToken)
+    public async Task<Response<IdentityResponse>> Register(RegisterDto register, CancellationToken cancellationToken)
     {
-        var user = new User(register.Email);
-       var result =  await unitOfWork.RegisterAndCreateProfile(user, register.UserType,register.Password);
+       var result =  await unitOfWork.RegisterAndCreateProfile(register.Email, register.UserType,register.Password);
        if (!result.IsSuccess)
-           return Response<TokenResponse>.Failure(result.Errors);
+           return Response<IdentityResponse>.Failure(result.Errors);
        var refreshToken = new RefreshToken(tokenProvider.GenerateRefreshToken(), result.Data!);
        if (!await refreshTokenRepository.AddTokenForUser(refreshToken))
-           return Response<TokenResponse>.Failure("Something Went wrong with token service");
+           return Response<IdentityResponse>.Failure("Something Went wrong with token service");
        
-       var accessToken = tokenProvider.GenerateJwtToken(result.Data!);
-       return Response<TokenResponse>.Success(new TokenResponse(AccessToken:accessToken, RefreshToken:refreshToken.Token));
+       var accessToken = tokenProvider.GenerateJwtToken(result.Data!.Id);
+       return Response<IdentityResponse>.Success(new IdentityResponse(AccessToken:accessToken, RefreshToken:refreshToken.Token,null));
+       // add profile in to response
+       
     }
     
 }

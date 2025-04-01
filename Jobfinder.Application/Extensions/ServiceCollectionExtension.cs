@@ -10,5 +10,6 @@ public static class ServiceCollectionExtension
         services.AddScoped<RegisterService>();
         services.AddScoped<LoginService>();
         services.AddScoped<CvService>();
+        services.AddScoped<CompanyService>();
     }
 }

@@ -12,7 +12,7 @@ public static class CvEndpoints
     {
         var root = builder.MapGroup("api");
 
-        root.MapPost("cvs",
+        root.MapPut("cvs",
             async ([FromBody] CreateCvDto createCvDto, IJobSeekerCvUnitOfWork unitOfWork, HttpContext context,
                     CancellationToken cancellationToken)
                 =>

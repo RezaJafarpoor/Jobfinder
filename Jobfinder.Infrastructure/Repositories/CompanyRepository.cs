@@ -6,7 +6,6 @@ using Microsoft.EntityFrameworkCore;
 namespace Jobfinder.Infrastructure.Repositories;
 
 
-//TODO: Add Result pattern to this class
 
 internal class CompanyRepository(ApplicationDbContext dbContext) : ICompanyRepository
 {
@@ -35,11 +34,22 @@ internal class CompanyRepository(ApplicationDbContext dbContext) : ICompanyRepos
         return company ?? null;
     }
 
+    public async Task<Company?> GetCompanyByEmployerId(Guid employerId, CancellationToken cancellationToken)
+    {
+        var company = await dbContext.Companies.FirstOrDefaultAsync(c => c.OwnerId == employerId, cancellationToken);
+        return company;
+    }
+
     public async Task<string?> GetCompanyNameByUserId(Guid userId, CancellationToken cancellationToken)
     {
         var companyName = await dbContext.Companies
             .Where(c => c.OwnerId == userId)
             .Select(c => c.CompanyName).FirstOrDefaultAsync(cancellationToken);
         return companyName;
+    }
+
+    public async Task<bool> SaveChangesAsync(CancellationToken cancellationToken)
+    {
+        return await dbContext.SaveChangesAsync(cancellationToken) > 0;
     }
 }

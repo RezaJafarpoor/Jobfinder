@@ -17,10 +17,13 @@ public class Company
 
     public Company() {}
 
-    public Company(EmployerProfile owner)
+    public Company(Guid ownerId,string websiteAddress, Location location, int sizeOfCompany, string description)
     {
-        Owner = owner;
-        OwnerId = owner.Id;
+        OwnerId = ownerId;
+        WebsiteAddress = websiteAddress;
+        Location = location;
+        SizeOfCompany = sizeOfCompany;
+        Description = description;
     }
 
 

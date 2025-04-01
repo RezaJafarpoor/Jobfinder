@@ -44,5 +44,19 @@ public static class CvEndpoints
 
             return Results.BadRequest();
         });
+
+
+        root.MapGet("cvs/myCv", async (HttpContext context, ICvRepository repository, CancellationToken cancellationToken) =>
+        {
+            var userId = context.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            if (!Guid.TryParse(userId, out Guid id))
+                return Results.Unauthorized();
+            var cv = await repository.GetCvByUserId(id, cancellationToken);
+            if (cv is null)
+                return Results.NotFound();
+            CvDto cvDto = cv;
+            return Results.Ok(cvDto);
+
+        });
     }
 }

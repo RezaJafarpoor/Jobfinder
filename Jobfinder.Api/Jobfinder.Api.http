@@ -7,7 +7,7 @@ Content-Type: application/json
 {
    "email":"reza@gmail.com",
    "password":"Reza1234@",
-   "userType":"JobSeeker"
+   "userType":"Employer"
 }
 
 ###
@@ -28,7 +28,7 @@ Authorization: Bearer
 
 {
   "location": {
-    "province": "khosezstajn",
+    "province": "khosezstan",
     "city": "ahvaz",
     "address": "golestan"
   },
@@ -48,4 +48,34 @@ GET {{Host}}/api/cvs/{id}
 ###
 GET {{Host}}/api/Profile
 ###
+POST {{Host}}/api/jobOffer
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1NTJlNTZjNC04MWNlLTQwNzMtNjExNy0wOGRkNzExOWQzYjEiLCJqdGkiOiJlZjUyNTBjYy1kMDFlLTQ5ZTQtOTVlNi04MjA1ZjA3YTcxMGUiLCJhdWQiOiJodHRwczovL2xvY2FsaG9zdDo3MDkzIiwiZXhwIjoxNzQzNTEyNzg5LCJpc3MiOiJodHRwczovL2xvY2FsaG9zdDo3MDkzIn0.tjfkgRRs8g2Dim2XIcTok1oZfXYqdgcTPqpCFUKe790
+Accept: application/json
+Content-Type: application/json
 
+{
+  "jobName": "Backend developer",
+  "jobDescription": "a great job in our company",
+  "jobDetails": {
+    "contractType": 0,
+    "workingDatsAndHours": {
+      "from": 7,
+      "to": 4,
+      "startingHour": 8,
+      "finishingHour":15
+    },
+    "isRemote": false,
+    "location": {
+      "province": "khosezstan",
+      "city": "ahvaz",
+      "address": "golestan"
+    },
+    "minimumAge": 18,
+    "maximumAge": 32
+  },
+  "salary": {
+    "from": 22,
+    "to": 42
+  },
+  "category": "Software"
+}

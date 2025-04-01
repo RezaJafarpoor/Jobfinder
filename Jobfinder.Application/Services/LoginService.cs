@@ -11,43 +11,38 @@ namespace Jobfinder.Application.Services;
 public sealed class LoginService(
     IUserProfileUnitOfWork unitOfWork,
     ITokenProvider tokenProvider,
-    IRefreshTokenRepository refreshTokenRepository,
-    CancellationToken cancellationToken)
+    IRefreshTokenRepository refreshTokenRepository)
 {
-    public async Task<Response<IdentityResponse>> LoginWithPassword(LoginDto login)
+    public async Task<Response<IdentityResponse>> LoginWithPassword(LoginDto login, CancellationToken cancellationToken)
     {
-        string accessToken, refreshToken;
         switch (login.UserType)
         {
-            case UserType.JobSeeker when 
-                await unitOfWork.LoginAsJobSeeker(login.Email, login.Password, cancellationToken) is {} jobSeeker :
+            case UserType.JobSeeker when
+                await unitOfWork.LoginAsJobSeeker(login.Email, login.Password, cancellationToken) is { } jobSeeker:
                 if (!jobSeeker.IsSuccess)
                     return Response<IdentityResponse>.Failure("JobSeeker Does not exist");
-                GetTokens(jobSeeker.Data!.User, out accessToken, out refreshToken);
-                JobSeekerDto jobSeekerDto= jobSeeker.Data;
-                return Response<IdentityResponse>.Success(new IdentityResponse(accessToken, refreshToken, jobSeekerDto));
+                var jobSeekerRefreshToken =
+                    new RefreshToken(tokenProvider.GenerateRefreshToken(), jobSeeker.Data!.User);
+                if (!await refreshTokenRepository.AddTokenForUser(jobSeekerRefreshToken))
+                    return Response<IdentityResponse>.Failure("Something wrong with token service");
+                var jobSeekerAccessToken = tokenProvider.GenerateJwtToken(jobSeeker.Data.Id);
+                JobSeekerDto jobSeekerDto = jobSeeker.Data;
+                return Response<IdentityResponse>.Success(new IdentityResponse(jobSeekerAccessToken,
+                    jobSeekerRefreshToken.Token, jobSeekerDto));
             case UserType.Employer when
-                await unitOfWork.LoginAsEmployer(login.Email, login.Password, cancellationToken) is {} employer:
+                await unitOfWork.LoginAsEmployer(login.Email, login.Password, cancellationToken) is { } employer:
                 if (!employer.IsSuccess)
                     return Response<IdentityResponse>.Failure("Employer Does Not Exist");
-                GetTokens(employer.Data!.User, out accessToken, out refreshToken);
-                EmployerDto employerDto= employer.Data;
-                return Response<IdentityResponse>.Success(new IdentityResponse(accessToken, refreshToken, employerDto));
+                var refreshToken = new RefreshToken(tokenProvider.GenerateRefreshToken(), employer.Data!.User);
+                if (!await refreshTokenRepository.AddTokenForUser(refreshToken))
+                    return Response<IdentityResponse>.Failure("Something wrong with Token Service");
+                var accessToken = tokenProvider.GenerateJwtToken(employer.Data!.Id);
+                EmployerDto employerDto = employer.Data;
+                return Response<IdentityResponse>.Success(new IdentityResponse(accessToken, refreshToken.Token,
+                    employerDto));
 
             default:
-                return Response<IdentityResponse>.Failure("User Type does not exist");
+                return Response<IdentityResponse>.Failure("User type does not exist");
         }
-        
-    }
-
-
-
-    private void GetTokens(User user, out string accessToken, out string refreshToken)
-    {
-        var refToken = new RefreshToken
-            (tokenProvider.GenerateRefreshToken(), user);
-        refreshTokenRepository.AddTokenForUser(refToken);
-        refreshToken = refToken.Token;
-        accessToken = tokenProvider.GenerateJwtToken(user.Id);
     }
 }

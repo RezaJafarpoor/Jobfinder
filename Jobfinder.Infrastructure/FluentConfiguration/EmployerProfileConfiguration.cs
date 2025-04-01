@@ -11,10 +11,10 @@ internal class EmployerProfileConfiguration : IEntityTypeConfiguration<EmployerP
         builder.HasKey(ep => ep.Id);
 
         builder.HasOne(ep => ep.Company)
-            .WithOne()
+            .WithOne(c => c.Owner)
             .HasForeignKey<EmployerProfile>(ep => ep.CompanyId)
             .OnDelete(DeleteBehavior.Cascade);
-        
+            
         builder.HasOne(ep => ep.User)
             .WithOne()
             .HasForeignKey<EmployerProfile>(ep => ep.UserId)

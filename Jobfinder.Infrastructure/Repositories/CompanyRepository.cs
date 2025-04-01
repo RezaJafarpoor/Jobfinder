@@ -34,4 +34,12 @@ internal class CompanyRepository(ApplicationDbContext dbContext) : ICompanyRepos
         var company = await dbContext.Companies.FirstOrDefaultAsync(c => c.Id == companyId, cancellationToken);
         return company ?? null;
     }
+
+    public async Task<string?> GetCompanyNameByUserId(Guid userId, CancellationToken cancellationToken)
+    {
+        var companyName = await dbContext.Companies
+            .Where(c => c.OwnerId == userId)
+            .Select(c => c.CompanyName).FirstOrDefaultAsync(cancellationToken);
+        return companyName;
+    }
 }

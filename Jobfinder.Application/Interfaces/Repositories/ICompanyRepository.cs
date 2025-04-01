@@ -8,4 +8,6 @@ public interface ICompanyRepository
     Task UpdateCompany(Company company);
     Task<List<Company>> GetCompanies(CancellationToken cancellationToken);
     Task<Company?> GetCompanyById(Guid companyId, CancellationToken cancellationToken);
+    Task<string?> GetCompanyNameByUserId(Guid userId, CancellationToken cancellationToken);
+
 }

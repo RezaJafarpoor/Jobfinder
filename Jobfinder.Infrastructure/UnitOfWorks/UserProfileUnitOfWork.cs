@@ -1,12 +1,10 @@
 ﻿using Jobfinder.Application.Commons;
 using Jobfinder.Application.Dtos.Identity;
-using Jobfinder.Application.Dtos.Profiles;
 using Jobfinder.Application.Interfaces.Repositories;
 using Jobfinder.Application.Interfaces.UnitOfWorks;
 using Jobfinder.Domain.Entities;
 using Jobfinder.Infrastructure.Persistence;
 using Microsoft.AspNetCore.Identity;
-using System.Net.NetworkInformation;
 
 namespace Jobfinder.Infrastructure.UnitOfWorks;
 
@@ -17,7 +15,9 @@ internal class UserProfileUnitOfWork
       SignInManager<User> signInManager,
       ApplicationDbContext dbContext) : IUserProfileUnitOfWork
 {
-   public async Task<Response<User>> RegisterAndCreateProfile(string userEmail, UserType userType, string password)
+   
+
+   public async Task<Response<JobSeekerProfile>> RegisterAsJobSeeker(string userEmail, string password)
    {
       var user = new User(userEmail);
       await using var transaction = await dbContext.Database.BeginTransactionAsync(); 
@@ -27,33 +27,50 @@ internal class UserProfileUnitOfWork
          if (!createdUser.Succeeded)
          {
             var errors = createdUser.Errors.Select(err => err.Description).ToList();
-            return Response<User>.Failure(errors);
+            return Response<JobSeekerProfile>.Failure(errors);
          }
+         var jobSeekerProfile = new JobSeekerProfile(user, null,null);
+         await jobSeekerProfileRepository.CreateProfile(jobSeekerProfile);
 
-         switch (userType)
-         {
-            case UserType.Employer:
-               var employerProfile = new EmployerProfile(user);
-               await employerProfileRepository.CreateProfile(employerProfile);
-               break;
-            case UserType.JobSeeker:
-               var jobSeekerProfile = new JobSeekerProfile(user, null,null);
-               await jobSeekerProfileRepository.CreateProfile(jobSeekerProfile);
-               break;
-            default:
-               return Response<User>.Failure("User Type is invalid");
-         }
+         
 
          await dbContext.SaveChangesAsync();
          await transaction.CommitAsync();
-         return Response<User>.Success(user);
+         return Response<JobSeekerProfile>.Success(jobSeekerProfile);
       }
       catch (Exception e)
       {
          await transaction.RollbackAsync();
-         return Response<User>.Failure("Something went wrong");
+         return Response<JobSeekerProfile>.Failure(e.Message);
       }
-      
+   }
+
+   public async Task<Response<EmployerProfile>> RegisterAsEmployer(string userEmail, string password)
+   {
+      var user = new User(userEmail);
+      await using var transaction = await dbContext.Database.BeginTransactionAsync(); 
+      try
+      {
+         var createdUser = await userManager.CreateAsync(user, password);
+         if (!createdUser.Succeeded)
+         {
+            var errors = createdUser.Errors.Select(err => err.Description).ToList();
+            return Response<EmployerProfile>.Failure(errors);
+         }
+         var employerProfile = new EmployerProfile(user);
+         await employerProfileRepository.CreateProfile(employerProfile);
+
+         
+
+         await dbContext.SaveChangesAsync();
+         await transaction.CommitAsync();
+         return Response<EmployerProfile>.Success(employerProfile);
+      }
+      catch (Exception e)
+      {
+         await transaction.RollbackAsync();
+         return Response<EmployerProfile>.Failure(e.Message);
+      }
    }
 
    public async Task<Response<EmployerProfile>> LoginAsEmployer(string userEmail, string password, CancellationToken cancellationToken)
@@ -68,8 +85,8 @@ internal class UserProfileUnitOfWork
       if (!signInResult.Succeeded)
          return Response<EmployerProfile>.Failure("User name or password is wrong");
       var profile = await employerProfileRepository.GetProfileByUserId(currentUser.Id, cancellationToken);
-      return profile is null
-         ? Response<EmployerProfile>.Failure("Profile does not exist") :
+      return profile is null ?
+         Response<EmployerProfile>.Failure("Profile does not exist") :
          Response<EmployerProfile>.Success(profile);
    }
 

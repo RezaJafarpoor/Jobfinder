@@ -22,9 +22,10 @@ internal class CompanyConfiguration : IEntityTypeConfiguration<Company>
             loc.Property(c => c.Province).HasMaxLength(50).IsRequired();
         });
 
-        builder.HasOne<EmployerProfile>()
+        builder.HasOne<EmployerProfile>(c => c.Owner)
             .WithOne(ep => ep.Company)
-            .HasForeignKey<Company>(c => c.Owner);
+            .HasForeignKey<Company>(c => c.OwnerId)
+            .OnDelete(DeleteBehavior.NoAction);
 
     }
 }

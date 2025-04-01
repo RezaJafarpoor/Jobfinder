@@ -1,5 +1,5 @@
 ﻿using Jobfinder.Application.Interfaces.Identity;
-using Jobfinder.Domain.Entities;
+using Jobfinder.Application.Interfaces.Repositories;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
@@ -9,9 +9,10 @@ using System.Text;
 
 namespace Jobfinder.Infrastructure.Identity;
 
-internal sealed class TokenProvider(IOptions<JwtSetting> jwtSetting) : ITokenProvider
+internal sealed class TokenProvider(
+    IOptions<JwtSetting> jwtSetting) : ITokenProvider
 {
-    public string GenerateJwtToken( Guid userId)
+    public string GenerateJwtToken(Guid userId)
     {
         var secretKey = jwtSetting.Value.Secret;
         var claims = new List<Claim>
@@ -19,7 +20,7 @@ internal sealed class TokenProvider(IOptions<JwtSetting> jwtSetting) : ITokenPro
             new Claim(JwtRegisteredClaimNames.Sub, userId.ToString()),
             new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
             new Claim(JwtRegisteredClaimNames.Aud, jwtSetting.Value.Audience)
-            
+
         };
 
         var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSetting.Value.Secret));
@@ -32,7 +33,10 @@ internal sealed class TokenProvider(IOptions<JwtSetting> jwtSetting) : ITokenPro
         );
         return new JwtSecurityTokenHandler().WriteToken(token);
     }
-    
+
     public string GenerateRefreshToken()
         => Convert.ToBase64String(RandomNumberGenerator.GetBytes(32));
+
+
+   
 }

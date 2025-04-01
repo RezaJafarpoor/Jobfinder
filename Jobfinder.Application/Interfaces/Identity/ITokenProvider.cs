@@ -1,6 +1,4 @@
-﻿using Jobfinder.Domain.Entities;
-
-namespace Jobfinder.Application.Interfaces.Identity;
+﻿namespace Jobfinder.Application.Interfaces.Identity;
 
 public interface ITokenProvider
 {

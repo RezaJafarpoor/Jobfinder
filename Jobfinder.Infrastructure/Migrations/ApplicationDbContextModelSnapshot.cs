@@ -38,7 +38,7 @@ namespace Jobfinder.Infrastructure.Migrations
                         .HasMaxLength(1500)
                         .HasColumnType("nvarchar(1500)");
 
-                    b.Property<Guid>("Owner")
+                    b.Property<Guid>("OwnerId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<int>("SizeOfCompany")
@@ -514,7 +514,7 @@ namespace Jobfinder.Infrastructure.Migrations
             modelBuilder.Entity("Jobfinder.Domain.Entities.EmployerProfile", b =>
                 {
                     b.HasOne("Jobfinder.Domain.Entities.Company", "Company")
-                        .WithOne()
+                        .WithOne("Owner")
                         .HasForeignKey("Jobfinder.Domain.Entities.EmployerProfile", "CompanyId")
                         .OnDelete(DeleteBehavior.Cascade);
 
@@ -747,6 +747,12 @@ namespace Jobfinder.Infrastructure.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("Jobfinder.Domain.Entities.Company", b =>
+                {
+                    b.Navigation("Owner")
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("Jobfinder.Domain.Entities.EmployerProfile", b =>
                 {
                     b.Navigation("JobOffers");
@@ -766,8 +772,7 @@ namespace Jobfinder.Infrastructure.Migrations
                 {
                     b.Navigation("JobApplications");
 
-                    b.Navigation("JobSeekerCv")
-                        .IsRequired();
+                    b.Navigation("JobSeekerCv");
                 });
 #pragma warning restore 612, 618
         }

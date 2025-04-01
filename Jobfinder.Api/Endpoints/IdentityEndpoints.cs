@@ -21,9 +21,9 @@ public static class IdentityEndpoints
             });
         
 
-        root.MapPost("login", async ([FromBody]LoginDto loginDto, LoginService loginService) =>
+        root.MapPost("login", async ([FromBody]LoginDto loginDto, LoginService loginService, CancellationToken cancellationToken) =>
         {
-            var result = await loginService.LoginWithPassword(loginDto);
+            var result = await loginService.LoginWithPassword(loginDto, cancellationToken);
            return  result.Errors.Count == 0 ?
                Results.Ok(result.Data) :
                Results.BadRequest(result.Errors);

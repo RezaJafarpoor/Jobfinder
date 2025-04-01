@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Jobfinder.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250326205844_FixingJobSeekerProfile")]
-    partial class FixingJobSeekerProfile
+    [Migration("20250401125737_Initial")]
+    partial class Initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -41,7 +41,7 @@ namespace Jobfinder.Infrastructure.Migrations
                         .HasMaxLength(1500)
                         .HasColumnType("nvarchar(1500)");
 
-                    b.Property<Guid>("Owner")
+                    b.Property<Guid>("OwnerId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<int>("SizeOfCompany")
@@ -82,6 +82,9 @@ namespace Jobfinder.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("JobSeekerId")
+                        .IsUnique();
+
                     b.ToTable("Cvs");
                 });
 
@@ -92,7 +95,6 @@ namespace Jobfinder.Infrastructure.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid?>("CompanyId")
-                        .IsRequired()
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid>("UserId")
@@ -101,7 +103,8 @@ namespace Jobfinder.Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("CompanyId")
-                        .IsUnique();
+                        .IsUnique()
+                        .HasFilter("[CompanyId] IS NOT NULL");
 
                     b.HasIndex("UserId")
                         .IsUnique();
@@ -194,9 +197,6 @@ namespace Jobfinder.Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid?>("CvId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<string>("Firstname")
                         .IsRequired()
                         .HasMaxLength(50)
@@ -211,10 +211,6 @@ namespace Jobfinder.Infrastructure.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("CvId")
-                        .IsUnique()
-                        .HasFilter("[CvId] IS NOT NULL");
 
                     b.HasIndex("UserId")
                         .IsUnique();
@@ -478,6 +474,12 @@ namespace Jobfinder.Infrastructure.Migrations
 
             modelBuilder.Entity("Jobfinder.Domain.Entities.Cv", b =>
                 {
+                    b.HasOne("Jobfinder.Domain.Entities.JobSeekerProfile", "JobSeeker")
+                        .WithOne("JobSeekerCv")
+                        .HasForeignKey("Jobfinder.Domain.Entities.Cv", "JobSeekerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.OwnsOne("Jobfinder.Domain.ValueObjects.Location", "Location", b1 =>
                         {
                             b1.Property<Guid>("CvId")
@@ -506,6 +508,8 @@ namespace Jobfinder.Infrastructure.Migrations
                                 .HasForeignKey("CvId");
                         });
 
+                    b.Navigation("JobSeeker");
+
                     b.Navigation("Location")
                         .IsRequired();
                 });
@@ -513,10 +517,9 @@ namespace Jobfinder.Infrastructure.Migrations
             modelBuilder.Entity("Jobfinder.Domain.Entities.EmployerProfile", b =>
                 {
                     b.HasOne("Jobfinder.Domain.Entities.Company", "Company")
-                        .WithOne()
+                        .WithOne("Owner")
                         .HasForeignKey("Jobfinder.Domain.Entities.EmployerProfile", "CompanyId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("Jobfinder.Domain.Entities.User", "User")
                         .WithOne()
@@ -676,18 +679,11 @@ namespace Jobfinder.Infrastructure.Migrations
 
             modelBuilder.Entity("Jobfinder.Domain.Entities.JobSeekerProfile", b =>
                 {
-                    b.HasOne("Jobfinder.Domain.Entities.Cv", "JobSeekerCv")
-                        .WithOne()
-                        .HasForeignKey("Jobfinder.Domain.Entities.JobSeekerProfile", "CvId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
                     b.HasOne("Jobfinder.Domain.Entities.User", "User")
                         .WithOne()
                         .HasForeignKey("Jobfinder.Domain.Entities.JobSeekerProfile", "UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("JobSeekerCv");
 
                     b.Navigation("User");
                 });
@@ -754,6 +750,12 @@ namespace Jobfinder.Infrastructure.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("Jobfinder.Domain.Entities.Company", b =>
+                {
+                    b.Navigation("Owner")
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("Jobfinder.Domain.Entities.EmployerProfile", b =>
                 {
                     b.Navigation("JobOffers");
@@ -772,6 +774,8 @@ namespace Jobfinder.Infrastructure.Migrations
             modelBuilder.Entity("Jobfinder.Domain.Entities.JobSeekerProfile", b =>
                 {
                     b.Navigation("JobApplications");
+
+                    b.Navigation("JobSeekerCv");
                 });
 #pragma warning restore 612, 618
         }

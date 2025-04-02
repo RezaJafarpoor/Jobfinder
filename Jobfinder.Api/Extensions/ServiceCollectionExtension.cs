@@ -20,5 +20,6 @@ public static class ServiceCollectionExtension
         builder.AddCvEndpoints();
         builder.AddJobOfferEndpoints();
         builder.AddCompanyEndpoints();
+        builder.AddJobApplicationEndpoints();
     }
 }

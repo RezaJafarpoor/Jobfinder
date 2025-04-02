@@ -17,6 +17,6 @@ public record JobOfferDto
 
 {
     public static implicit operator JobOfferDto(Domain.Entities.JobOffer jobOffer)
-        => new JobOfferDto(jobOffer.Id.ToString(),jobOffer.JobName, jobOffer.JobDescription, jobOffer.JobDetails, jobOffer.Salary,
+        => new(jobOffer.Id.ToString(),jobOffer.JobName, jobOffer.JobDescription, jobOffer.JobDetails, jobOffer.Salary,
             jobOffer.CompanyName,jobOffer.Category);
 }

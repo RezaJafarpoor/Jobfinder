@@ -34,6 +34,8 @@ public static class ServiceCollectionExtension
         services.AddScoped<IRefreshTokenRepository, RefreshTokenRepository>();
         services.AddScoped<IJobSeekerCvUnitOfWork, JobSeekerCvUnitOfWork>();
         services.AddScoped<IUserProfileUnitOfWork, UserProfileUnitOfWork>();
+        services.AddScoped<IJobApplicationRepository, JobApplicationRepository>();
+        services.AddScoped<IJobOfferApplicationsUnitOfWork, JobOfferApplicationsUnitOfWork>();
         services.AddPersistence(configuration);
         services.AddIdentity(configuration);
        

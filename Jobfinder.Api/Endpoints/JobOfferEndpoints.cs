@@ -48,7 +48,6 @@ public static class JobOfferEndpoints
                 var jobOffer = await jobOfferRepository.GetJobOfferById(jobOfferId, cancellationToken);
                 if (jobOffer is null)
                     return Results.NotFound();
-
                 JobOfferDto dto = jobOffer;
                 return Results.Ok(dto);
             });

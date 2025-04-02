@@ -35,4 +35,5 @@ internal class JobOfferRepository
     public async Task<bool> SaveChangesAsync(CancellationToken cancellationToken)
         => await dbContext.SaveChangesAsync(cancellationToken) > 0;
 
+   
 }

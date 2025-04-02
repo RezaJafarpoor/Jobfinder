@@ -1,11 +1,14 @@
-﻿using Jobfinder.Domain.ValueObjects;
+﻿
+using Jobfinder.Domain.ValueObjects;
+using System.Text.Json.Serialization;
 
 namespace Jobfinder.Application.Dtos.Company;
 
 public record CreateCompanyDto
-    (string CompanyName,
-        string WebsiteAddress,
-        Location Location,
-        int SizeOfCompany,
-        string Description
+    (
+        [property:JsonPropertyName("companyname")] string CompanyName,
+        [property:JsonPropertyName("websiteAddress")]string WebsiteAddress,
+        [property:JsonPropertyName("location")]Location Location,
+        [property:JsonPropertyName("sizeOfCompany")]int SizeOfCompany,
+        [property:JsonPropertyName("Description")]string Description
         );

@@ -1,9 +1,11 @@
 ﻿using Jobfinder.Domain.ValueObjects;
+using System.Text.Json.Serialization;
 
 namespace Jobfinder.Application.Dtos.Company;
 
 public record UpdateCompanyDto
-    (string? WebsiteAddress,
-        Location? Location,
-        int? SizeOfCompany,
-        string? Description);
+    (
+        [property:JsonPropertyName("websiteAddress")]string? WebsiteAddress,
+        [property:JsonPropertyName("location")]Location? Location,
+        [property:JsonPropertyName("sizeOfCompany")]int? SizeOfCompany,
+        [property:JsonPropertyName("description")]string? Description);

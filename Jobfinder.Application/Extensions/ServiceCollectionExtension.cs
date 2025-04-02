@@ -11,5 +11,6 @@ public static class ServiceCollectionExtension
         services.AddScoped<LoginService>();
         services.AddScoped<CvService>();
         services.AddScoped<CompanyService>();
+        services.AddScoped<JobApplicationService>();
     }
 }

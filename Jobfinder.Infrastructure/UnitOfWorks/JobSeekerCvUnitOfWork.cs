@@ -18,16 +18,12 @@ internal class JobSeekerCvUnitOfWork(
         await using var transaction = await dbContext.Database.BeginTransactionAsync(cancellationToken);
         try
         {
-            var profile = await jobSeekerProfileRepository.GetProfileByUserId(jobSeekerId, cancellationToken);
+            var profile = await jobSeekerProfileRepository.GetProfileById(jobSeekerId, cancellationToken);
             if (profile is null)
                 return Response<string>.Failure("User does not exist");
 
             var cv = new Cv(cvDto.Location, cvDto.BirthDay, cvDto.MaximumSalary, cvDto.MaximumSalary, cvDto.Status,
-                profile.Id)
-            {
-                JobSeeker = profile
-                
-            };
+                profile);
             profile.Firstname = cvDto.Firstname;
             profile.Lastname = cvDto.Lastname;
             await cvRepository.CreateCv(cv);

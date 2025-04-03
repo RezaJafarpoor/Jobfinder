@@ -5,11 +5,14 @@ using Jobfinder.Domain.Entities;
 
 namespace Jobfinder.Application.Services;
 
-public sealed class CvService (ICvRepository cvRepository)
+public sealed class JobSeekerService (ICvRepository cvRepository, IJobSeekerProfileRepository jobSeekerRepository)
 {
     public async Task<Response<string>> CreateCv(CreateCvDto cvDto, Guid jobSeekerId, CancellationToken cancellationToken)
     {
-        var cv = new Cv(cvDto.Location, cvDto.BirthDay, cvDto.MinimumSalary, cvDto.MaximumSalary, cvDto.Status, jobSeekerId);
+        var jobSeeker = await jobSeekerRepository.GetProfileById(jobSeekerId, cancellationToken);
+        if (jobSeeker is null)
+            return Response<string>.Failure("Job seeker does not exist");
+        var cv = new Cv(cvDto.Location, cvDto.BirthDay, cvDto.MinimumSalary, cvDto.MaximumSalary, cvDto.Status, jobSeeker);
         await cvRepository.CreateCv(cv);
         if (await cvRepository.SaveChangesAsync(cancellationToken))
             return Response<string>.Success("Cv created");

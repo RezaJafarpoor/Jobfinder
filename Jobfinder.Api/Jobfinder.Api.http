@@ -1,5 +1,5 @@
 @Host=https://localhost:7093
-
+@token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI4OTRlOGE5MS00OWVlLTQ1NGUtYjBmOC0wOGRkNzJlN2VhYjciLCJqdGkiOiJjNDUxMDg4Yi1jMTUxLTQ1NjktYjI1MS05NzA5MzAyYjkzMmQiLCJhdWQiOiJodHRwczovL2xvY2FsaG9zdDo3MDkzIiwiZXhwIjoxNzQ2MzAxNDU1LCJpc3MiOiJodHRwczovL2xvY2FsaG9zdDo3MDkzIn0.xjbOvfxX0-OZ_yWSXJCUKzPOaiwZTIID5e-BngD9e0o
 POST {{Host}}/api/identity/register
 Accept: application/json
 Content-Type: application/json
@@ -10,7 +10,7 @@ Content-Type: application/json
    "userType":"Employer"
 }
 
-###
+###z`
 POST {{Host}}/api/identity/login
 Accept: application/json
 Content-Type: application/json
@@ -24,7 +24,7 @@ POST {{Host}}/api/cvs
 Accept: application/json
 Authorization: Bearer 
 Content-Type: application/json
-Authorization: Bearer 
+Authorization: Bearer {{token}}
 
 {
   "location": {
@@ -49,7 +49,7 @@ GET {{Host}}/api/cvs/{id}
 GET {{Host}}/api/Profile
 ###
 POST {{Host}}/api/jobOffer
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1NTJlNTZjNC04MWNlLTQwNzMtNjExNy0wOGRkNzExOWQzYjEiLCJqdGkiOiJlZjUyNTBjYy1kMDFlLTQ5ZTQtOTVlNi04MjA1ZjA3YTcxMGUiLCJhdWQiOiJodHRwczovL2xvY2FsaG9zdDo3MDkzIiwiZXhwIjoxNzQzNTEyNzg5LCJpc3MiOiJodHRwczovL2xvY2FsaG9zdDo3MDkzIn0.tjfkgRRs8g2Dim2XIcTok1oZfXYqdgcTPqpCFUKe790
+Authorization: Bearer {{token}}
 Accept: application/json
 Content-Type: application/json
 
@@ -79,3 +79,23 @@ Content-Type: application/json
   },
   "category": "Software"
 }
+###
+
+POST {{Host}}/api/company 
+Accept: application/json
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "companyName": "my company",
+  "websiteAddress": "www.myCompany.com",
+  "location": {
+    "province": "khosezstan",
+    "city": "Ahvaz",
+    "address": "golestan"
+  },
+  "sizeOfCompany": 12,
+  "description": "my company is great"
+}
+###
+GET{{Host}}/api/test

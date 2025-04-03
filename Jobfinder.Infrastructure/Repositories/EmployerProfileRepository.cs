@@ -14,13 +14,22 @@ internal class EmployerProfileRepository
          return Task.CompletedTask;
     }
 
-    public async Task SaveChangesAsync(CancellationToken cancellationToken)
-        => await dbContext.SaveChangesAsync(cancellationToken);
-
-    public async Task<EmployerProfile?> GetProfileByUserId(Guid userId, CancellationToken cancellationToken)
+    public async Task<List<EmployerProfile>> GetProfiles(CancellationToken cancellationToken)
     {
-        var profile = await dbContext.EmployerProfiles.Include(u => u.User)
-            .FirstOrDefaultAsync(ep => ep.UserId == userId, cancellationToken);
+        var profiles = await dbContext.EmployerProfiles
+            .Include(c => c.Company)
+            .ToListAsync(cancellationToken);
+        return profiles;
+    }
+
+    public async Task<bool> SaveChangesAsync(CancellationToken cancellationToken)
+        => await dbContext.SaveChangesAsync(cancellationToken) > 0;
+
+    public async Task<EmployerProfile?> GetProfileById(Guid userId, CancellationToken cancellationToken)
+    {      
+        var profile = await dbContext.EmployerProfiles
+            .Include(u => u.Company)
+            .FirstOrDefaultAsync(ep => ep.Id == userId, cancellationToken);
         return profile;
     }
 }

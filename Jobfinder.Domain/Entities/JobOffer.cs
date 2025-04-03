@@ -13,6 +13,7 @@ public class JobOffer
     public string CompanyName{ get; set; } = string.Empty;
     public JobCategory Category { get; set; } = new();
     public Guid CategoryId { get; set; }
+    public EmployerProfile EmployerProfile { get; set; } = null!;
     public Guid EmployerProfileId { get; set; }
 
     public List<JobApplication> JobApplications { get; set; } = [];
@@ -21,7 +22,7 @@ public class JobOffer
 
     public JobOffer(string jobName, string jobDescription, JobDetails jobDetails, 
         Salary salary, string companyName, JobCategory jobCategory,
-        Guid employerProfileId)
+        EmployerProfile employerProfile)
     {
         JobName = jobName;
         JobDescription = jobDescription;
@@ -29,7 +30,9 @@ public class JobOffer
         Salary = salary;
         CompanyName = companyName;
         Category = jobCategory;
-        EmployerProfileId = employerProfileId;
+        CategoryId = jobCategory.Id;
+        EmployerProfileId = employerProfile.Id;
+        EmployerProfile = employerProfile;
     }
 
     public void UpdateJobOfferDto(string jobName, string jobDescription, JobDetails jobDetails,

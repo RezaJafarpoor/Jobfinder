@@ -9,8 +9,7 @@ public static class ServiceCollectionExtension
     {
         services.AddScoped<RegisterService>();
         services.AddScoped<LoginService>();
-        services.AddScoped<CvService>();
-        services.AddScoped<CompanyService>();
-        services.AddScoped<JobApplicationService>();
+        services.AddScoped<JobSeekerService>();
+        services.AddScoped<EmployerService>();
     }
 }

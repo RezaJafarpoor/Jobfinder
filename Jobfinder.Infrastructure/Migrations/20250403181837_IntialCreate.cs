@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Jobfinder.Infrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class Initial : Migration
+    public partial class IntialCreate : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -48,25 +48,6 @@ namespace Jobfinder.Infrastructure.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_AspNetUsers", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Companies",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    CompanyName = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
-                    WebsiteAddress = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
-                    Location_Province = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    Location_City = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
-                    Location_Address = table.Column<string>(type: "nvarchar(1500)", maxLength: 1500, nullable: false),
-                    SizeOfCompany = table.Column<int>(type: "int", nullable: false),
-                    Description = table.Column<string>(type: "nvarchar(1500)", maxLength: 1500, nullable: false),
-                    OwnerId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Companies", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -188,6 +169,24 @@ namespace Jobfinder.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "EmployerProfiles",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_EmployerProfiles", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_EmployerProfiles_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "JobSeekerProfiles",
                 columns: table => new
                 {
@@ -228,51 +227,26 @@ namespace Jobfinder.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "EmployerProfiles",
+                name: "Companies",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    CompanyId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-                    UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_EmployerProfiles", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_EmployerProfiles_AspNetUsers_UserId",
-                        column: x => x.UserId,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_EmployerProfiles_Companies_CompanyId",
-                        column: x => x.CompanyId,
-                        principalTable: "Companies",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Cvs",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    CompanyName = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    WebsiteAddress = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
                     Location_Province = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     Location_City = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
                     Location_Address = table.Column<string>(type: "nvarchar(1500)", maxLength: 1500, nullable: false),
-                    BirthDay = table.Column<DateOnly>(type: "date", nullable: true),
-                    MinimumExpectedSalary = table.Column<int>(type: "int", nullable: true),
-                    MaximumExpectedSalary = table.Column<int>(type: "int", nullable: true),
-                    ServiceStatus = table.Column<int>(type: "int", nullable: false, defaultValue: 0),
-                    JobSeekerId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                    SizeOfCompany = table.Column<int>(type: "int", nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(1500)", maxLength: 1500, nullable: false),
+                    OwnerId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Cvs", x => x.Id);
+                    table.PrimaryKey("PK_Companies", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Cvs_JobSeekerProfiles_JobSeekerId",
-                        column: x => x.JobSeekerId,
-                        principalTable: "JobSeekerProfiles",
+                        name: "FK_Companies_EmployerProfiles_OwnerId",
+                        column: x => x.OwnerId,
+                        principalTable: "EmployerProfiles",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -319,6 +293,31 @@ namespace Jobfinder.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Cvs",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Location_Province = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    Location_City = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
+                    Location_Address = table.Column<string>(type: "nvarchar(1500)", maxLength: 1500, nullable: false),
+                    BirthDay = table.Column<DateOnly>(type: "date", nullable: true),
+                    MinimumExpectedSalary = table.Column<int>(type: "int", nullable: true),
+                    MaximumExpectedSalary = table.Column<int>(type: "int", nullable: true),
+                    ServiceStatus = table.Column<int>(type: "int", nullable: false, defaultValue: 0),
+                    JobSeekerId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Cvs", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Cvs_JobSeekerProfiles_JobSeekerId",
+                        column: x => x.JobSeekerId,
+                        principalTable: "JobSeekerProfiles",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "JobApplications",
                 columns: table => new
                 {
@@ -341,7 +340,8 @@ namespace Jobfinder.Infrastructure.Migrations
                         name: "FK_JobApplications_JobSeekerProfiles_JobSeekerProfileId",
                         column: x => x.JobSeekerProfileId,
                         principalTable: "JobSeekerProfiles",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateIndex(
@@ -384,17 +384,16 @@ namespace Jobfinder.Infrastructure.Migrations
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Companies_OwnerId",
+                table: "Companies",
+                column: "OwnerId",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Cvs_JobSeekerId",
                 table: "Cvs",
                 column: "JobSeekerId",
                 unique: true);
-
-            migrationBuilder.CreateIndex(
-                name: "IX_EmployerProfiles_CompanyId",
-                table: "EmployerProfiles",
-                column: "CompanyId",
-                unique: true,
-                filter: "[CompanyId] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
                 name: "IX_EmployerProfiles_UserId",
@@ -453,6 +452,9 @@ namespace Jobfinder.Infrastructure.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
+                name: "Companies");
+
+            migrationBuilder.DropTable(
                 name: "Cvs");
 
             migrationBuilder.DropTable(
@@ -478,9 +480,6 @@ namespace Jobfinder.Infrastructure.Migrations
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");
-
-            migrationBuilder.DropTable(
-                name: "Companies");
         }
     }
 }

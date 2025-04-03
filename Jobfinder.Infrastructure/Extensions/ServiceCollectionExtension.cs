@@ -1,5 +1,4 @@
-﻿using Jobfinder.Application.Interfaces;
-using Jobfinder.Application.Interfaces.Identity;
+﻿using Jobfinder.Application.Interfaces.Identity;
 using Jobfinder.Application.Interfaces.Repositories;
 using Jobfinder.Application.Interfaces.UnitOfWorks;
 using Jobfinder.Domain.Entities;
@@ -13,7 +12,6 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
-using System.IdentityModel.Tokens.Jwt;
 using System.Text;
 
 namespace Jobfinder.Infrastructure.Extensions;

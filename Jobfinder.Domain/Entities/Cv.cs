@@ -13,23 +13,22 @@ public class Cv
     public int? MaximumExpectedSalary { get; set; }
 
     public MilitaryServiceStatus ServiceStatus { get; set; }
-    [JsonIgnore]
-    
-    public JobSeekerProfile JobSeeker { get; set; } = new();
+    [JsonIgnore] public JobSeekerProfile JobSeeker { get; set; } = null!;
     public Guid JobSeekerId { get; set; }
     public string FullName => $"{JobSeeker.Firstname} {JobSeeker.Lastname}";
 
     public Cv() {}
 
     public Cv(Location location, DateOnly? birthDay, int? minimumExpectedSalary, int? maximumExpectedSalary,
-        MilitaryServiceStatus? serviceStatus, Guid jobSeekerId)
+        MilitaryServiceStatus? serviceStatus, JobSeekerProfile profile)
     {
         Location = location;
         BirthDay = birthDay;
         MinimumExpectedSalary = minimumExpectedSalary;
         MaximumExpectedSalary = maximumExpectedSalary;
         ServiceStatus = serviceStatus ?? MilitaryServiceStatus.NotServedYet;
-        JobSeekerId = jobSeekerId;
+        JobSeekerId = profile.Id;
+        JobSeeker = profile;
     }
 
 

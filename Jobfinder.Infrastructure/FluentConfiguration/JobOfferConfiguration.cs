@@ -26,21 +26,19 @@ internal class JobOfferConfiguration : IEntityTypeConfiguration<JobOffer>
             });
         });
         builder.OwnsOne(jo => jo.Salary);
-        
 
+        builder.HasMany(jo => jo.JobApplications)
+            .WithOne(ja => ja.JobOffer)
+            .HasForeignKey(ja => ja.JobOfferId);
+        
+        
         builder.HasOne(jo => jo.Category)
             .WithMany(c => c.JobOffers)
             .HasForeignKey(jo => jo.CategoryId);
 
-        builder.HasOne<EmployerProfile>()
-            .WithMany(ep => ep.JobOffers)
-            .HasForeignKey(jo => jo.EmployerProfileId)
-            .OnDelete(DeleteBehavior.Cascade);
+      
 
-        builder.HasMany(jo => jo.JobApplications)
-            .WithOne(ja => ja.JobOffer)
-            .HasForeignKey(ja => ja.JobOfferId)
-            .OnDelete(DeleteBehavior.Cascade);
+       
 
 
     }

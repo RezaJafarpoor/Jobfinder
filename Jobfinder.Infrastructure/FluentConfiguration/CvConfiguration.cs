@@ -19,8 +19,5 @@ internal class CvConfiguration : IEntityTypeConfiguration<Cv>
         });
         builder.Property(c => c.ServiceStatus).HasDefaultValue(MilitaryServiceStatus.NotServedYet);
 
-        builder.HasOne(c => c.JobSeeker)
-            .WithOne(jsp => jsp.JobSeekerCv)
-            .HasForeignKey<Cv>(c => c.JobSeekerId);
     }
 }

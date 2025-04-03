@@ -10,8 +10,6 @@ internal class JobCategoryConfiguration : IEntityTypeConfiguration<JobCategory>
     {
         builder.HasKey(jc => jc.Id);
         builder.Property(jc => jc.Category).HasMaxLength(200).IsRequired();
-        builder.HasMany(jc => jc.JobOffers)
-            .WithOne(jo => jo.Category)
-            .HasForeignKey(jo => jo.CategoryId);
+        
     }
 }

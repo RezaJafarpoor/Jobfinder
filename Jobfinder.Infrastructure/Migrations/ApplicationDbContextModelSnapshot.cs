@@ -51,6 +51,9 @@ namespace Jobfinder.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("OwnerId")
+                        .IsUnique();
+
                     b.ToTable("Companies");
                 });
 
@@ -91,17 +94,10 @@ namespace Jobfinder.Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid?>("CompanyId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<Guid>("UserId")
                         .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("CompanyId")
-                        .IsUnique()
-                        .HasFilter("[CompanyId] IS NOT NULL");
 
                     b.HasIndex("UserId")
                         .IsUnique();
@@ -437,6 +433,12 @@ namespace Jobfinder.Infrastructure.Migrations
 
             modelBuilder.Entity("Jobfinder.Domain.Entities.Company", b =>
                 {
+                    b.HasOne("Jobfinder.Domain.Entities.EmployerProfile", "Owner")
+                        .WithOne("Company")
+                        .HasForeignKey("Jobfinder.Domain.Entities.Company", "OwnerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.OwnsOne("Jobfinder.Domain.ValueObjects.Location", "Location", b1 =>
                         {
                             b1.Property<Guid>("CompanyId")
@@ -467,6 +469,8 @@ namespace Jobfinder.Infrastructure.Migrations
 
                     b.Navigation("Location")
                         .IsRequired();
+
+                    b.Navigation("Owner");
                 });
 
             modelBuilder.Entity("Jobfinder.Domain.Entities.Cv", b =>
@@ -513,18 +517,11 @@ namespace Jobfinder.Infrastructure.Migrations
 
             modelBuilder.Entity("Jobfinder.Domain.Entities.EmployerProfile", b =>
                 {
-                    b.HasOne("Jobfinder.Domain.Entities.Company", "Company")
-                        .WithOne("Owner")
-                        .HasForeignKey("Jobfinder.Domain.Entities.EmployerProfile", "CompanyId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
                     b.HasOne("Jobfinder.Domain.Entities.User", "User")
                         .WithOne()
                         .HasForeignKey("Jobfinder.Domain.Entities.EmployerProfile", "UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("Company");
 
                     b.Navigation("User");
                 });
@@ -540,7 +537,7 @@ namespace Jobfinder.Infrastructure.Migrations
                     b.HasOne("Jobfinder.Domain.Entities.JobSeekerProfile", "JobSeekerProfile")
                         .WithMany("JobApplications")
                         .HasForeignKey("JobSeekerProfileId")
-                        .OnDelete(DeleteBehavior.NoAction)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("JobOffer");
@@ -556,7 +553,7 @@ namespace Jobfinder.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Jobfinder.Domain.Entities.EmployerProfile", null)
+                    b.HasOne("Jobfinder.Domain.Entities.EmployerProfile", "EmployerProfile")
                         .WithMany("JobOffers")
                         .HasForeignKey("EmployerProfileId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -667,6 +664,8 @@ namespace Jobfinder.Infrastructure.Migrations
 
                     b.Navigation("Category");
 
+                    b.Navigation("EmployerProfile");
+
                     b.Navigation("JobDetails")
                         .IsRequired();
 
@@ -747,14 +746,10 @@ namespace Jobfinder.Infrastructure.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Jobfinder.Domain.Entities.Company", b =>
-                {
-                    b.Navigation("Owner")
-                        .IsRequired();
-                });
-
             modelBuilder.Entity("Jobfinder.Domain.Entities.EmployerProfile", b =>
                 {
+                    b.Navigation("Company");
+
                     b.Navigation("JobOffers");
                 });
 

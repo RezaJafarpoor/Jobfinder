@@ -1,5 +1,4 @@
 ﻿using Jobfinder.Application.Commons;
-using Jobfinder.Application.Dtos.Identity;
 using Jobfinder.Application.Interfaces.Repositories;
 using Jobfinder.Application.Interfaces.UnitOfWorks;
 using Jobfinder.Domain.Entities;
@@ -59,9 +58,6 @@ internal class UserProfileUnitOfWork
          }
          var employerProfile = new EmployerProfile(user);
          await employerProfileRepository.CreateProfile(employerProfile);
-
-         
-
          await dbContext.SaveChangesAsync();
          await transaction.CommitAsync();
          return Response<EmployerProfile>.Success(employerProfile);
@@ -84,7 +80,7 @@ internal class UserProfileUnitOfWork
       var signInResult = await signInManager.CheckPasswordSignInAsync(currentUser, password, false);
       if (!signInResult.Succeeded)
          return Response<EmployerProfile>.Failure("User name or password is wrong");
-      var profile = await employerProfileRepository.GetProfileByUserId(currentUser.Id, cancellationToken);
+      var profile = await employerProfileRepository.GetProfileById(currentUser.Id, cancellationToken);
       return profile is null ?
          Response<EmployerProfile>.Failure("Profile does not exist") :
          Response<EmployerProfile>.Success(profile);
@@ -99,7 +95,7 @@ internal class UserProfileUnitOfWork
       var signInResult = await signInManager.CheckPasswordSignInAsync(currentUser, password, false);
       if (!signInResult.Succeeded)
          return Response<JobSeekerProfile>.Failure("User name or password is wrong");
-      var profile = await jobSeekerProfileRepository.GetProfileByUserId(currentUser.Id, cancellationToken);
+      var profile = await jobSeekerProfileRepository.GetProfileById(currentUser.Id, cancellationToken);
       return profile is null
          ? Response<JobSeekerProfile>.Failure("Profile does not exist") :
          Response<JobSeekerProfile>.Success(profile);

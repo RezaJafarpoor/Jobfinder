@@ -1,4 +1,4 @@
-﻿using Jobfinder.Domain.Entities;
+using Jobfinder.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -12,7 +12,8 @@ internal class EmployerProfileConfiguration : IEntityTypeConfiguration<EmployerP
 
         builder.HasOne(ep => ep.Company)
             .WithOne(c => c.Owner)
-            .HasForeignKey<EmployerProfile>(ep => ep.CompanyId)
+            .HasForeignKey<Company>(c => c.OwnerId)
+            .IsRequired()
             .OnDelete(DeleteBehavior.Cascade);
             
         builder.HasOne(ep => ep.User)
@@ -22,7 +23,7 @@ internal class EmployerProfileConfiguration : IEntityTypeConfiguration<EmployerP
             .OnDelete(DeleteBehavior.Cascade);
 
         builder.HasMany(ep => ep.JobOffers)
-            .WithOne()
+            .WithOne(jo => jo.EmployerProfile)
             .HasForeignKey(jo =>jo.EmployerProfileId);
 
 

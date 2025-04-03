@@ -1,10 +1,12 @@
-﻿namespace Jobfinder.Domain.Entities;
+﻿using System.Text.Json.Serialization;
+
+namespace Jobfinder.Domain.Entities;
 
 public class EmployerProfile 
 {
     public Guid Id { get; set; }
-    public Company? Company { get; set; }
-    public Guid? CompanyId { get; set; }
+    [JsonIgnore]
+    public Company? Company { get; set; } 
     public List<JobOffer> JobOffers { get; set; } = [];
     public User User { get; set; } = new();
     public Guid UserId { get; set; }

@@ -1,6 +1,7 @@
 ﻿using Jobfinder.Domain.ValueObjects;
 using System.Data;
 using System.Drawing;
+using System.Text.Json.Serialization;
 
 namespace Jobfinder.Domain.Entities;
 
@@ -12,14 +13,16 @@ public class Company
     public Location Location { get; set; } = new();
     public int SizeOfCompany { get; set; }
     public string Description { get; set; } = string.Empty;
-    public EmployerProfile Owner { get; set; } = new();
+    [JsonIgnore] public EmployerProfile Owner { get; set; } = null!;
     public Guid OwnerId { get; set; }
 
     public Company() {}
 
-    public Company(Guid ownerId,string websiteAddress, Location location, int sizeOfCompany, string description)
+    public Company(EmployerProfile profile,string companyName,string websiteAddress, Location location, int sizeOfCompany, string description)
     {
-        OwnerId = ownerId;
+        Owner = profile;
+        CompanyName = companyName;
+        OwnerId = profile.Id;
         WebsiteAddress = websiteAddress;
         Location = location;
         SizeOfCompany = sizeOfCompany;

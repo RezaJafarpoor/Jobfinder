@@ -13,23 +13,23 @@ public static class JobOfferEndpoints
     {
         var root = builder.MapGroup("api");
 
-        root.MapPost("jobOffer", async ([FromBody]CreateJobOfferDto job, IJobOfferRepository jobOfferRepository, HttpContext context, ICompanyRepository companyRepository, CancellationToken cancellationToken) =>
-        {
-            var employer = context.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-            if (employer is null)
-                return Results.Unauthorized();
-            Guid.TryParse(employer, out Guid profileId);
-            var category = new JobCategory(job.JobCategory);
-            var company = await companyRepository.GetCompanyNameByUserId(profileId, cancellationToken);
-            if (company is null)
-                return Results.BadRequest("Register your company first");
-            var jobOffer = new JobOffer(job.JobName, job.JobDescription, job.JobDetails, job.Salary,company,
-                category, profileId);
-            await jobOfferRepository.CreateJobOffer(jobOffer);
-            return await jobOfferRepository.SaveChangesAsync(cancellationToken)
-                ? Results.BadRequest()
-                : Results.NoContent();
-        });
+        // root.MapPost("jobOffer", async ([FromBody]CreateJobOfferDto job, IJobOfferRepository jobOfferRepository, HttpContext context, ICompanyRepository companyRepository, CancellationToken cancellationToken) =>
+        // {
+        //     var employer = context.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        //     if (employer is null)
+        //         return Results.Unauthorized();
+        //     Guid.TryParse(employer, out Guid profileId);
+        //     var category = new JobCategory(job.JobCategory);
+        //     var company = await companyRepository.GetCompanyByEmployerId(profileId, cancellationToken);
+        //     if (company is null)
+        //         return Results.BadRequest("Register your company first");
+        //     var jobOffer = new JobOffer(job.JobName, job.JobDescription, job.JobDetails, job.Salary,company.CompanyName,
+        //         category, profileId);
+        //     await jobOfferRepository.CreateJobOffer(jobOffer);
+        //     return await jobOfferRepository.SaveChangesAsync(cancellationToken)
+        //         ? Results.BadRequest()
+        //         : Results.NoContent();
+        // });
         
         root.MapGet("jobOffer", async (IJobOfferRepository repository, CancellationToken cancellationToken) =>
         {

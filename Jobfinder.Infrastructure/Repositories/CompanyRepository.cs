@@ -24,7 +24,7 @@ internal class CompanyRepository(ApplicationDbContext dbContext) : ICompanyRepos
 
     public async  Task<List<Company>> GetCompanies(CancellationToken cancellationToken)
     {
-        var companies = await dbContext.Companies.AsNoTracking().ToListAsync(cancellationToken);
+        var companies = await dbContext.Companies.ToListAsync(cancellationToken);
         return companies;
     }
 
@@ -36,17 +36,12 @@ internal class CompanyRepository(ApplicationDbContext dbContext) : ICompanyRepos
 
     public async Task<Company?> GetCompanyByEmployerId(Guid employerId, CancellationToken cancellationToken)
     {
-        var company = await dbContext.Companies.FirstOrDefaultAsync(c => c.OwnerId == employerId, cancellationToken);
+        var company = await dbContext.Companies.
+            FirstOrDefaultAsync( cancellationToken);
         return company;
     }
 
-    public async Task<string?> GetCompanyNameByUserId(Guid userId, CancellationToken cancellationToken)
-    {
-        var companyName = await dbContext.Companies
-            .Where(c => c.OwnerId == userId)
-            .Select(c => c.CompanyName).FirstOrDefaultAsync(cancellationToken);
-        return companyName;
-    }
+   
 
     public async Task<bool> SaveChangesAsync(CancellationToken cancellationToken)
     {

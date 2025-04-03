@@ -9,7 +9,7 @@ public class JobCategory
     public JobCategory() {}
     public JobCategory(string category)
     {
-        Category = Category;
+        Category = category;
     }
 
     public void UpdateCategory(string category)

@@ -58,5 +58,10 @@ public static class CvEndpoints
             return Results.Ok(cvDto);
 
         });
+
+        root.MapGet("test", async (IEmployerProfileRepository repository, CancellationToken cancellationToken) =>
+        {
+            return Results.Ok(await repository.GetProfiles(cancellationToken));
+        });
     }
 }

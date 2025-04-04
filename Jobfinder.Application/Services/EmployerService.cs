@@ -2,7 +2,9 @@
 using Jobfinder.Application.Dtos.Company;
 using Jobfinder.Application.Dtos.JobOffer;
 using Jobfinder.Application.Interfaces.Repositories;
+using Jobfinder.Application.Interfaces.UnitOfWorks;
 using Jobfinder.Domain.Entities;
+using Jobfinder.Domain.Enums;
 
 namespace Jobfinder.Application.Services;
 
@@ -10,7 +12,6 @@ public class EmployerService
 
     (IEmployerProfileRepository profileRepository,
         ICompanyRepository companyRepository,
-        IJobOfferRepository jobOfferRepository,
         IJobApplicationRepository applicationRepository)
 {
     public async Task<Response<string>> CreateCompany(Guid employerId, CreateCompanyDto dto, CancellationToken cancellationToken)
@@ -52,5 +53,16 @@ public class EmployerService
         return job is null ?
             Response<List<Cv?>?>.Failure("No application for job ") :
             Response<List<Cv?>?>.Success(job);
+    }
+
+
+    //TODO: Add Email support for notifying job Seeker about application
+    public Task<Response<string>> ChangeApplicationStatusForJobApplication(Guid applicationId,
+        JobApplicationStatus status,
+        CancellationToken cancellationToken)
+    {
+        
+        
+        throw new NotImplementedException();
     }
 };

@@ -1,8 +1,9 @@
-﻿using Jobfinder.Domain.Entities;
+﻿using Jobfinder.Application.Interfaces.Common;
+using Jobfinder.Domain.Entities;
 
 namespace Jobfinder.Application.Interfaces.Repositories;
 
-public interface IJobApplicationRepository
+public interface IJobApplicationRepository : IScopedService
 {
     Task AddJobApplication(JobApplication application);
     Task<List<JobApplication>> GetJobApplications(CancellationToken cancellationToken);

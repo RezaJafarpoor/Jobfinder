@@ -28,7 +28,7 @@ internal sealed class TokenProvider(
         var token = new JwtSecurityToken(
             issuer: jwtSetting.Value.Issuer,
             claims: claims,
-            expires: DateTime.UtcNow.AddDays(jwtSetting.Value.ExpirationTimeInMinute),
+            expires: DateTime.UtcNow.AddDays(jwtSetting.Value.ExpirationTimeInMinute), // WARNING: Change this to use Minutes not Days
             signingCredentials: credential
         );
         return new JwtSecurityTokenHandler().WriteToken(token);

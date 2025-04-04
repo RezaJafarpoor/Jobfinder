@@ -1,8 +1,9 @@
-﻿using Jobfinder.Domain.Entities;
+﻿using Jobfinder.Application.Interfaces.Common;
+using Jobfinder.Domain.Entities;
 
 namespace Jobfinder.Application.Interfaces.Repositories;
 
-public interface IJobSeekerProfileRepository
+public interface IJobSeekerProfileRepository : IScopedService
 {
     Task CreateProfile(JobSeekerProfile jobSeekerProfile);
     Task<JobSeekerProfile?> GetProfileById(Guid userId, CancellationToken cancellationToken);

@@ -1,8 +1,9 @@
-﻿using Jobfinder.Domain.Entities;
+﻿using Jobfinder.Application.Interfaces.Common;
+using Jobfinder.Domain.Entities;
 
 namespace Jobfinder.Application.Interfaces.Repositories;
 
-public interface IEmployerProfileRepository
+public interface IEmployerProfileRepository: IScopedService
 {
     Task CreateProfile(EmployerProfile profile);
     Task<List<EmployerProfile>> GetProfiles(CancellationToken cancellationToken);

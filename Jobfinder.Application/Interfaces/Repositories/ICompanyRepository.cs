@@ -1,8 +1,9 @@
-﻿using Jobfinder.Domain.Entities;
+﻿using Jobfinder.Application.Interfaces.Common;
+using Jobfinder.Domain.Entities;
 
 namespace Jobfinder.Application.Interfaces.Repositories;
 
-public interface ICompanyRepository
+public interface ICompanyRepository : IScopedService
 {
     Task CreateCompany(Company userCompany);
     Task UpdateCompany(Company company);

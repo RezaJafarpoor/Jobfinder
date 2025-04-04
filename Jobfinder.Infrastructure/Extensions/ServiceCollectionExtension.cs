@@ -1,4 +1,5 @@
-﻿using Jobfinder.Application.Interfaces.Identity;
+﻿using Jobfinder.Application.Interfaces.Common;
+using Jobfinder.Application.Interfaces.Identity;
 using Jobfinder.Application.Interfaces.Repositories;
 using Jobfinder.Application.Interfaces.UnitOfWorks;
 using Jobfinder.Domain.Entities;
@@ -12,6 +13,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
+using System.Reflection;
 using System.Text;
 
 namespace Jobfinder.Infrastructure.Extensions;
@@ -21,19 +23,31 @@ public static class ServiceCollectionExtension
 
     public static void AddInfrastructureServices(this IServiceCollection services, IConfiguration configuration)
     {
-        services.AddScoped<IIdentityRepository, IdentityRepository>();
-        services.AddScoped<ICompanyRepository, CompanyRepository>();
-        services.AddScoped<ICvRepository, CvRepository>();
-        services.AddScoped<IJobCategoryRepository, JobCategoryRepository>();
-        services.AddScoped<IJobOfferRepository, JobOfferRepository>();
-        services.AddScoped<IJobSeekerProfileRepository, JobSeekerProfileRepository>();
-        services.AddScoped<ITokenProvider, TokenProvider>();
-        services.AddScoped<IEmployerProfileRepository, EmployerProfileRepository>();
-        services.AddScoped<IRefreshTokenRepository, RefreshTokenRepository>();
-        services.AddScoped<IJobSeekerCvUnitOfWork, JobSeekerCvUnitOfWork>();
-        services.AddScoped<IUserProfileUnitOfWork, UserProfileUnitOfWork>();
-        services.AddScoped<IJobApplicationRepository, JobApplicationRepository>();
-        services.AddScoped<IJobOfferApplicationsUnitOfWork, JobOfferApplicationsUnitOfWork>();
+        var assembly = Assembly.GetExecutingAssembly();
+        var types = assembly.GetTypes()
+            .Where(t => t is { IsClass: true, IsAbstract: false });
+        foreach (var type in types)
+        {
+            var serviceInterfaces = type.GetInterfaces();
+            foreach (var iFace in serviceInterfaces)
+            {
+                if (typeof(IScopedService).IsAssignableFrom(iFace))
+                    services.AddScoped(iFace, type);
+            }
+        }
+        // services.AddScoped<IIdentityRepository, IdentityRepository>();
+        // services.AddScoped<ICompanyRepository, CompanyRepository>();
+        // services.AddScoped<ICvRepository, CvRepository>();
+        // services.AddScoped<IJobCategoryRepository, JobCategoryRepository>();
+        // services.AddScoped<IJobOfferRepository, JobOfferRepository>();
+        // services.AddScoped<IJobSeekerProfileRepository, JobSeekerProfileRepository>();
+        // services.AddScoped<ITokenProvider, TokenProvider>();
+        // services.AddScoped<IEmployerProfileRepository, EmployerProfileRepository>();
+        // services.AddScoped<IRefreshTokenRepository, RefreshTokenRepository>();
+        // services.AddScoped<IJobSeekerCvUnitOfWork, JobSeekerCvUnitOfWork>();
+        // services.AddScoped<IUserProfileUnitOfWork, UserProfileUnitOfWork>();
+        // services.AddScoped<IJobApplicationRepository, JobApplicationRepository>();
+        // services.AddScoped<IJobOfferApplicationsUnitOfWork, JobOfferApplicationsUnitOfWork>();
         services.AddPersistence(configuration);
         services.AddIdentity(configuration);
        

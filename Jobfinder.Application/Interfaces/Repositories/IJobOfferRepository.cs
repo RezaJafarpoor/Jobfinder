@@ -1,8 +1,9 @@
-﻿using Jobfinder.Domain.Entities;
+﻿using Jobfinder.Application.Interfaces.Common;
+using Jobfinder.Domain.Entities;
 
 namespace Jobfinder.Application.Interfaces.Repositories;
 
-public interface IJobOfferRepository
+public interface IJobOfferRepository : IScopedService
 {
     Task CreateJobOffer(JobOffer jobOffer);
     Task UpdateJobOffer(JobOffer jobOffer);

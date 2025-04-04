@@ -1,8 +1,9 @@
-﻿using Jobfinder.Domain.Entities;
+﻿using Jobfinder.Application.Interfaces.Common;
+using Jobfinder.Domain.Entities;
 
 namespace Jobfinder.Application.Interfaces.Repositories;
 
-public interface ICvRepository
+public interface ICvRepository : IScopedService
 {
     Task CreateCv(Cv cv);
     Task UpdateCv(Cv cv);

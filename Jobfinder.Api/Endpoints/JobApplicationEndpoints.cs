@@ -26,6 +26,8 @@ public static class JobApplicationEndpoints
             JobSeekerService service, CancellationToken cancellationToken, HttpContext context) =>
         {
             var jobSeekerId = context.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            if (jobSeekerId is null)
+                return Results.Unauthorized();
             Guid.TryParse(jobSeekerId, out var id);
             Guid.TryParse(jobOfferId, out var jobId);
             var result = await service.ApplyToJob(new CreateJobApplicationDto(id, jobId), cancellationToken);

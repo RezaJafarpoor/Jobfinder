@@ -1,6 +1,8 @@
-﻿namespace Jobfinder.Application.Interfaces.Identity;
+﻿using Jobfinder.Application.Interfaces.Common;
 
-public interface ITokenProvider
+namespace Jobfinder.Application.Interfaces.Identity;
+
+public interface ITokenProvider : IScopedService
 {
     public string GenerateJwtToken(Guid userId);
     public string GenerateRefreshToken();

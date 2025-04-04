@@ -1,8 +1,9 @@
-﻿using Jobfinder.Domain.Entities;
+﻿using Jobfinder.Application.Interfaces.Common;
+using Jobfinder.Domain.Entities;
 
 namespace Jobfinder.Application.Interfaces.Repositories;
 
-public interface IJobCategoryRepository
+public interface IJobCategoryRepository : IScopedService
 {
     Task<bool> AddCategory(JobCategory jobCategory, CancellationToken cancellationToken);
     Task<bool> DeleteCategoryById(Guid id);

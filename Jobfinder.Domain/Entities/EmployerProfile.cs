@@ -18,7 +18,7 @@ public class EmployerProfile
         User = user;
     }
 
-    public void CreateJobOffer(JobOffer jobOffer)
+    public void AddJobOffer(JobOffer jobOffer)
     {
         JobOffers.Add(jobOffer);
     }

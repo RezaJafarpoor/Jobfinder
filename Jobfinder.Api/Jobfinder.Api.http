@@ -1,5 +1,5 @@
 @Host=https://localhost:7093
-@token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI4OTRlOGE5MS00OWVlLTQ1NGUtYjBmOC0wOGRkNzJlN2VhYjciLCJqdGkiOiJjNDUxMDg4Yi1jMTUxLTQ1NjktYjI1MS05NzA5MzAyYjkzMmQiLCJhdWQiOiJodHRwczovL2xvY2FsaG9zdDo3MDkzIiwiZXhwIjoxNzQ2MzAxNDU1LCJpc3MiOiJodHRwczovL2xvY2FsaG9zdDo3MDkzIn0.xjbOvfxX0-OZ_yWSXJCUKzPOaiwZTIID5e-BngD9e0o
+@token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJmZDQ3NTljMC05NjJhLTQ4MDgtMDM1My0wOGRkNzM3NzcyNmEiLCJqdGkiOiI3ZGY3M2M2My05MGUyLTQ4ZWQtOTFlYy1lZDZlY2MzOWEwMWMiLCJhdWQiOiJodHRwczovL2xvY2FsaG9zdDo3MDkzIiwiZXhwIjoxNzQ2MzYzNTE4LCJpc3MiOiJodHRwczovL2xvY2FsaG9zdDo3MDkzIn0.9dJK6Ys4Y-Adml5VqR8Qhpjk-yherXyIkGtjT548nQI
 POST {{Host}}/api/identity/register
 Accept: application/json
 Content-Type: application/json
@@ -17,7 +17,8 @@ Content-Type: application/json
 
 {
    "email":"reza@gmail.com",
-   "password":"Reza1234@"
+   "password":"Reza1234@",
+   "userType":"Employer"
 }
 ###
 POST {{Host}}/api/cvs
@@ -45,8 +46,6 @@ GET {{Host}}/api/cvs
 Accept: application/json
 ###
 GET {{Host}}/api/cvs/{id}
-###
-GET {{Host}}/api/Profile
 ###
 POST {{Host}}/api/jobOffer
 Authorization: Bearer {{token}}

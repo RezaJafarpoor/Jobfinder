@@ -32,7 +32,7 @@ internal class JobApplicationRepository
         return result;
     }
 
-    public async Task<List<Cv?>> GetCvsForJobOffer(Guid jobOfferId, CancellationToken cancellationToken)
+    public async Task<List<Cv?>?> GetCvsForJobOffer(Guid jobOfferId, CancellationToken cancellationToken)
     {
         var cvs = await dbContext.JobApplications.Include(ja => ja.JobSeekerProfile)
             .ThenInclude(jsp => jsp.JobSeekerCv).Select(ja => ja.JobSeekerProfile.JobSeekerCv).ToListAsync(cancellationToken);

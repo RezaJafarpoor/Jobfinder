@@ -12,7 +12,9 @@ public static class CvEndpoints
     {
         var root = builder.MapGroup("api");
 
-        root.MapPut("cvs",
+       
+
+    root.MapPost("cvs",
             async ([FromBody] CreateCvDto createCvDto, IJobSeekerCvUnitOfWork unitOfWork, HttpContext context,
                     CancellationToken cancellationToken)
                 =>
@@ -34,6 +36,7 @@ public static class CvEndpoints
                 :Results.Ok(cvs.Select(cv => (CvDto)cv));
         });
 
+        
         root.MapGet("cvs/{userId}", async ([FromRoute]string userId, ICvRepository cvRepository, CancellationToken cancellationToken) =>
         {
             if (Guid.TryParse(userId, out Guid id))
@@ -46,22 +49,6 @@ public static class CvEndpoints
         });
 
 
-        root.MapGet("cvs/myCv", async (HttpContext context, ICvRepository repository, CancellationToken cancellationToken) =>
-        {
-            var userId = context.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-            if (!Guid.TryParse(userId, out Guid id))
-                return Results.Unauthorized();
-            var cv = await repository.GetCvByUserId(id, cancellationToken);
-            if (cv is null)
-                return Results.NotFound();
-            CvDto cvDto = cv;
-            return Results.Ok(cvDto);
-
-        });
-
-        root.MapGet("test", async (IEmployerProfileRepository repository, CancellationToken cancellationToken) =>
-        {
-            return Results.Ok(await repository.GetProfiles(cancellationToken));
-        });
+        
     }
 }

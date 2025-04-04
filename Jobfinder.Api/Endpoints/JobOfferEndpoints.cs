@@ -1,6 +1,7 @@
 ﻿using Jobfinder.Application.Dtos.Category;
 using Jobfinder.Application.Dtos.JobOffer;
 using Jobfinder.Application.Interfaces.Repositories;
+using Jobfinder.Application.Services;
 using Jobfinder.Domain.Entities;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
@@ -13,23 +14,17 @@ public static class JobOfferEndpoints
     {
         var root = builder.MapGroup("api");
 
-        // root.MapPost("jobOffer", async ([FromBody]CreateJobOfferDto job, IJobOfferRepository jobOfferRepository, HttpContext context, ICompanyRepository companyRepository, CancellationToken cancellationToken) =>
-        // {
-        //     var employer = context.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-        //     if (employer is null)
-        //         return Results.Unauthorized();
-        //     Guid.TryParse(employer, out Guid profileId);
-        //     var category = new JobCategory(job.JobCategory);
-        //     var company = await companyRepository.GetCompanyByEmployerId(profileId, cancellationToken);
-        //     if (company is null)
-        //         return Results.BadRequest("Register your company first");
-        //     var jobOffer = new JobOffer(job.JobName, job.JobDescription, job.JobDetails, job.Salary,company.CompanyName,
-        //         category, profileId);
-        //     await jobOfferRepository.CreateJobOffer(jobOffer);
-        //     return await jobOfferRepository.SaveChangesAsync(cancellationToken)
-        //         ? Results.BadRequest()
-        //         : Results.NoContent();
-        // });
+        root.MapPost("jobOffer", async ([FromBody]CreateJobOfferDto job, EmployerService service, HttpContext context, CancellationToken cancellationToken) =>
+        {
+            var employer = context.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            if (employer is null)
+                return Results.Unauthorized();
+            Guid.TryParse(employer, out Guid profileId);
+            var result = await service.CreateJobOffer(profileId, job, cancellationToken);
+            return result.IsSuccess ? 
+                Results.NoContent() :
+                Results.BadRequest(result.Errors);
+        });
         
         root.MapGet("jobOffer", async (IJobOfferRepository repository, CancellationToken cancellationToken) =>
         {

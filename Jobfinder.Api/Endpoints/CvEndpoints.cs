@@ -1,4 +1,5 @@
-﻿using Jobfinder.Application.Dtos.Cvs;
+﻿using Jobfinder.Application.Commons.Identity;
+using Jobfinder.Application.Dtos.Cvs;
 using Jobfinder.Application.Interfaces.Repositories;
 using Jobfinder.Application.Interfaces.UnitOfWorks;
 using Microsoft.AspNetCore.Mvc;
@@ -27,7 +28,8 @@ public static class CvEndpoints
                 }
 
                 return Results.Unauthorized();
-            });
+            })
+        .RequireAuthorization(AuthPolicies.JobSeekerOnly.ToString());
 
         root.MapGet("cvs", async (ICvRepository cvRepository, CancellationToken cancellationToken ) =>
         {

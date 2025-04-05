@@ -1,7 +1,9 @@
-﻿using Jobfinder.Application.Interfaces.Common;
+﻿using Jobfinder.Application.Commons.Identity;
+using Jobfinder.Application.Interfaces.Common;
 using Jobfinder.Application.Interfaces.Identity;
 using Jobfinder.Application.Interfaces.Repositories;
 using Jobfinder.Application.Interfaces.UnitOfWorks;
+using Jobfinder.Domain.Commons.Identity;
 using Jobfinder.Domain.Entities;
 using Jobfinder.Infrastructure.Identity;
 using Jobfinder.Infrastructure.Persistence;
@@ -14,6 +16,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using System.Reflection;
+using System.Security.Claims;
 using System.Text;
 
 namespace Jobfinder.Infrastructure.Extensions;
@@ -35,19 +38,7 @@ public static class ServiceCollectionExtension
                     services.AddScoped(iFace, type);
             }
         }
-        // services.AddScoped<IIdentityRepository, IdentityRepository>();
-        // services.AddScoped<ICompanyRepository, CompanyRepository>();
-        // services.AddScoped<ICvRepository, CvRepository>();
-        // services.AddScoped<IJobCategoryRepository, JobCategoryRepository>();
-        // services.AddScoped<IJobOfferRepository, JobOfferRepository>();
-        // services.AddScoped<IJobSeekerProfileRepository, JobSeekerProfileRepository>();
-        // services.AddScoped<ITokenProvider, TokenProvider>();
-        // services.AddScoped<IEmployerProfileRepository, EmployerProfileRepository>();
-        // services.AddScoped<IRefreshTokenRepository, RefreshTokenRepository>();
-        // services.AddScoped<IJobSeekerCvUnitOfWork, JobSeekerCvUnitOfWork>();
-        // services.AddScoped<IUserProfileUnitOfWork, UserProfileUnitOfWork>();
-        // services.AddScoped<IJobApplicationRepository, JobApplicationRepository>();
-        // services.AddScoped<IJobOfferApplicationsUnitOfWork, JobOfferApplicationsUnitOfWork>();
+   
         services.AddPersistence(configuration);
         services.AddIdentity(configuration);
        
@@ -70,8 +61,21 @@ public static class ServiceCollectionExtension
         services.AddOptions<JwtSetting>()
             .Bind(config: configuration.GetSection("JwtSetting"));
         
-        services.AddAuthorization();
-        services.AddIdentity<User, IdentityRole<Guid>>()
+        services.AddAuthorization(option =>
+        {
+            option.AddPolicy(AuthPolicies.EmployerOnly.ToString(), policy =>
+            {
+                policy.RequireRole(Roles.Employer.ToString());
+            });
+            option.AddPolicy(AuthPolicies.AdminOnly.ToString(), policy =>
+            {
+                policy.RequireRole(Roles.Admin.ToString());
+            });option.AddPolicy(AuthPolicies.JobSeekerOnly.ToString(), policy =>
+            {
+                policy.RequireRole(Roles.JobSeeker.ToString());
+            });
+        });
+        services.AddIdentity<User, Role>()
             .AddEntityFrameworkStores<ApplicationDbContext>()
             .AddDefaultTokenProviders();
         services.AddAuthentication(option =>
@@ -88,7 +92,7 @@ public static class ServiceCollectionExtension
                 }
                 option.TokenValidationParameters = new TokenValidationParameters
                 {
-                 
+                    RoleClaimType = ClaimTypes.Role,
                     ValidateIssuer = true,
                     ValidateIssuerSigningKey = true,
                     ValidateLifetime = true,

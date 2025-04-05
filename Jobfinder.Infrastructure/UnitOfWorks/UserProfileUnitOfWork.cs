@@ -28,6 +28,7 @@ internal class UserProfileUnitOfWork
             var errors = createdUser.Errors.Select(err => err.Description).ToList();
             return Response<JobSeekerProfile>.Failure(errors);
          }
+         
          var jobSeekerProfile = new JobSeekerProfile(user, null,null);
          await jobSeekerProfileRepository.CreateProfile(jobSeekerProfile);
 

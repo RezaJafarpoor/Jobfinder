@@ -2,7 +2,6 @@
 
 namespace Jobfinder.Domain.Entities;
 
-public class Role : IdentityRole<Guid>
+public sealed class Role : IdentityRole<Guid>
 {
-    
 }

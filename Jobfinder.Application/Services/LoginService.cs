@@ -4,6 +4,7 @@ using Jobfinder.Application.Dtos.Profiles;
 using Jobfinder.Application.Interfaces.Identity;
 using Jobfinder.Application.Interfaces.Repositories;
 using Jobfinder.Application.Interfaces.UnitOfWorks;
+using Jobfinder.Domain.Commons.Identity;
 using Jobfinder.Domain.Entities;
 
 namespace Jobfinder.Application.Services;
@@ -25,7 +26,7 @@ public sealed class LoginService(
                     new RefreshToken(tokenProvider.GenerateRefreshToken(), jobSeeker.Data!.User);
                 if (!await refreshTokenRepository.AddTokenForUser(jobSeekerRefreshToken))
                     return Response<IdentityResponse>.Failure("Something wrong with token service");
-                var jobSeekerAccessToken = tokenProvider.GenerateJwtToken(jobSeeker.Data.Id);
+                var jobSeekerAccessToken = tokenProvider.GenerateJwtToken(jobSeeker.Data.Id, Roles.JobSeeker.ToString());
                 JobSeekerDto jobSeekerDto = jobSeeker.Data;
                 return Response<IdentityResponse>.Success(new IdentityResponse(jobSeekerAccessToken,
                     jobSeekerRefreshToken.Token, jobSeekerDto));
@@ -36,7 +37,7 @@ public sealed class LoginService(
                 var refreshToken = new RefreshToken(tokenProvider.GenerateRefreshToken(), employer.Data!.User);
                 if (!await refreshTokenRepository.AddTokenForUser(refreshToken))
                     return Response<IdentityResponse>.Failure("Something wrong with Token Service");
-                var accessToken = tokenProvider.GenerateJwtToken(employer.Data!.Id);
+                var accessToken = tokenProvider.GenerateJwtToken(employer.Data!.Id, Roles.Employer.ToString());
                 EmployerDto employerDto = employer.Data;
                 return Response<IdentityResponse>.Success(new IdentityResponse(accessToken, refreshToken.Token,
                     employerDto));

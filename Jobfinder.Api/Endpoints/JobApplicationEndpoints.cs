@@ -1,4 +1,5 @@
 ﻿using Jobfinder.Application.Dtos.JobApplication;
+using Jobfinder.Application.Interfaces.Repositories;
 using Jobfinder.Application.Interfaces.UnitOfWorks;
 using Jobfinder.Application.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -12,7 +13,7 @@ public static class JobApplicationEndpoints
     {
         var root = builder.MapGroup("api");
 
-        root.MapGet("jobOffer/{jobOfferId}/applications", async ([FromRoute]string jobOfferId,EmployerService service, CancellationToken cancellationToken) =>
+        root.MapGet("jobOffers/{jobOfferId}/applications", async ([FromRoute]string jobOfferId,EmployerService service, CancellationToken cancellationToken) =>
         {
             Guid.TryParse(jobOfferId, out Guid id);
             var result = await service.GetApplicationForJobByJobId(id, cancellationToken);
@@ -22,7 +23,7 @@ public static class JobApplicationEndpoints
         });
 
 
-        root.MapPost("jobOffer/{jobOfferId}/applications", async ([FromRoute] string jobOfferId ,
+        root.MapPost("jobOffers/{jobOfferId}/applications", async ([FromRoute] string jobOfferId ,
             JobSeekerService service, CancellationToken cancellationToken, HttpContext context) =>
         {
             var jobSeekerId = context.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
@@ -35,6 +36,20 @@ public static class JobApplicationEndpoints
                 Results.NoContent() :
                 Results.BadRequest();
         });
+        
+
+        root.MapPost("jobOffers/{jobOfferId}/applications/{applicationId}", async ([FromRoute] string jobOfferId, 
+            [FromRoute] string applicationId, [FromBody] UpdateJobApplicationStatus status
+            , EmployerService service, CancellationToken cancellationToken) =>
+        {
+            Guid.TryParse(jobOfferId, out var jobId);
+            Guid.TryParse(applicationId, out var appId);
+            var result = await service.ChangeApplicationStatusForJobApplication(appId, jobId, status, cancellationToken);
+            return result.IsSuccess ? 
+                Results.NoContent() : 
+                Results.BadRequest(result.Errors);
+        });
+       
 
     }
 }

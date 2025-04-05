@@ -15,7 +15,7 @@ public class Cv
     public MilitaryServiceStatus ServiceStatus { get; set; }
     [JsonIgnore] public JobSeekerProfile JobSeeker { get; set; } = null!;
     public Guid JobSeekerId { get; set; }
-    public string FullName => $"{JobSeeker.Firstname} {JobSeeker.Lastname}";
+   
 
     public Cv() {}
 

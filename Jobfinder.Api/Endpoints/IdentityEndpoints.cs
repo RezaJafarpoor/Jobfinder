@@ -1,6 +1,5 @@
 ﻿using  Jobfinder.Application.Dtos.Identity;
 using Jobfinder.Application.Services;
-using Jobfinder.Domain.Entities;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Jobfinder.Api.Endpoints;

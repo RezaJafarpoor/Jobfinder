@@ -1,5 +1,6 @@
 ﻿using Jobfinder.Application.Interfaces.Identity;
 using Jobfinder.Application.Interfaces.Repositories;
+using Jobfinder.Domain.Commons.Identity;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
@@ -12,14 +13,15 @@ namespace Jobfinder.Infrastructure.Identity;
 internal sealed class TokenProvider(
     IOptions<JwtSetting> jwtSetting) : ITokenProvider
 {
-    public string GenerateJwtToken(Guid userId)
+    public string GenerateJwtToken(Guid userId, string role)
     {
         var secretKey = jwtSetting.Value.Secret;
         var claims = new List<Claim>
         {
             new Claim(JwtRegisteredClaimNames.Sub, userId.ToString()),
             new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-            new Claim(JwtRegisteredClaimNames.Aud, jwtSetting.Value.Audience)
+            new Claim(JwtRegisteredClaimNames.Aud, jwtSetting.Value.Audience),
+            new Claim(ClaimTypes.Role, role)
 
         };
 

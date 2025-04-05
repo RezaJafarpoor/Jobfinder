@@ -11,11 +11,10 @@ public record CvDto
         [property:JsonPropertyName("birthDay")] DateOnly? BirthDay,
         [property:JsonPropertyName("maxmimumSalary")] int? MaximumSalary,
         [property:JsonPropertyName("minimumSalary")] int? MinimumSalary,
-        [property:JsonPropertyName("status")] MilitaryServiceStatus? Status,
-        [property:JsonPropertyName("fullName")] string FullName)
+        [property:JsonPropertyName("status")] MilitaryServiceStatus? Status)
 {
     public static implicit operator CvDto(Cv cv) 
-        => new CvDto(cv.Location,cv.BirthDay,cv.MaximumExpectedSalary,cv.MinimumExpectedSalary,cv.ServiceStatus,cv.FullName);
+        => new CvDto(cv.Location,cv.BirthDay,cv.MaximumExpectedSalary,cv.MinimumExpectedSalary,cv.ServiceStatus);
     
 
     

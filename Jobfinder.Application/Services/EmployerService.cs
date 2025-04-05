@@ -1,5 +1,7 @@
 ﻿using Jobfinder.Application.Commons;
 using Jobfinder.Application.Dtos.Company;
+using Jobfinder.Application.Dtos.Cvs;
+using Jobfinder.Application.Dtos.JobApplication;
 using Jobfinder.Application.Dtos.JobOffer;
 using Jobfinder.Application.Interfaces.Repositories;
 using Jobfinder.Application.Interfaces.UnitOfWorks;
@@ -47,22 +49,30 @@ public class EmployerService
         return Response<string>.Success();
     }
 
-    public async Task<Response<List<Cv?>?>> GetApplicationForJobByJobId(Guid jobId, CancellationToken cancellationToken)
+    public async Task<Response<List<CvDto>?>> GetApplicationForJobByJobId(Guid jobId, CancellationToken cancellationToken)
     {
         var job = await applicationRepository.GetCvsForJobOffer(jobId, cancellationToken);
-        return job is null ?
-            Response<List<Cv?>?>.Failure("No application for job ") :
-            Response<List<Cv?>?>.Success(job);
+        if (job is null)
+            return Response<List<CvDto>?>.Failure("No application for job ");
+        var dtos = job.Select(j => (CvDto)j).ToList();
+        return Response<List<CvDto>?>.Success(dtos);
+
     }
 
 
     //TODO: Add Email support for notifying job Seeker about application
-    public Task<Response<string>> ChangeApplicationStatusForJobApplication(Guid applicationId,
-        JobApplicationStatus status,
+    public async Task<Response<string>> ChangeApplicationStatusForJobApplication(Guid applicationId,
+        Guid jobId,UpdateJobApplicationStatus status,
         CancellationToken cancellationToken)
     {
+        var job = await applicationRepository.GetJobApplication(jobId, applicationId, cancellationToken);
+        if (job is null)
+            return Response<string>.Failure("job or Application does not exist");
+        job.Status = status.Status;
+        if (!await applicationRepository.SaveChangesAsync(cancellationToken))
+            return Response<string>.Failure("Something went wrong");
+        //TODO: Add Email support for notifying job Seeker about application
         
-        
-        throw new NotImplementedException();
+        return Response<string>.Success();
     }
 };

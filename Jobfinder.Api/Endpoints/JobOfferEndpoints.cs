@@ -14,7 +14,7 @@ public static class JobOfferEndpoints
     {
         var root = builder.MapGroup("api");
 
-        root.MapPost("jobOffer", async ([FromBody]CreateJobOfferDto job, EmployerService service, HttpContext context, CancellationToken cancellationToken) =>
+        root.MapPost("jobOffers", async ([FromBody]CreateJobOfferDto job, EmployerService service, HttpContext context, CancellationToken cancellationToken) =>
         {
             var employer = context.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             if (employer is null)
@@ -26,7 +26,7 @@ public static class JobOfferEndpoints
                 Results.BadRequest(result.Errors);
         });
         
-        root.MapGet("jobOffer", async (IJobOfferRepository repository, CancellationToken cancellationToken) =>
+        root.MapGet("jobOffers", async (IJobOfferRepository repository, CancellationToken cancellationToken) =>
         {
             var jobOffers = await repository.GetJobOffers(cancellationToken);
             if (jobOffers is null)
@@ -36,7 +36,7 @@ public static class JobOfferEndpoints
            return Results.Ok(dtos);
         });
 
-        root.MapGet("jobOffer/{id}",
+        root.MapGet("jobOffers/{id}",
             async (string id, IJobOfferRepository jobOfferRepository, CancellationToken cancellationToken) =>
             {
                 Guid.TryParse(id, out Guid jobOfferId);
@@ -46,5 +46,8 @@ public static class JobOfferEndpoints
                 JobOfferDto dto = jobOffer;
                 return Results.Ok(dto);
             });
+        
+        
+        
     }
 }

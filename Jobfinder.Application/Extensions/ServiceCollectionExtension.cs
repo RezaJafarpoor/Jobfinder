@@ -1,4 +1,5 @@
 ﻿using Jobfinder.Application.Services;
+using Jobfinder.Domain.Entities;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Jobfinder.Application.Extensions;
@@ -9,6 +10,7 @@ public static class ServiceCollectionExtension
     {
         services.AddScoped<RegisterService>();
         services.AddScoped<LoginService>();
+        services.AddScoped<RefreshService>();
         services.AddScoped<JobSeekerService>();
         services.AddScoped<EmployerService>();
     }

@@ -31,9 +31,7 @@ internal class UserProfileUnitOfWork
          
          var jobSeekerProfile = new JobSeekerProfile(user, null,null);
          await jobSeekerProfileRepository.CreateProfile(jobSeekerProfile);
-
          
-
          await dbContext.SaveChangesAsync();
          await transaction.CommitAsync();
          return Response<JobSeekerProfile>.Success(jobSeekerProfile);
@@ -96,7 +94,7 @@ internal class UserProfileUnitOfWork
       var signInResult = await signInManager.CheckPasswordSignInAsync(currentUser, password, false);
       if (!signInResult.Succeeded)
          return Response<JobSeekerProfile>.Failure("User name or password is wrong");
-      var profile = await jobSeekerProfileRepository.GetProfileById(currentUser.Id, cancellationToken);
+      var profile = await jobSeekerProfileRepository.GetProfileByUserId(currentUser.Id, cancellationToken);
       return profile is null
          ? Response<JobSeekerProfile>.Failure("Profile does not exist") :
          Response<JobSeekerProfile>.Success(profile);

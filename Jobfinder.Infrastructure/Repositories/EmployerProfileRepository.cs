@@ -29,14 +29,14 @@ internal class EmployerProfileRepository
     {      
         var profile = await dbContext.EmployerProfiles
             .Include(u => u.Company)
-            .FirstOrDefaultAsync(ep => ep.Id == userId, cancellationToken);
+            .FirstOrDefaultAsync(ep => ep.UserId == userId, cancellationToken);
         return profile;
     }
 
     public async Task<EmployerProfile?> GetProfileByUserId(Guid userId, CancellationToken cancellationToken)
     {
         var profile = await dbContext.EmployerProfiles
-            .FirstOrDefaultAsync(ep => ep.User.Id == userId, cancellationToken);
+            .FirstOrDefaultAsync(ep => ep.UserId == userId, cancellationToken);
         return profile;
     }
 }

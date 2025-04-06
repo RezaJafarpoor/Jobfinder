@@ -21,7 +21,7 @@ internal class JobOfferApplicationsUnitOfWork
             var jobOffer = await jobOfferRepository.GetJobOfferById(dto.JobOfferId,cancellationToken);
             if (jobOffer is null)
                 return Response<string>.Failure("Job does not exist");
-            var jobSeeker = await jobSeekerRepository.GetProfileById(dto.JobSeekerProfileId, cancellationToken);
+            var jobSeeker = await jobSeekerRepository.GetProfileByUserId(dto.JobSeekerProfileId, cancellationToken);
             if (jobSeeker is null)
                 return Response<string>.Failure("User profile does not exist");
             var application = new JobApplication(jobSeeker, jobOffer);

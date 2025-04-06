@@ -13,7 +13,7 @@ public sealed class JobSeekerService (ICvRepository cvRepository, IJobSeekerProf
 {
     public async Task<Response<string>> CreateCv(CreateCvDto cvDto, Guid jobSeekerId, CancellationToken cancellationToken)
     {
-        var jobSeeker = await jobSeekerRepository.GetProfileById(jobSeekerId, cancellationToken);
+        var jobSeeker = await jobSeekerRepository.GetProfileByUserId(jobSeekerId, cancellationToken);
         if (jobSeeker is null)
             return Response<string>.Failure("Job seeker does not exist");
         var cv = new Cv(cvDto.Location, cvDto.BirthDay, cvDto.MinimumSalary, cvDto.MaximumSalary, cvDto.Status, jobSeeker);

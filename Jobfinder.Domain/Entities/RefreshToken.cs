@@ -18,7 +18,7 @@ public class RefreshToken
     }
 
     public bool IsExpired()
-        => ExpirationDate > DateTime.UtcNow;
+        => ExpirationDate < DateTime.UtcNow;
 
 
 }

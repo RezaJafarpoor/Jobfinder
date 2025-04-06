@@ -13,6 +13,26 @@ namespace Jobfinder.Infrastructure.Identity;
 internal sealed class TokenProvider(
     IOptions<JwtSetting> jwtSetting) : ITokenProvider
 {
+    public string GenerateJwtToken(Guid userId)
+    {
+        var secretKey = jwtSetting.Value.Secret;
+        var claims = new List<Claim>
+        {
+            new Claim(JwtRegisteredClaimNames.Sub, userId.ToString()),
+            new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+            new Claim(JwtRegisteredClaimNames.Aud, jwtSetting.Value.Audience),
+        };
+
+        var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSetting.Value.Secret));
+        var credential = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+        var token = new JwtSecurityToken(
+            issuer: jwtSetting.Value.Issuer,
+            claims: claims,
+            expires: DateTime.UtcNow.AddDays(jwtSetting.Value.ExpirationTimeInMinute), // WARNING: Change this to use Minutes not Days
+            signingCredentials: credential
+        );
+        return new JwtSecurityTokenHandler().WriteToken(token);
+    }
     public string GenerateJwtToken(Guid userId, string role)
     {
         var secretKey = jwtSetting.Value.Secret;
@@ -22,7 +42,6 @@ internal sealed class TokenProvider(
             new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
             new Claim(JwtRegisteredClaimNames.Aud, jwtSetting.Value.Audience),
             new Claim(ClaimTypes.Role, role)
-
         };
 
         var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSetting.Value.Secret));

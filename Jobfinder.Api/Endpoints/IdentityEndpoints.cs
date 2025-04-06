@@ -27,6 +27,15 @@ public static class IdentityEndpoints
                Results.Ok(result.Data) :
                Results.BadRequest(result.Errors);
         });
+
+        root.MapPost("refresh", async ([FromBody] string token, RefreshService service,
+            CancellationToken cancellationToken) =>
+        {
+            var result = await service.CheckRefreshToken(token, cancellationToken);
+            return result.IsSuccess ? 
+                Results.Ok(result.Data) : 
+                Results.BadRequest(result.Errors);
+        });
     }
 }
 

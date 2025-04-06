@@ -35,9 +35,10 @@ internal class JobApplicationRepository
         return application;
     }
 
-    public async Task<int> DeleteJobApplicationByJobSeekerId(Guid jobSeekerId)
+    public async Task<int> DeleteJobApplicationByJobSeekerId(Guid jobId, Guid applicationId, Guid jobSeekerId)
     {
-        var result = await dbContext.JobApplications.Where(ja => ja.JobSeekerProfileId == jobSeekerId)
+        var result = await dbContext.JobApplications
+            .Where(ja => ja.JobSeekerProfileId == jobSeekerId && ja.JobOfferId ==jobId && ja.Id == applicationId)
             .ExecuteDeleteAsync();
         return result;
     }

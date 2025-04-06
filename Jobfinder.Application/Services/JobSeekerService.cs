@@ -32,9 +32,9 @@ public sealed class JobSeekerService (ICvRepository cvRepository, IJobSeekerProf
             Response<string>.Failure(result.Errors);
     }
 
-    public async Task<Response<string>> CancelApplication(CreateJobApplicationDto dto)
+    public async Task<Response<string>> CancelApplication(Guid jobId, Guid applicationId, Guid jobSeekerId)
     {
-        var result = await jobOfferApplicationsUnitOfWork.CancelApplicationToJob(dto);
+        var result = await jobOfferApplicationsUnitOfWork.CancelApplicationToJob(jobId, applicationId, jobSeekerId);
         return result.IsSuccess ?
             Response<string>.Success() :
             Response<string>.Failure(result.Errors);

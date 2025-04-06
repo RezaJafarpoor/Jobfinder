@@ -8,6 +8,6 @@ namespace Jobfinder.Application.Interfaces.UnitOfWorks;
 public interface IJobOfferApplicationsUnitOfWork : IScopedService
 {
     Task<Response<string>> ApplyToJob(CreateJobApplicationDto dto,CancellationToken cancellationToken);
-    Task<Response<string>> CancelApplicationToJob(CreateJobApplicationDto dto);
+    Task<Response<string>> CancelApplicationToJob(Guid jobId, Guid applicationId, Guid jobSeekerId);
     Task<Response<List<Cv?>>> GetApplicationsForJob(Guid jobOfferId,CancellationToken cancellationToken);
 }

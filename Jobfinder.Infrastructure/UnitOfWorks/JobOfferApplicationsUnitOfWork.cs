@@ -40,9 +40,9 @@ internal class JobOfferApplicationsUnitOfWork
         }
     }
 
-    public async Task<Response<string>> CancelApplicationToJob(CreateJobApplicationDto dto)
+    public async Task<Response<string>> CancelApplicationToJob(Guid jobId, Guid applicationId, Guid jobSeekerId)
     {
-        var result = await jobApplicationRepository.DeleteJobApplicationByJobSeekerId(dto.JobSeekerProfileId);
+        var result = await jobApplicationRepository.DeleteJobApplicationByJobSeekerId(jobId, applicationId, jobSeekerId);
         return result >= 1 ? 
             Response<string>.Success() :
             Response<string>.Failure("Something went wrong");

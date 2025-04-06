@@ -1,4 +1,5 @@
-﻿using Jobfinder.Application.Dtos.Company;
+﻿using Jobfinder.Application.Commons.Identity;
+using Jobfinder.Application.Dtos.Company;
 using Jobfinder.Application.Services;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
@@ -20,7 +21,8 @@ public static class CompanyEndpoints
                 ? Results.NoContent()
                 : Results.BadRequest(result.Errors);
         
-        });
+        })
+        .RequireAuthorization(AuthPolicies.EmployerOnly.ToString());
 
     }
 }

@@ -1,4 +1,5 @@
-﻿using Jobfinder.Application.Dtos.JobApplication;
+﻿using Jobfinder.Application.Commons.Identity;
+using Jobfinder.Application.Dtos.JobApplication;
 using Jobfinder.Application.Interfaces.Repositories;
 using Jobfinder.Application.Interfaces.UnitOfWorks;
 using Jobfinder.Application.Services;
@@ -20,7 +21,8 @@ public static class JobApplicationEndpoints
             return result.IsSuccess ? 
                 Results.Ok(result.Data) 
                 : Results.NotFound();
-        });
+        })
+        .RequireAuthorization(AuthPolicies.EmployerOnly.ToString());
 
 
         root.MapPost("jobOffers/{jobOfferId}/applications", async ([FromRoute] string jobOfferId ,
@@ -35,7 +37,8 @@ public static class JobApplicationEndpoints
             return result.IsSuccess ?
                 Results.NoContent() :
                 Results.BadRequest();
-        });
+        })
+        .RequireAuthorization(AuthPolicies.JobSeekerOnly.ToString());
         
 
         root.MapPost("jobOffers/{jobOfferId}/applications/{applicationId}", async ([FromRoute] string jobOfferId, 
@@ -48,8 +51,23 @@ public static class JobApplicationEndpoints
             return result.IsSuccess ? 
                 Results.NoContent() : 
                 Results.BadRequest(result.Errors);
-        });
-       
+        })
+        .RequireAuthorization(AuthPolicies.EmployerOnly.ToString());
+
+        root.MapDelete("jobOffers/{jobOfferId}/applications/{applicationId}", async ([FromRoute] string jobOfferId, 
+                [FromRoute] string applicationId, HttpContext context
+                , JobSeekerService service, CancellationToken cancellationToken) =>
+        {
+            Guid.TryParse(jobOfferId, out var jobId);
+            Guid.TryParse(applicationId, out var appId);
+            var jobSeeker = context.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            Guid.TryParse(jobSeeker, out var userId);
+            var result = await service.CancelApplication(jobId, appId, userId);
+            return result.IsSuccess ? 
+                Results.NoContent() : 
+                Results.BadRequest(result.Errors);
+        })
+        .RequireAuthorization(AuthPolicies.JobSeekerOnly.ToString());
 
     }
 }

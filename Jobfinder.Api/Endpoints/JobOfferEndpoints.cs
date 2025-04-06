@@ -1,8 +1,7 @@
-﻿using Jobfinder.Application.Dtos.Category;
+﻿using Jobfinder.Application.Commons.Identity;
 using Jobfinder.Application.Dtos.JobOffer;
 using Jobfinder.Application.Interfaces.Repositories;
 using Jobfinder.Application.Services;
-using Jobfinder.Domain.Entities;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 
@@ -24,7 +23,8 @@ public static class JobOfferEndpoints
             return result.IsSuccess ? 
                 Results.NoContent() :
                 Results.BadRequest(result.Errors);
-        });
+        })
+        .RequireAuthorization(AuthPolicies.EmployerOnly.ToString());
         
         root.MapGet("jobOffers", async (IJobOfferRepository repository, CancellationToken cancellationToken) =>
         {

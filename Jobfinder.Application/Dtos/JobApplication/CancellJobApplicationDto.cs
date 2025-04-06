@@ -2,7 +2,7 @@
 
 namespace Jobfinder.Application.Dtos.JobApplication;
 
-public record CancelJobApplicationDto
+public record CancellJobApplicationDto
     (
         [property:JsonPropertyName("jobSeekerProfileId")]Guid JobSeekerProfileId,
         [property:JsonPropertyName("jobOfferId")]Guid JobOfferId

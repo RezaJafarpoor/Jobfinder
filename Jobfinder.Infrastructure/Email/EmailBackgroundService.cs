@@ -16,6 +16,7 @@ public class EmailBackgroundService
         {
             var email = await channel.Reader.ReadAsync(stoppingToken);
             await emailService.SendEmailAsync(email);
+            Console.WriteLine("Email Send");
         }
     }
 }

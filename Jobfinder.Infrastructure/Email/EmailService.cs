@@ -55,7 +55,7 @@ public class EmailService
         <p>Hello,</p>
         <p>We received a request to reset your password. Click the button below to set a new password:</p>
         <p style='text-align: center;'>
-            <a href='{RESET_LINK}' class='button'>Reset Password</a>
+            <a href='{RESET_LINK}' class='button'>'{Reset_Password}'</a>
         </p>
         <p>If you didn't request this, you can safely ignore this email.</p>
         <p>Thanks,<br>The Support Team</p>
@@ -72,7 +72,7 @@ public class EmailService
         { var message = new MimeMessage();
             message.From.Add(new MailboxAddress("JobFinder", configuration.Value.Server));
             message.To.Add(new MailboxAddress("user", emailContent.To));
-            var body = Default.Replace("{Reset_Link}", emailContent.Content);
+            var body = Default.Replace("{Reset_Password}", emailContent.Content);
             var bodyBuilder = new BodyBuilder
             {
                 HtmlBody = body

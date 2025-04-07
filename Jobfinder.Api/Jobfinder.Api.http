@@ -7,20 +7,20 @@ Accept: application/json
 Content-Type: application/json
 
 {
-   "email":"reza@gmail.com",
+   "email":"rezajafarpoor222@gmail.com",
    "password":"Reza1234@",
-   "userType":"JobSeeker"
+   "userType":"Employer"
 }
 
-###z`
+###
 POST {{Host}}/api/identity/login
 Accept: application/json
 Content-Type: application/json
 
 {
-   "email":"reza1@gmail.com",
-   "password":"Reza1234@",
-   "userType":"JobSeeker"
+   "email":"rezajafarpoor222@gmail.com",
+   "password":"Reza6692@",
+   "userType":"Employer"
 }
 ###
 POST {{Host}}/api/cvs
@@ -121,4 +121,23 @@ Accept: application/json
 Content-Type: application/json
 
 "{{refresh}}"
+###
 
+POST{{Host}}/api/identity/forget
+Accept: application/json
+Content-Type: application/json
+
+{
+  "email": "rezajafarpoor222@gmail.com"
+}
+###
+POST{{Host}}/api/identity/reset
+Accept: application/json
+Content-Type: application/json
+
+{
+  "email": "rezajafarpoor222@gmail.com",
+  "token": "CfDJ8GMEA3E5+wJMncBsI0KeoyF09xxpAri/0vNPRve5rfOF2DHjJevmc1xrRCQLwePdEfvaiXmHed2FFYo0VwcAx5KlzA+NTshWTJreI5LC0dqI7vKm53emw/VVur0JrJcs8HRQmrH7aKYzuq5j1Fps2LsBWOYYJg+XQBuKuA6A4YTMo/AcWsThTJ2XbMK8+O1tM12979wqtRs8WOR2/IHLbUTFj3Q8Ls51erQZp5Z3x6PG",
+  "newPassword": "Reza6692@"
+}
+###

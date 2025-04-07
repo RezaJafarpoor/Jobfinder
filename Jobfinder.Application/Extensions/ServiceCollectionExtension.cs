@@ -13,5 +13,6 @@ public static class ServiceCollectionExtension
         services.AddScoped<RefreshService>();
         services.AddScoped<JobSeekerService>();
         services.AddScoped<EmployerService>();
+        services.AddScoped<ResetPasswordService>();
     }
 }

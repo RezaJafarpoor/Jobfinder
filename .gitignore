@@ -5,6 +5,7 @@
 
 # dotenv files
 .env
+Jobfinder.Api/appsettings.json
 
 # User-specific files
 *.rsuser

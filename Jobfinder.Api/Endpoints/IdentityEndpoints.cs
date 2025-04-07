@@ -36,6 +36,25 @@ public static class IdentityEndpoints
                 Results.Ok(result.Data) : 
                 Results.BadRequest(result.Errors);
         });
+
+
+        root.MapPost("forget", async ([FromBody] ForgetPasswordDto dto, ResetPasswordService service,
+            CancellationToken cancellationToken) =>
+        {
+            var result = await service.ForgetPassword(dto.Email, cancellationToken);
+            return result.IsSuccess ? 
+                Results.Ok(result.Data) : 
+                Results.BadRequest(result.Errors);
+        });
+
+        root.MapPost("reset", async ([FromBody]ResetPasswordDto dto,ResetPasswordService service,
+            CancellationToken cancellationToken) =>
+        {
+            var result = await service.ResetPassword(dto.Email, dto.NewPassword, dto.Token);
+            return result.IsSuccess ? 
+                Results.Ok(result.Data) : 
+                Results.BadRequest(result.Errors);
+        });
     }
 }
 

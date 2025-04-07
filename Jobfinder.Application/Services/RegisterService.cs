@@ -6,6 +6,7 @@ using Jobfinder.Application.Interfaces.Repositories;
 using Jobfinder.Application.Interfaces.UnitOfWorks;
 using Jobfinder.Domain.Commons.Identity;
 using Jobfinder.Domain.Entities;
+using System.Threading.Channels;
 
 namespace Jobfinder.Application.Services;
 

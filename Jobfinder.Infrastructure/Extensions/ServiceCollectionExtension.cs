@@ -1,10 +1,12 @@
-﻿using Jobfinder.Application.Commons.Identity;
+﻿using Jobfinder.Application.Commons;
+using Jobfinder.Application.Commons.Identity;
 using Jobfinder.Application.Interfaces.Common;
 using Jobfinder.Application.Interfaces.Identity;
 using Jobfinder.Application.Interfaces.Repositories;
 using Jobfinder.Application.Interfaces.UnitOfWorks;
 using Jobfinder.Domain.Commons.Identity;
 using Jobfinder.Domain.Entities;
+using Jobfinder.Infrastructure.Email;
 using Jobfinder.Infrastructure.Identity;
 using Jobfinder.Infrastructure.Persistence;
 using Jobfinder.Infrastructure.Repositories;
@@ -18,6 +20,7 @@ using Microsoft.IdentityModel.Tokens;
 using System.Reflection;
 using System.Security.Claims;
 using System.Text;
+using System.Threading.Channels;
 
 namespace Jobfinder.Infrastructure.Extensions;
 
@@ -41,6 +44,7 @@ public static class ServiceCollectionExtension
    
         services.AddPersistence(configuration);
         services.AddIdentity(configuration);
+        services.AddEmail(configuration);
        
     }
     
@@ -104,5 +108,20 @@ public static class ServiceCollectionExtension
                     IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtOption.Secret))
                 };
             });
+    }
+
+
+    public static void AddEmail(this IServiceCollection services, IConfiguration configuration)
+    {
+        services.Configure<EmailConfig>(configuration.GetSection("EmailConfig"));
+        services.AddSingleton<IEmailService, EmailService>();
+        services.AddSingleton<Channel<EmailContent>>(_ => Channel.CreateUnbounded<EmailContent>(
+            new UnboundedChannelOptions
+            {
+                AllowSynchronousContinuations = false,
+                SingleReader = true,
+                SingleWriter = false
+            }));
+        services.AddHostedService<EmailBackgroundService>();
     }
 }

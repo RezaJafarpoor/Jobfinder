@@ -1,6 +1,7 @@
 ﻿using Jobfinder.Application.Commons;
 using Jobfinder.Application.Interfaces.Repositories;
 using Jobfinder.Application.Interfaces.UnitOfWorks;
+using Jobfinder.Domain.Commons.Identity;
 using Jobfinder.Domain.Entities;
 using Jobfinder.Infrastructure.Persistence;
 using Microsoft.AspNetCore.Identity;
@@ -18,7 +19,7 @@ internal class UserProfileUnitOfWork
 
    public async Task<Response<JobSeekerProfile>> RegisterAsJobSeeker(string userEmail, string password)
    {
-      var user = new User(userEmail);
+      var user = new User(userEmail, Roles.Employer);
       await using var transaction = await dbContext.Database.BeginTransactionAsync(); 
       try
       {
@@ -45,7 +46,7 @@ internal class UserProfileUnitOfWork
 
    public async Task<Response<EmployerProfile>> RegisterAsEmployer(string userEmail, string password)
    {
-      var user = new User(userEmail);
+      var user = new User(userEmail, Roles.Employer);
       await using var transaction = await dbContext.Database.BeginTransactionAsync(); 
       try
       {

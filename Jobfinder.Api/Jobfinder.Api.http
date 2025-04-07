@@ -1,13 +1,13 @@
 @Host=https://localhost:7093
 @token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjNGU1YjgyOC1mMWZlLTQ3ZTYtZjI3ZS0wOGRkNzQ0ZmYzM2QiLCJqdGkiOiIzNjEwZDIxYi01MDBmLTQxMDYtOWY2ZS1hY2M1NGI2N2EwODciLCJhdWQiOiJodHRwczovL2xvY2FsaG9zdDo3MDkzIiwiaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS93cy8yMDA4LzA2L2lkZW50aXR5L2NsYWltcy9yb2xlIjoiRW1wbG95ZXIiLCJleHAiOjE3NDY0NTYwODgsImlzcyI6Imh0dHBzOi8vbG9jYWxob3N0OjcwOTMifQ.P3kRlmpNrs-OmBKBGJacqwx4AS5vUwdNNZfcXE_XbV8
-@jobseeker =eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI0ODg3YzhkYi1iMDBlLTQ2Y2MtOGZjMC0wOGRkNzQzYzRiMWQiLCJqdGkiOiI2MmNiNGJmZS0yZmZkLTQzMmItYWU2Zi00YTg5ZTEwOGNlOGEiLCJhdWQiOiJodHRwczovL2xvY2FsaG9zdDo3MDkzIiwiZXhwIjoxNzQ2NDQ3NjQ2LCJpc3MiOiJodHRwczovL2xvY2FsaG9zdDo3MDkzIn0.opeUE6A3cxqpDhlIqlDOF9pNf9liyybPEASuQXKQ-Tc
+@jobSeeker =eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJmMTkzNGZlZi04ZmRkLTQzYzYtYWE1OS0wOGRkNzUzMDFhZDUiLCJqdGkiOiIzNzU0N2I0NS0wZTU0LTRlN2YtODhkMi03MzlkZjY2ZTk5MGIiLCJhdWQiOiJodHRwczovL2xvY2FsaG9zdDo3MDkzIiwiaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS93cy8yMDA4LzA2L2lkZW50aXR5L2NsYWltcy9yb2xlIjoiSm9iU2Vla2VyIiwiZXhwIjoxNzQ2NTUyMzYyLCJpc3MiOiJodHRwczovL2xvY2FsaG9zdDo3MDkzIn0.l5SeiUuTemid054wlMIs2LwyDsuxwABoM7EDI7WP0vc
 @refresh=CP46F/4eLvu96JFnxl9X7r8Bz6UeHr/Kc+9ahUEj9DA=
 POST {{Host}}/api/identity/register
 Accept: application/json
 Content-Type: application/json
 
 {
-   "email":"reza1@gmail.com",
+   "email":"reza@gmail.com",
    "password":"Reza1234@",
    "userType":"JobSeeker"
 }
@@ -26,7 +26,7 @@ Content-Type: application/json
 POST {{Host}}/api/cvs
 Accept: application/json
 Content-Type: application/json
-Authorization: Bearer {{token}}
+Authorization: Bearer {{jobSeeker}}
 
 {
   "location": {

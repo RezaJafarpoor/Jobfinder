@@ -13,12 +13,12 @@ internal class JobSeekerCvUnitOfWork(
     ICvRepository cvRepository,
     ApplicationDbContext dbContext) : IJobSeekerCvUnitOfWork
 {
-    public async Task<Response<string>> CreateCvAndUpdateUsername(CreateCvDto cvDto, Guid jobSeekerId,CancellationToken cancellationToken)
+    public async Task<Response<string>> CreateCvAndUpdateUsername(CreateCvDto cvDto, Guid userId,CancellationToken cancellationToken)
     {
         await using var transaction = await dbContext.Database.BeginTransactionAsync(cancellationToken);
         try
         {
-            var profile = await jobSeekerProfileRepository.GetProfileByUserId(jobSeekerId, cancellationToken);
+            var profile = await jobSeekerProfileRepository.GetProfileByUserId(userId, cancellationToken);
             if (profile is null)
                 return Response<string>.Failure("User does not exist");
 

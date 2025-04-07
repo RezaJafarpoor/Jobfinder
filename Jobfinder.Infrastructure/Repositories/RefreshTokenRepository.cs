@@ -16,7 +16,7 @@ internal class RefreshTokenRepository
 
     public async Task<RefreshToken?> FindAsync(string token,CancellationToken cancellationToken)
     {
-        var result = await dbContext.RefreshTokens
+        var result = await dbContext.RefreshTokens.Include(rt => rt.User)
             .FirstOrDefaultAsync(rt => rt.Token == token, cancellationToken);
         return result;
     }

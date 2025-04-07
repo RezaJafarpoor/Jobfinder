@@ -6,6 +6,6 @@ namespace Jobfinder.Application.Interfaces.UnitOfWorks;
 
 public interface IJobSeekerCvUnitOfWork : IScopedService
 {
-    Task<Response<string>> CreateCvAndUpdateUsername(CreateCvDto cvDto, Guid jobSeekerId,
+    Task<Response<string>> CreateCvAndUpdateUsername(CreateCvDto cvDto, Guid userId,
         CancellationToken cancellationToken);
 }

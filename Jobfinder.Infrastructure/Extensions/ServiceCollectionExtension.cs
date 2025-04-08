@@ -2,18 +2,14 @@
 using Jobfinder.Application.Commons;
 using Jobfinder.Application.Commons.Identity;
 using Jobfinder.Application.Interfaces.Common;
-using Jobfinder.Application.Interfaces.Identity;
 using Jobfinder.Application.Interfaces.Repositories;
-using Jobfinder.Application.Interfaces.UnitOfWorks;
 using Jobfinder.Domain.Commons.Identity;
 using Jobfinder.Domain.Entities;
 using Jobfinder.Infrastructure.Email;
 using Jobfinder.Infrastructure.Identity;
-using Jobfinder.Infrastructure.Persistence;
 using Jobfinder.Infrastructure.Persistence.Minio;
 using Jobfinder.Infrastructure.Persistence.SqlServer;
 using Jobfinder.Infrastructure.Repositories;
-using Jobfinder.Infrastructure.UnitOfWorks;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -67,11 +63,12 @@ public static class ServiceCollectionExtension
             {
                 ServiceURL = miniConfig.ServiceUrl,
                 ForcePathStyle = true,
+                Timeout = TimeSpan.FromSeconds(miniConfig.TimeOutInSecond),
                 UseHttp = true
             };
             return new AmazonS3Client(miniConfig.Username,miniConfig.Password,config);
         });
-        
+        services.AddScoped<IMinioRepository, MinioRepository>();
         services.AddDbContext<ApplicationDbContext>(option =>
         {
             option.UseSqlServer(configuration.GetConnectionString("AppDbConnection"))

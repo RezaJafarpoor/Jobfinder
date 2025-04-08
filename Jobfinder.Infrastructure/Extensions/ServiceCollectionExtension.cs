@@ -1,4 +1,5 @@
-﻿using Jobfinder.Application.Commons;
+﻿using Amazon.S3;
+using Jobfinder.Application.Commons;
 using Jobfinder.Application.Commons.Identity;
 using Jobfinder.Application.Interfaces.Common;
 using Jobfinder.Application.Interfaces.Identity;
@@ -9,6 +10,8 @@ using Jobfinder.Domain.Entities;
 using Jobfinder.Infrastructure.Email;
 using Jobfinder.Infrastructure.Identity;
 using Jobfinder.Infrastructure.Persistence;
+using Jobfinder.Infrastructure.Persistence.Minio;
+using Jobfinder.Infrastructure.Persistence.SqlServer;
 using Jobfinder.Infrastructure.Repositories;
 using Jobfinder.Infrastructure.UnitOfWorks;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -52,6 +55,23 @@ public static class ServiceCollectionExtension
     
     private static void AddPersistence(this IServiceCollection services, IConfiguration configuration)
     {
+        services.AddOptions<MinioConfig>()
+            .Bind(config: configuration.GetSection("MinioConfig"));
+        var miniConfig = configuration.GetSection("MinioConfig").Get<MinioConfig>();
+        if (miniConfig is null)
+            throw new ArgumentException("minio config is missing");
+
+        services.AddSingleton<IAmazonS3>(_ =>
+        {
+            var config = new AmazonS3Config()
+            {
+                ServiceURL = miniConfig.ServiceUrl,
+                ForcePathStyle = true,
+                UseHttp = true
+            };
+            return new AmazonS3Client(miniConfig.Username,miniConfig.Password,config);
+        });
+        
         services.AddDbContext<ApplicationDbContext>(option =>
         {
             option.UseSqlServer(configuration.GetConnectionString("AppDbConnection"))

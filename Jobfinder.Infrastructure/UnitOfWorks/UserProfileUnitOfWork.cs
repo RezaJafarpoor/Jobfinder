@@ -4,6 +4,7 @@ using Jobfinder.Application.Interfaces.UnitOfWorks;
 using Jobfinder.Domain.Commons.Identity;
 using Jobfinder.Domain.Entities;
 using Jobfinder.Infrastructure.Persistence;
+using Jobfinder.Infrastructure.Persistence.SqlServer;
 using Microsoft.AspNetCore.Identity;
 
 namespace Jobfinder.Infrastructure.UnitOfWorks;

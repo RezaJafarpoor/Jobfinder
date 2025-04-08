@@ -1,6 +1,7 @@
 ﻿using  Jobfinder.Application.Interfaces.Repositories;
 using Jobfinder.Domain.Entities;
 using Jobfinder.Infrastructure.Persistence;
+using Jobfinder.Infrastructure.Persistence.SqlServer;
 using Microsoft.EntityFrameworkCore;
 
 namespace Jobfinder.Infrastructure.Repositories;

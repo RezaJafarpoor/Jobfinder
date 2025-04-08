@@ -1,9 +1,8 @@
 ﻿using Jobfinder.Domain.Entities;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
-namespace Jobfinder.Infrastructure.Persistence;
+namespace Jobfinder.Infrastructure.Persistence.SqlServer;
 
 internal class ApplicationDbContext
     (DbContextOptions<ApplicationDbContext> options) :IdentityDbContext<User,Role,Guid> (options)

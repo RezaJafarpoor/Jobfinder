@@ -23,6 +23,7 @@ public sealed class RegisterService
             case UserType.Employer:
             {
                 var result =  await unitOfWork.RegisterAsEmployer(register.Email, register.Password);
+                
                 if (!result.IsSuccess)
                     return Response<IdentityResponse>.Failure(result.Errors);
                 var refreshToken = new RefreshToken(tokenProvider.GenerateRefreshToken(), result.Data!.User);

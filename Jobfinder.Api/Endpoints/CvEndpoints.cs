@@ -50,7 +50,10 @@ public static class CvEndpoints
             return Results.BadRequest();
         });
 
+        root.MapGet("test", async (IJobApplicationRepository repository) =>
+        {
+            return Results.Ok(await repository.Test());
+        });
 
-        
     }
 }

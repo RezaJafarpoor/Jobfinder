@@ -9,7 +9,7 @@ internal class JobApplicationConfiguration : IEntityTypeConfiguration<JobApplica
     public void Configure(EntityTypeBuilder<JobApplication> builder)
     {
         builder.HasKey(ja => ja.Id);
-        
+      
         
     }
 }

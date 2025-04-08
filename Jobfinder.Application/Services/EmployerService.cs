@@ -7,6 +7,8 @@ using Jobfinder.Application.Interfaces.Repositories;
 using Jobfinder.Application.Interfaces.UnitOfWorks;
 using Jobfinder.Domain.Entities;
 using Jobfinder.Domain.Enums;
+using System.Text;
+using System.Threading.Channels;
 
 namespace Jobfinder.Application.Services;
 
@@ -14,7 +16,8 @@ public class EmployerService
 
     (IEmployerProfileRepository profileRepository,
         ICompanyRepository companyRepository,
-        IJobApplicationRepository applicationRepository)
+        IJobApplicationRepository applicationRepository,
+        Channel<EmailContent> channel)
 {
     public async Task<Response<string>> CreateCompany(Guid employerId, CreateCompanyDto dto, CancellationToken cancellationToken)
     {
@@ -62,7 +65,7 @@ public class EmployerService
 
     //TODO: Add Email support for notifying job Seeker about application
     public async Task<Response<string>> ChangeApplicationStatusForJobApplication(Guid applicationId,
-        Guid jobId,UpdateJobApplicationStatus status,
+        Guid jobId, UpdateJobApplicationStatus status,
         CancellationToken cancellationToken)
     {
         var job = await applicationRepository.GetJobApplication(jobId, applicationId, cancellationToken);
@@ -71,8 +74,14 @@ public class EmployerService
         job.Status = status.Status;
         if (!await applicationRepository.SaveChangesAsync(cancellationToken))
             return Response<string>.Failure("Something went wrong");
-        //TODO: Add Email support for notifying job Seeker about application
-        
-        return Response<string>.Success();
+
+        if (status.Status is JobApplicationStatus.Accepted)
+        {
+            var emailContent = new EmailContent("Your Request Accepted",job.JobSeekerProfile.User.Email,$"Dear {job.JobSeekerProfile.Firstname}");
+            await channel.Writer.WriteAsync(emailContent, cancellationToken);
+        }
+
+        return Response<string>.Success("changed");
+
     }
-};
+}

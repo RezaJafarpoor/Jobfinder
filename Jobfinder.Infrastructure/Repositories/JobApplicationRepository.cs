@@ -15,8 +15,15 @@ internal class JobApplicationRepository
         return Task.CompletedTask;
     }
 
-    
 
+    public async Task<JobApplication?> Test()
+    {
+        var application = await dbContext.JobApplications
+            .Include(ja => ja.JobSeekerProfile)
+            .ThenInclude(u => u.User)
+            .FirstOrDefaultAsync();
+            return application;
+    }
     public async Task<List<JobApplication>> GetJobApplications(CancellationToken cancellationToken)
     {
         var applications = await dbContext.JobApplications.ToListAsync(cancellationToken);
@@ -24,13 +31,17 @@ internal class JobApplicationRepository
     }
     public async Task<JobApplication?> GetJobApplication(Guid id,CancellationToken cancellationToken)
     {
-        var application = await dbContext.JobApplications.FirstOrDefaultAsync(ja => ja.Id == id, cancellationToken);
+        var application = await dbContext.JobApplications
+            .Include(ja => ja.JobOffer)
+            .FirstOrDefaultAsync(ja => ja.Id == id, cancellationToken);
         return application;
     }
 
     public async Task<JobApplication?> GetJobApplication(Guid jobId, Guid applicationId, CancellationToken cancellationToken)
     {
         var application = await dbContext.JobApplications
+            .Include(ja => ja.JobSeekerProfile)
+            .ThenInclude(u => u.User)
             .FirstOrDefaultAsync(ja => ja.Id == applicationId && ja.JobOfferId == jobId, cancellationToken);
         return application;
     }

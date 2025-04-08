@@ -7,7 +7,7 @@ namespace Jobfinder.Application.Dtos.Cvs;
 
 public record CvDto
     (
-        [property:JsonPropertyName("location")] string Id,
+        [property:JsonPropertyName("id")] string Id,
         [property:JsonPropertyName("location")] Location Location,
         [property:JsonPropertyName("birthDay")] DateOnly? BirthDay,
         [property:JsonPropertyName("maxmimumSalary")] int? MaximumSalary,

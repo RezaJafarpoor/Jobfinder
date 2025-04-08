@@ -1,15 +1,15 @@
 @Host=https://localhost:7093
-@token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjNGU1YjgyOC1mMWZlLTQ3ZTYtZjI3ZS0wOGRkNzQ0ZmYzM2QiLCJqdGkiOiIzNjEwZDIxYi01MDBmLTQxMDYtOWY2ZS1hY2M1NGI2N2EwODciLCJhdWQiOiJodHRwczovL2xvY2FsaG9zdDo3MDkzIiwiaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS93cy8yMDA4LzA2L2lkZW50aXR5L2NsYWltcy9yb2xlIjoiRW1wbG95ZXIiLCJleHAiOjE3NDY0NTYwODgsImlzcyI6Imh0dHBzOi8vbG9jYWxob3N0OjcwOTMifQ.P3kRlmpNrs-OmBKBGJacqwx4AS5vUwdNNZfcXE_XbV8
-@jobSeeker =eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJmMTkzNGZlZi04ZmRkLTQzYzYtYWE1OS0wOGRkNzUzMDFhZDUiLCJqdGkiOiIzNzU0N2I0NS0wZTU0LTRlN2YtODhkMi03MzlkZjY2ZTk5MGIiLCJhdWQiOiJodHRwczovL2xvY2FsaG9zdDo3MDkzIiwiaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS93cy8yMDA4LzA2L2lkZW50aXR5L2NsYWltcy9yb2xlIjoiSm9iU2Vla2VyIiwiZXhwIjoxNzQ2NTUyMzYyLCJpc3MiOiJodHRwczovL2xvY2FsaG9zdDo3MDkzIn0.l5SeiUuTemid054wlMIs2LwyDsuxwABoM7EDI7WP0vc
+@token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxOTcxODhjZC1iMDA5LTQxNWUtNDg3ZC0wOGRkNzVmNzM1ZDUiLCJqdGkiOiJjYTBhZDJkNC1mMGU4LTQ0ZGUtYTlmNi01NzczZjM4MWQzMDQiLCJhdWQiOiJodHRwczovL2xvY2FsaG9zdDo3MDkzIiwiaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS93cy8yMDA4LzA2L2lkZW50aXR5L2NsYWltcy9yb2xlIjoiRW1wbG95ZXIiLCJleHAiOjE3NDY2Mzc5MTIsImlzcyI6Imh0dHBzOi8vbG9jYWxob3N0OjcwOTMifQ.pn0BmExLb2ebC2-YqzRmTvQlHgDzxp3fphbPdUtxgn8
+@jobSeeker =eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhZWRhYzQwNi02OTA1LTQ3NWItNDg3Yy0wOGRkNzVmNzM1ZDUiLCJqdGkiOiJhZmVjYmRkZC1hZjkwLTRlNWItOTU2Yy0wNTFhMjU5ODczNDYiLCJhdWQiOiJodHRwczovL2xvY2FsaG9zdDo3MDkzIiwiaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS93cy8yMDA4LzA2L2lkZW50aXR5L2NsYWltcy9yb2xlIjoiSm9iU2Vla2VyIiwiZXhwIjoxNzQ2NjM4OTY0LCJpc3MiOiJodHRwczovL2xvY2FsaG9zdDo3MDkzIn0.rS8_BLaQH9Ggmfm4SUdsH8k_dInNF2gu1MUdIWuMHlM
 @refresh=CP46F/4eLvu96JFnxl9X7r8Bz6UeHr/Kc+9ahUEj9DA=
 POST {{Host}}/api/identity/register
 Accept: application/json
 Content-Type: application/json
 
 {
-   "email":"rezajafarpoor222@gmail.com",
+   "email":"rezajafarpoor009@gmail.com",
    "password":"Reza1234@",
-   "userType":"Employer"
+   "userType":"Jobseeker"
 }
 
 ###
@@ -19,14 +19,14 @@ Content-Type: application/json
 
 {
    "email":"rezajafarpoor222@gmail.com",
-   "password":"Reza6692@",
-   "userType":"Employer"
+   "password":"Reza1234@",
+   "userType":"Jobseeker"
 }
 ###
 POST {{Host}}/api/cvs
+Authorization: Bearer {{jobSeeker}}
 Accept: application/json
 Content-Type: application/json
-Authorization: Bearer {{jobSeeker}}
 
 {
   "location": {
@@ -40,7 +40,6 @@ Authorization: Bearer {{jobSeeker}}
   "status":0,
   "firstName":"reza",
   "lastName":"jafarpoor"
-  
 }
 ###
 GET {{Host}}/api/cvs
@@ -101,9 +100,9 @@ Content-Type: application/json
 GET{{Host}}/api/jobOffers
 Accept: application/json
 ###
-POST {{Host}}/api/jobOffers/bb9bd285-7d5f-49ac-3f1c-08dd743b948e/applications/a883a22b-ab59-4ea9-f33c-08dd743cbdb6
+POST {{Host}}/api/jobOffers/fc2a51d9-9425-4c92-9bc3-08dd75f7e5f7/applications/fced9940-7b53-48c9-68a4-08dd75fa4f9c
 Accept: application/json
-Authorization: Bearer {{jobseeker}}
+Authorization: Bearer {{token}}
 Content-Type:  application/json
 
 {
@@ -111,9 +110,9 @@ Content-Type:  application/json
 }
 
 ###
-GET {{Host}}/api/jobOffers/bb9bd285-7d5f-49ac-3f1c-08dd743b948e/applications
+GET {{Host}}/api/jobOffers/fc2a51d9-9425-4c92-9bc3-08dd75f7e5f7/applications
 Accept: application/json
-Authorization: Bearer {{jobseeker}}
+Authorization: Bearer {{token}}
 
 ###
 POST{{Host}}/api/identity/refresh
@@ -140,4 +139,6 @@ Content-Type: application/json
   "token": "CfDJ8GMEA3E5+wJMncBsI0KeoyF09xxpAri/0vNPRve5rfOF2DHjJevmc1xrRCQLwePdEfvaiXmHed2FFYo0VwcAx5KlzA+NTshWTJreI5LC0dqI7vKm53emw/VVur0JrJcs8HRQmrH7aKYzuq5j1Fps2LsBWOYYJg+XQBuKuA6A4YTMo/AcWsThTJ2XbMK8+O1tM12979wqtRs8WOR2/IHLbUTFj3Q8Ls51erQZp5Z3x6PG",
   "newPassword": "Reza6692@"
 }
+###
+GET{{Host}}/api/test
 ###

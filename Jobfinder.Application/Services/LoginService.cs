@@ -26,7 +26,7 @@ public sealed class LoginService(
                     new RefreshToken(tokenProvider.GenerateRefreshToken(), jobSeeker.Data!.User);
                 if (!await refreshTokenRepository.AddTokenForUser(jobSeekerRefreshToken))
                     return Response<IdentityResponse>.Failure("Something wrong with token service");
-                var jobSeekerAccessToken = tokenProvider.GenerateJwtToken(jobSeeker.Data.Id, Roles.JobSeeker.ToString());
+                var jobSeekerAccessToken = tokenProvider.GenerateJwtToken(jobSeeker.Data.UserId, Roles.JobSeeker.ToString());
               
                 return Response<IdentityResponse>.Success(new IdentityResponse(jobSeekerAccessToken,
                     jobSeekerRefreshToken.Token));

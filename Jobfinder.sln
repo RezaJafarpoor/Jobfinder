@@ -10,6 +10,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Jobfinder.Infrastructure", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Jobfinder.Domain", "Jobfinder.Domain\Jobfinder.Domain.csproj", "{CAC2C478-3EA6-48A9-9F01-45E7B61AF91F}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infrastructure.UnitTest", "Infrastructure.UnitTest\Infrastructure.UnitTest.csproj", "{C79EE0A2-0E1F-412B-80C6-362B4B34D57F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -20,6 +22,7 @@ Global
 		{477ADB66-CA76-4484-9D89-92BF06E2B803} = {711CB66D-D025-4BF4-87CD-CEFD23B10CD1}
 		{E80F846F-F1C2-45FF-8B0A-422BEE278ABF} = {711CB66D-D025-4BF4-87CD-CEFD23B10CD1}
 		{CAC2C478-3EA6-48A9-9F01-45E7B61AF91F} = {711CB66D-D025-4BF4-87CD-CEFD23B10CD1}
+		{C79EE0A2-0E1F-412B-80C6-362B4B34D57F} = {711CB66D-D025-4BF4-87CD-CEFD23B10CD1}
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{9CAC474A-A628-4BA8-9066-8F5799F39D12}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -38,5 +41,9 @@ Global
 		{CAC2C478-3EA6-48A9-9F01-45E7B61AF91F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CAC2C478-3EA6-48A9-9F01-45E7B61AF91F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CAC2C478-3EA6-48A9-9F01-45E7B61AF91F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C79EE0A2-0E1F-412B-80C6-362B4B34D57F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C79EE0A2-0E1F-412B-80C6-362B4B34D57F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C79EE0A2-0E1F-412B-80C6-362B4B34D57F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C79EE0A2-0E1F-412B-80C6-362B4B34D57F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

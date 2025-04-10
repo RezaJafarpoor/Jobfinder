@@ -1,7 +1,6 @@
-﻿using Amazon.S3;
-using Amazon.S3.Model;
-using Jobfinder.Application.Commons.Identity;
+﻿using Jobfinder.Application.Commons.Identity;
 using Jobfinder.Application.Dtos.Cvs;
+using Microsoft.AspNetCore.Antiforgery;
 using Jobfinder.Application.Interfaces.Repositories;
 using Jobfinder.Application.Interfaces.UnitOfWorks;
 using Microsoft.AspNetCore.Mvc;
@@ -58,17 +57,7 @@ public static class CvEndpoints
             return Results.Ok(await repository.Test());
         });
 
-
-        root.MapPost("cvs/upload", async ([FromForm]IFormFile file, IMinioRepository repository) =>
-        {
-            if (file.Length == 0)
-                return Results.BadRequest("No file Uploaded");
-            await using var stream = file.OpenReadStream();
-            var response = await repository.UploadFileAsync(file.FileName, stream);
-            return response.HttpStatusCode is not HttpStatusCode.OK 
-                ? Results.BadRequest() :
-                Results.NoContent();
-        });
+        
 
     }
 }

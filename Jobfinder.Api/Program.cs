@@ -13,18 +13,13 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddInfrastructureServices(builder.Configuration);
 builder.Services.AddApplicationServices();
+
 var app = builder.Build();
 
-using (var scoped = app.Services.CreateScope())
-{
-    var s3 = scoped.ServiceProvider.GetRequiredService<IAmazonS3>();
-    var seed = new S3Seed(s3);
-    var result = await seed.CheckBucketAndCreate("job-seeker");
-    if (!result)
-        throw new Exception("S3 Bucket problem");
-}
 
 
+app.UseAuthentication();
+app.UseAuthorization();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
@@ -36,5 +31,6 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 app.AddEndpoints();
+
 app.Run();
 

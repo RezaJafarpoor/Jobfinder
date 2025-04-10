@@ -22,6 +22,8 @@ internal class IdentityRepository
 
     public async Task<Response<User>> LoginUser(User user, string password)
     {
+        if (user.Email is null)
+            return Response<User>.Failure("Email is not provided");
         var currentUser = await userManager.FindByEmailAsync(user.Email);
         if (currentUser is null)
             return Response<User>.Failure("user or password is wrong.");

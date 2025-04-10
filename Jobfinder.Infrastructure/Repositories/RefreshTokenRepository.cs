@@ -9,13 +9,13 @@ namespace Jobfinder.Infrastructure.Repositories;
 internal class RefreshTokenRepository
     (ApplicationDbContext dbContext) : IRefreshTokenRepository
 {
-    public async Task<bool> AddTokenForUser(RefreshToken token)
+    public async Task<bool> AddToken(RefreshToken token)
     {
         dbContext.Add(token);
         return await dbContext.SaveChangesAsync() > 0;
     }
 
-    public async Task<RefreshToken?> FindAsync(string token,CancellationToken cancellationToken)
+    public async Task<RefreshToken?> FindTokenAsync(string token,CancellationToken cancellationToken)
     {
         var result = await dbContext.RefreshTokens.Include(rt => rt.User)
             .FirstOrDefaultAsync(rt => rt.Token == token, cancellationToken);

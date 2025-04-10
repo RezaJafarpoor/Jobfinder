@@ -12,7 +12,7 @@ public class RefreshService
 
     public async Task<Response<IdentityResponse>> CheckRefreshToken(string oldToken, CancellationToken cancellationToken)
     {
-        var refreshToken = await repository.FindAsync(oldToken, cancellationToken);
+        var refreshToken = await repository.FindTokenAsync(oldToken, cancellationToken);
         if (refreshToken is null)
             return Response<IdentityResponse>.Failure("token is not valid");
         if (refreshToken.IsExpired())

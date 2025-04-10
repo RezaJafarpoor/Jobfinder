@@ -40,9 +40,6 @@ internal class CvRepository
         return cv;
     }
 
-    public async Task<bool> SaveChangesAsync(CancellationToken cancellationToken)
-        => await dbContext.SaveChangesAsync(cancellationToken) > 0;
-
     public async Task<Cv?> GetCvByUserId(Guid userId, CancellationToken cancellationToken)
     {
         var cv = await dbContext.Cvs.Include(c => c.JobSeeker)
@@ -50,4 +47,7 @@ internal class CvRepository
             .FirstOrDefaultAsync(cancellationToken);
         return cv;
     }
+
+    public async Task<bool> SaveChangesAsync(CancellationToken cancellationToken)
+        => await dbContext.SaveChangesAsync(cancellationToken) > 0;
 }

@@ -24,7 +24,7 @@ public sealed class LoginService(
                     return Response<IdentityResponse>.Failure("JobSeeker Does not exist");
                 var jobSeekerRefreshToken =
                     new RefreshToken(tokenProvider.GenerateRefreshToken(), jobSeeker.Data!.User);
-                if (!await refreshTokenRepository.AddTokenForUser(jobSeekerRefreshToken))
+                if (!await refreshTokenRepository.AddToken(jobSeekerRefreshToken))
                     return Response<IdentityResponse>.Failure("Something wrong with token service");
                 var jobSeekerAccessToken = tokenProvider.GenerateJwtToken(jobSeeker.Data.UserId, Roles.JobSeeker.ToString());
               
@@ -35,7 +35,7 @@ public sealed class LoginService(
                 if (!employer.IsSuccess)
                     return Response<IdentityResponse>.Failure("Employer Does Not Exist");
                 var refreshToken = new RefreshToken(tokenProvider.GenerateRefreshToken(), employer.Data!.User);
-                if (!await refreshTokenRepository.AddTokenForUser(refreshToken))
+                if (!await refreshTokenRepository.AddToken(refreshToken))
                     return Response<IdentityResponse>.Failure("Something wrong with Token Service");
                 var accessToken = tokenProvider.GenerateJwtToken(employer.Data!.UserId);
          

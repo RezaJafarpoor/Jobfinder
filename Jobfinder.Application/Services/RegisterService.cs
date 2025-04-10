@@ -27,7 +27,7 @@ public sealed class RegisterService
                 if (!result.IsSuccess)
                     return Response<IdentityResponse>.Failure(result.Errors);
                 var refreshToken = new RefreshToken(tokenProvider.GenerateRefreshToken(), result.Data!.User);
-                if (!await refreshTokenRepository.AddTokenForUser(refreshToken))
+                if (!await refreshTokenRepository.AddToken(refreshToken))
                     return Response<IdentityResponse>.Failure("Something Went wrong with token service");
                 var accessToken = tokenProvider.GenerateJwtToken(result.Data!.UserId, Roles.Employer.ToString());
                
@@ -40,7 +40,7 @@ public sealed class RegisterService
                 if (!result.IsSuccess)
                     return Response<IdentityResponse>.Failure(result.Errors);
                 var refreshToken = new RefreshToken(tokenProvider.GenerateRefreshToken(), result.Data!.User);
-                if (!await refreshTokenRepository.AddTokenForUser(refreshToken))
+                if (!await refreshTokenRepository.AddToken(refreshToken))
                     return Response<IdentityResponse>.Failure("Something Went wrong with token service");
                 var accessToken = tokenProvider.GenerateJwtToken(result.Data!.UserId, Roles.JobSeeker.ToString());
                 return Response<IdentityResponse>.Success(new IdentityResponse(AccessToken: accessToken,

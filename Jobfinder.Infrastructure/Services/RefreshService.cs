@@ -2,12 +2,13 @@
 using Jobfinder.Application.Dtos.Identity;
 using Jobfinder.Application.Interfaces.Identity;
 using Jobfinder.Application.Interfaces.Repositories;
+using Jobfinder.Application.Interfaces.Services;
 
-namespace Jobfinder.Application.Services;
+namespace Jobfinder.Infrastructure.Services;
 
 public class RefreshService
 (IRefreshTokenRepository repository,
-    ITokenProvider tokenProvider)
+    ITokenProvider tokenProvider) : IRefreshService
 {
 
     public async Task<Response<IdentityResponse>> CheckRefreshToken(string oldToken, CancellationToken cancellationToken)

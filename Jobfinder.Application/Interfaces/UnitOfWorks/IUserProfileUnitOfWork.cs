@@ -1,16 +1,13 @@
 ﻿using Jobfinder.Application.Commons;
-using Jobfinder.Application.Dtos.Identity;
 using Jobfinder.Application.Interfaces.Common;
+using Jobfinder.Application.Interfaces.Repositories;
 using Jobfinder.Domain.Entities;
+using Microsoft.AspNetCore.Identity;
 
 namespace Jobfinder.Application.Interfaces.UnitOfWorks;
 
 public interface IUserProfileUnitOfWork : IScopedService
 {
-    Task<Response<JobSeekerProfile>> RegisterAsJobSeeker(string  userEmail, string password);    
-    Task<Response<EmployerProfile>> RegisterAsEmployer(string  userEmail, string password);
-
-    Task<Response<@EmployerProfile>> LoginAsEmployer(string userEmail,  string password, CancellationToken cancellationToken);
-    Task<Response<@JobSeekerProfile>> LoginAsJobSeeker(string userEmail,  string password, CancellationToken cancellationToken);
+ 
 
 }

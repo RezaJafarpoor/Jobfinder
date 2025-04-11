@@ -1,5 +1,5 @@
 ﻿using Jobfinder.Application.Interfaces.Identity;
-using Jobfinder.Domain.Commons.Identity;
+using Jobfinder.Domain.Enums;
 using Jobfinder.Infrastructure.Identity;
 using Microsoft.Extensions.Options;
 using System.IdentityModel.Tokens.Jwt;

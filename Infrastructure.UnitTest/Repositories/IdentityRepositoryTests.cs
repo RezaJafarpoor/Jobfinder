@@ -1,5 +1,5 @@
-﻿using Jobfinder.Domain.Commons.Identity;
-using Jobfinder.Domain.Entities;
+﻿using Jobfinder.Domain.Entities;
+using Jobfinder.Domain.Enums;
 using Jobfinder.Infrastructure.Repositories;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;

@@ -1,5 +1,4 @@
 ﻿using Jobfinder.Application.Interfaces.Common;
-using Jobfinder.Domain.Commons.Identity;
 
 namespace Jobfinder.Application.Interfaces.Identity;
 

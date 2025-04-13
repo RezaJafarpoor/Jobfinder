@@ -19,7 +19,13 @@ internal class DomainEventsMiddleware
             .ToList();
         foreach (var domainEvent in events)
         {
-            await mediator.RaiseEvent(domainEvent);
+            await mediator.RaiseEvent((dynamic)domainEvent);
         }
+
+        foreach (var entity in dbContext.ChangeTracker.Entries<IHasDomainEvents>())
+        {
+            entity.Entity.ClearDomainEvents();
+        }
+        
     }
 }

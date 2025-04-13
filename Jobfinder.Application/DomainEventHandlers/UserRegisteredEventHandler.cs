@@ -19,9 +19,11 @@ public class UserRegisteredEventHandler
                     break;
                case Roles.JobSeeker:
                     await jobSeekerProfileRepository.CreateProfile(new JobSeekerProfile(domainEvent.User,null,null));
+                    await jobSeekerProfileRepository.SaveChangesAsync(CancellationToken.None);
                     break;
                case Roles.Employer:
                     await employerProfileRepository.CreateProfile(new EmployerProfile(domainEvent.User));
+                    await employerProfileRepository.SaveChangesAsync(CancellationToken.None);
                     break;
                default:
                     throw new ArgumentOutOfRangeException();

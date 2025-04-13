@@ -10,7 +10,7 @@ using Microsoft.AspNetCore.Identity;
 
 namespace Jobfinder.Infrastructure.Services;
 
-public sealed class RegisterService
+internal sealed class RegisterService
         (ITokenProvider tokenProvider,
         IRefreshTokenRepository refreshTokenRepository,
         UserManager<User> userManager) : IRegisterService
@@ -38,8 +38,8 @@ public sealed class RegisterService
         await refreshTokenRepository.AddToken(refreshToken);
         if (!await refreshTokenRepository.SaveChanges(cancellationToken))
             return Response<IdentityResponse>.Failure("Something went wrong!");
-        var accessToken = tokenProvider.GenerateJwtToken(user.Id, user.UserRole.ToString());
         user.AddDomainEvent(new UserRegisteredEvent(user));
+        var accessToken = tokenProvider.GenerateJwtToken(user.Id, user.UserRole.ToString());
         var response = new IdentityResponse(AccessToken: accessToken, RefreshToken: refreshToken.Token);
          return Response<IdentityResponse>.Success(response); 
     }

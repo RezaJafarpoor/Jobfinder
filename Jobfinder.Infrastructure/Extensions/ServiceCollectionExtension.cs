@@ -42,7 +42,8 @@ public static class ServiceCollectionExtension
                     services.AddScoped(iFace, type);
             }
         }
-   
+
+        services.AddScoped<DomainEventsMiddleware>();
         services.AddPersistence(configuration);
         services.AddIdentity(configuration);
         services.AddEmail(configuration);

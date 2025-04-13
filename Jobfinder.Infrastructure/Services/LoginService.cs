@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Identity;
 
 namespace Jobfinder.Infrastructure.Services;
 
-public sealed class LoginService(
+internal sealed class LoginService(
     ITokenProvider tokenProvider,
     IRefreshTokenRepository refreshTokenRepository,
     UserManager<User> userManager,

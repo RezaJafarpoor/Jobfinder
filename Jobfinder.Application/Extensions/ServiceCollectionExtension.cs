@@ -1,9 +1,8 @@
-﻿using Jobfinder.Application.DomainEventHandlers;
-using Jobfinder.Application.Interfaces.Common;
+﻿using Amazon.S3.Model;
+using Jobfinder.Application.DomainEventHandlers;
+using Jobfinder.Application.Notification;
 using Jobfinder.Application.Services;
-using Jobfinder.Domain.Entities;
 using Jobfinder.Domain.Events;
-using Jobfinder.Domain.Interfaces;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Jobfinder.Application.Extensions;
@@ -14,6 +13,14 @@ public static class ServiceCollectionExtension
     {
         services.AddScoped<JobSeekerService>();
         services.AddScoped<EmployerService>();
-        services.AddScoped<IDomainEventHandler<UserRegisteredEvent>, UserRegisteredEventHandler>();
+        AddPubSubMediator(services);
+      
+    }
+
+    private static void AddPubSubMediator(this IServiceCollection services)
+    {
+        services.AddScoped<INotificationHandler<UserRegisteredEvent>, UserRegisteredEventHandler>();
+        services.AddScoped<NotificationMediator>();
+        
     }
 }

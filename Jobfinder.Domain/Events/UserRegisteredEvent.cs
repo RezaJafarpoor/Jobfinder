@@ -3,7 +3,8 @@ using Jobfinder.Domain.Interfaces;
 
 namespace Jobfinder.Domain.Events;
 
-public record UserRegisteredEvent (User User): IDomainEvent
+public class UserRegisteredEvent (User user) : INotification
 {
+    public User User { get; init; } = user;
     
 }

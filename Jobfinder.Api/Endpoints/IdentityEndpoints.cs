@@ -1,4 +1,5 @@
 ﻿using  Jobfinder.Application.Dtos.Identity;
+using Jobfinder.Application.Interfaces.Services;
 using Jobfinder.Application.Services;
 using Jobfinder.Infrastructure.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -12,7 +13,7 @@ public static class IdentityEndpoints
         var root = builder.MapGroup("api/identity");
 
         root.MapPost("register",
-            async ([FromBody] RegisterDto register, RegisterService registerService, CancellationToken cancellationToken) =>
+            async ([FromBody] RegisterDto register, IRegisterService registerService, CancellationToken cancellationToken) =>
             {
                 var result = await registerService.Register(register, cancellationToken);
                 return result.Errors.Count == 0 ? 
@@ -21,7 +22,7 @@ public static class IdentityEndpoints
             });
         
 
-        root.MapPost("login", async ([FromBody]LoginDto loginDto, LoginService loginService, CancellationToken cancellationToken) =>
+        root.MapPost("login", async ([FromBody]LoginDto loginDto, ILoginService loginService, CancellationToken cancellationToken) =>
         {
             var result = await loginService.LoginWithPassword(loginDto, cancellationToken);
            return  result.Errors.Count == 0 ?
@@ -29,7 +30,7 @@ public static class IdentityEndpoints
                Results.BadRequest(result.Errors);
         });
 
-        root.MapPost("refresh", async ([FromBody] string token, RefreshService service,
+        root.MapPost("refresh", async ([FromBody] string token, IRefreshService service,
             CancellationToken cancellationToken) =>
         {
             var result = await service.CheckRefreshToken(token, cancellationToken);
@@ -39,7 +40,7 @@ public static class IdentityEndpoints
         });
 
 
-        root.MapPost("forget", async ([FromBody] ForgetPasswordDto dto, ResetPasswordService service,
+        root.MapPost("forget", async ([FromBody] ForgetPasswordDto dto, IResetPasswordService service,
             CancellationToken cancellationToken) =>
         {
             var result = await service.ForgetPassword(dto.Email, cancellationToken);
@@ -48,7 +49,7 @@ public static class IdentityEndpoints
                 Results.BadRequest(result.Errors);
         });
 
-        root.MapPost("reset", async ([FromBody]ResetPasswordDto dto,ResetPasswordService service,
+        root.MapPost("reset", async ([FromBody]ResetPasswordDto dto,IResetPasswordService service,
             CancellationToken cancellationToken) =>
         {
             var result = await service.ResetPassword(dto.Email, dto.NewPassword, dto.Token);

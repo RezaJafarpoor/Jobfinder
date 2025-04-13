@@ -6,7 +6,7 @@ using System.Threading.Channels;
 
 namespace Jobfinder.Infrastructure.Services;
 
-public class ResetPasswordService
+internal class ResetPasswordService
  (UserManager<User> userManager,
      Channel<EmailContent> channel) : IResetPasswordService
 {

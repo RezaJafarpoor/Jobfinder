@@ -5,7 +5,7 @@ namespace Jobfinder.Application.Interfaces.Repositories;
 
 public interface IRefreshTokenRepository: IScopedService
 {
-    Task<bool> AddToken( RefreshToken token);
+    Task AddToken( RefreshToken token);
 
     Task<RefreshToken?> FindTokenAsync(string token,CancellationToken cancellationToken);
     Task<bool> SaveChanges(CancellationToken cancellationToken);

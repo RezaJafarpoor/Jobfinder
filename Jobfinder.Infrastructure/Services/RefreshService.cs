@@ -6,7 +6,7 @@ using Jobfinder.Application.Interfaces.Services;
 
 namespace Jobfinder.Infrastructure.Services;
 
-public class RefreshService
+internal class RefreshService
 (IRefreshTokenRepository repository,
     ITokenProvider tokenProvider) : IRefreshService
 {

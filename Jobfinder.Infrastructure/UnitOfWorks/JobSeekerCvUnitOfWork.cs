@@ -6,6 +6,7 @@ using Jobfinder.Domain.Entities;
 using Jobfinder.Infrastructure.Persistence;
 using Jobfinder.Infrastructure.Persistence.SqlServer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage;
 
 namespace Jobfinder.Infrastructure.UnitOfWorks;
 
@@ -14,6 +15,7 @@ internal class JobSeekerCvUnitOfWork(
     ICvRepository cvRepository,
     ApplicationDbContext dbContext) : IJobSeekerCvUnitOfWork
 {
+    private  IDbContextTransaction _transaction;
     public async Task<Response<string>> CreateCvAndUpdateUsername(CreateCvDto cvDto, Guid userId,CancellationToken cancellationToken)
     {
         await using var transaction = await dbContext.Database.BeginTransactionAsync(cancellationToken);
@@ -38,4 +40,25 @@ internal class JobSeekerCvUnitOfWork(
             return Response<string>.Failure(e.Message);
         }
     }
+
+    public async Task BeginTransaction()
+    {
+         _transaction = await dbContext.Database.BeginTransactionAsync();
+    }
+
+    public async Task CommitAsync() 
+        => await _transaction.CommitAsync();
+
+    public async Task RollbackAsync()
+        => await _transaction.RollbackAsync();
+
+    public async Task SaveChangesAsync()
+        => await dbContext.SaveChangesAsync();
+
+    public void Dispose()
+    {
+        _transaction.Dispose();
+        dbContext.Dispose();
+    }
+    
 }

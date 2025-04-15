@@ -5,53 +5,42 @@ using Jobfinder.Application.Interfaces.UnitOfWorks;
 using Jobfinder.Domain.Entities;
 using Jobfinder.Infrastructure.Persistence;
 using Jobfinder.Infrastructure.Persistence.SqlServer;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage;
 
 namespace Jobfinder.Infrastructure.UnitOfWorks;
 
-internal class JobOfferApplicationsUnitOfWork
-    (IJobOfferRepository jobOfferRepository,
-        IJobSeekerProfileRepository jobSeekerRepository,
-        IJobApplicationRepository jobApplicationRepository,
-         ApplicationDbContext dbContext) : IJobOfferApplicationsUnitOfWork
+internal class JobOfferApplicationsUnitOfWork : IJobOfferApplicationsUnitOfWork
 {
-    public async Task<Response<string>> ApplyToJob(CreateJobApplicationDto dto, CancellationToken cancellationToken)
+    private readonly ApplicationDbContext _dbContext;
+    private IDbContextTransaction _transaction;
+    public JobOfferApplicationsUnitOfWork(IJobApplicationRepository jobApplicationRepository, IJobSeekerProfileRepository jobSeekerProfileRepository,
+        ApplicationDbContext dbContext)
     {
-        await using var transaction = await dbContext.Database.BeginTransactionAsync(cancellationToken);
-        try
-        {
-            var jobOffer = await jobOfferRepository.GetJobOfferById(dto.JobOfferId,cancellationToken);
-            if (jobOffer is null)
-                return Response<string>.Failure("Job does not exist");
-            var jobSeeker = await jobSeekerRepository.GetProfileByUserId(dto.JobSeekerProfileId, cancellationToken);
-            if (jobSeeker is null)
-                return Response<string>.Failure("User profile does not exist");
-            var application = new JobApplication(jobSeeker, jobOffer);
-            await jobApplicationRepository.AddJobApplication(application);
-            await dbContext.SaveChangesAsync(cancellationToken);
-            jobOffer.AddApplication(application);
-            await jobOfferRepository.UpdateJobOffer(jobOffer);
-            await dbContext.SaveChangesAsync(cancellationToken);
-            await transaction.CommitAsync(cancellationToken);
-            return Response<string>.Success("Applied successfully");
-        }
-        catch (Exception e)
-        {
-            await transaction.RollbackAsync(cancellationToken);
-            return Response<string>.Failure(e.Message);
-        }
+        _dbContext = dbContext;
+        JobApplicationRepository = jobApplicationRepository;
+        JobSeekerProfileRepository = jobSeekerProfileRepository;
     }
 
-    public async Task<Response<string>> CancelApplicationToJob(Guid jobId, Guid applicationId, Guid jobSeekerId)
-    {
-        var result = await jobApplicationRepository.DeleteJobApplicationByJobSeekerId(jobId, applicationId, jobSeekerId);
-        return result >= 1 ? 
-            Response<string>.Success() :
-            Response<string>.Failure("Something went wrong");
-    }
+    public IJobApplicationRepository JobApplicationRepository { get; set; }
+    public IJobSeekerProfileRepository JobSeekerProfileRepository { get; set; }
 
-    public async Task<Response<List<Cv?>>> GetApplicationsForJob(Guid jobOfferId, CancellationToken cancellationToken)
+
+    public async Task BeginTransactionAsync()
+        => _transaction = await _dbContext.Database.BeginTransactionAsync();
+
+
+    public async Task CommitAsync()
+        => await _transaction.CommitAsync();
+
+
+    public async Task RollbackAsync()
+        => await _transaction.RollbackAsync();
+
+    public async Task SaveChangesAsync()
+        => await _dbContext.SaveChangesAsync();
+    public void Dispose()
     {
-        var cvs = await jobApplicationRepository.GetCvsForJobOffer(jobOfferId, cancellationToken);
-        return cvs.Count == 0 ? Response<List<Cv?>>.Failure("Job offer does not exist") : Response<List<Cv?>>.Success(cvs);
+        _transaction.Dispose();
     }
 }

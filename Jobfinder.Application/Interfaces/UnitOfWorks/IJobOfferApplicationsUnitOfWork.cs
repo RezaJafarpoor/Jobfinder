@@ -1,13 +1,14 @@
-﻿using Jobfinder.Application.Commons;
-using Jobfinder.Application.Dtos.JobApplication;
-using Jobfinder.Application.Interfaces.Common;
-using Jobfinder.Domain.Entities;
+﻿using Jobfinder.Application.Interfaces.Common;
+using Jobfinder.Application.Interfaces.Repositories;
 
 namespace Jobfinder.Application.Interfaces.UnitOfWorks;
 
-public interface IJobOfferApplicationsUnitOfWork : IScopedService
+public interface IJobOfferApplicationsUnitOfWork : IScopedService, IDisposable
 {
-    Task<Response<string>> ApplyToJob(CreateJobApplicationDto dto,CancellationToken cancellationToken);
-    Task<Response<string>> CancelApplicationToJob(Guid jobId, Guid applicationId, Guid jobSeekerId);
-    Task<Response<List<Cv?>>> GetApplicationsForJob(Guid jobOfferId,CancellationToken cancellationToken);
+    public IJobApplicationRepository JobApplicationRepository { get; set; }
+    public IJobSeekerProfileRepository JobSeekerProfileRepository { get; set; }
+    Task BeginTransactionAsync();
+    Task CommitAsync();
+    Task RollbackAsync();
+    Task SaveChangesAsync();
 }

@@ -8,17 +8,30 @@ using Jobfinder.Domain.Entities;
 
 namespace Jobfinder.Application.Services;
 
-public sealed class JobSeekerService (ICvRepository cvRepository, IJobSeekerProfileRepository jobSeekerRepository,
-    IJobOfferApplicationsUnitOfWork jobOfferApplicationsUnitOfWork)
+public sealed class JobSeekerService (IJobOfferApplicationsUnitOfWork jobOfferApplicationsUnitOfWork,
+    IJobSeekerCvUnitOfWork unitOfWork)
 {
     public async Task<Response<string>> CreateCv(CreateCvDto cvDto, Guid jobSeekerId, CancellationToken cancellationToken)
     {
-        var jobSeeker = await jobSeekerRepository.GetProfileByUserId(jobSeekerId, cancellationToken);
+        var jobSeeker = await unitOfWork.JobSeekerProfileRepository.GetProfileByUserId(jobSeekerId, cancellationToken);
         if (jobSeeker is null)
             return Response<string>.Failure("Job seeker does not exist");
         var cv = new Cv(cvDto.Location, cvDto.BirthDay, cvDto.MinimumSalary, cvDto.MaximumSalary, cvDto.Status, jobSeeker);
-        await cvRepository.CreateCv(cv);
-        if (await cvRepository.SaveChangesAsync(cancellationToken))
+        await unitOfWork.CvRepository.CreateCv(cv);
+        if (await unitOfWork.SaveChangesAsync())
+            return Response<string>.Success("Cv created");
+        return Response<string>.Failure("Something went wrong");
+    }
+
+    public async Task<Response<string>> CreateCvAndUpdateUsername(CreateCvDto cvDto, Guid userId, CancellationToken cancellationToken)
+    {
+        await unitOfWork.BeginTransaction();
+        var profile = await unitOfWork.JobSeekerProfileRepository.GetProfileByUserId(userId, cancellationToken);
+        if (profile is null)
+            return Response<string>.Failure("Job seeker does not exist");
+        var cv = new Cv(cvDto.Location, cvDto.BirthDay, cvDto.MinimumSalary, cvDto.MaximumSalary, cvDto.Status, profile);
+        await unitOfWork.CvRepository.CreateCv(cv);
+        if (await unitOfWork.SaveChangesAsync())
             return Response<string>.Success("Cv created");
         return Response<string>.Failure("Something went wrong");
     }
@@ -26,18 +39,13 @@ public sealed class JobSeekerService (ICvRepository cvRepository, IJobSeekerProf
 
     public async Task<Response<string>> ApplyToJob(CreateJobApplicationDto dto, CancellationToken cancellationToken)
     {
-        var result = await jobOfferApplicationsUnitOfWork.ApplyToJob(dto, cancellationToken);
-        return result.IsSuccess ?
-            Response<string>.Success() :
-            Response<string>.Failure(result.Errors);
+        throw new NotImplementedException();
     }
+    
 
     public async Task<Response<string>> CancelApplication(Guid jobId, Guid applicationId, Guid jobSeekerId)
     {
-        var result = await jobOfferApplicationsUnitOfWork.CancelApplicationToJob(jobId, applicationId, jobSeekerId);
-        return result.IsSuccess ?
-            Response<string>.Success() :
-            Response<string>.Failure(result.Errors);
+        throw new NotImplementedException();
     }
     
 }

@@ -3,12 +3,11 @@ using Jobfinder.Application.Interfaces.Repositories;
 
 namespace Jobfinder.Application.Interfaces.UnitOfWorks;
 
-public interface IJobOfferApplicationsUnitOfWork : IScopedService, IDisposable
+public interface IJobOfferApplicationsUnitOfWork : IScopedService
 {
     public IJobApplicationRepository JobApplicationRepository { get; set; }
     public IJobSeekerProfileRepository JobSeekerProfileRepository { get; set; }
-    Task BeginTransactionAsync();
-    Task CommitAsync();
-    Task RollbackAsync();
-    Task SaveChangesAsync();
+    public IJobOfferRepository JobOfferRepository { get; set; }
+   
+    Task<bool> SaveChangesAsync();
 }

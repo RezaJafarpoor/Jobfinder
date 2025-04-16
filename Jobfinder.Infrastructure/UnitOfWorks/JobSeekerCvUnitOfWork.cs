@@ -10,40 +10,19 @@ using Microsoft.EntityFrameworkCore.Storage;
 
 namespace Jobfinder.Infrastructure.UnitOfWorks;
 
-internal class JobSeekerCvUnitOfWork : IJobSeekerCvUnitOfWork
+internal class JobSeekerCvUnitOfWork(
+    IJobSeekerProfileRepository jobSeekerProfileRepository,
+    ICvRepository cvRepository,
+    ApplicationDbContext dbContext)
+    : IJobSeekerCvUnitOfWork
 {
-    private readonly ApplicationDbContext _dbContext;
-    private  IDbContextTransaction _transaction;
+    public IJobSeekerProfileRepository JobSeekerProfileRepository { get; set; } = jobSeekerProfileRepository;
+    public ICvRepository CvRepository { get; set; } = cvRepository;
 
-    public JobSeekerCvUnitOfWork(IJobSeekerProfileRepository jobSeekerProfileRepository, ICvRepository cvRepository,  ApplicationDbContext dbContext)
-    {
-        _dbContext = dbContext;
-        JobSeekerProfileRepository = jobSeekerProfileRepository;
-        CvRepository = cvRepository;
-    }
-
-    public IJobSeekerProfileRepository JobSeekerProfileRepository { get; set; }
-    public ICvRepository CvRepository { get; set; }
-    
-       
-
-    public async Task BeginTransaction()
-    {
-         _transaction = await _dbContext.Database.BeginTransactionAsync();
-    }
-
-    public async Task CommitAsync() 
-        => await _transaction.CommitAsync();
-
-    public async Task RollbackAsync()
-        => await _transaction.RollbackAsync();
 
     public async Task<bool> SaveChangesAsync()
-        => await _dbContext.SaveChangesAsync() > 0;
+        => await dbContext.SaveChangesAsync() > 0;
 
-    public void Dispose()
-    {
-        _transaction.Dispose();
-    }
+   
     
 }

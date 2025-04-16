@@ -6,15 +6,13 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Jobfinder.Application.Interfaces.UnitOfWorks;
 
-public interface IJobSeekerCvUnitOfWork : IScopedService, IDisposable
+public interface IJobSeekerCvUnitOfWork : IScopedService
 {
     public IJobSeekerProfileRepository JobSeekerProfileRepository { get; set; }
     public ICvRepository CvRepository { get; set; }
     
  
 
-    Task BeginTransaction();
-    Task CommitAsync();
-    Task RollbackAsync();
+
     Task<bool> SaveChangesAsync();
 }

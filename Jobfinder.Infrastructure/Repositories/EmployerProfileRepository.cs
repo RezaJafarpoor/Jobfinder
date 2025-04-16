@@ -23,9 +23,6 @@ internal class EmployerProfileRepository
         return profiles;
     }
 
-    public async Task<bool> SaveChangesAsync(CancellationToken cancellationToken)
-        => await dbContext.SaveChangesAsync(cancellationToken) > 0;
-
     public async Task<EmployerProfile?> GetProfileById(Guid userId, CancellationToken cancellationToken)
     {      
         var profile = await dbContext.EmployerProfiles
@@ -40,4 +37,7 @@ internal class EmployerProfileRepository
             .FirstOrDefaultAsync(ep => ep.UserId == userId, cancellationToken);
         return profile;
     }
+
+    public async Task<bool> SaveChangesAsync(CancellationToken cancellationToken)
+        => await dbContext.SaveChangesAsync(cancellationToken) > 0;
 }

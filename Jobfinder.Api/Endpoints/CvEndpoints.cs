@@ -3,6 +3,7 @@ using Jobfinder.Application.Dtos.Cvs;
 using Microsoft.AspNetCore.Antiforgery;
 using Jobfinder.Application.Interfaces.Repositories;
 using Jobfinder.Application.Interfaces.UnitOfWorks;
+using Jobfinder.Application.Services;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
 using System.Security.Claims;
@@ -18,14 +19,14 @@ public static class CvEndpoints
        
 
     root.MapPost("cvs",
-            async ([FromBody] CreateCvDto createCvDto, IJobSeekerCvUnitOfWork unitOfWork, HttpContext context,
+            async ([FromBody] CreateCvDto createCvDto, JobSeekerService service, HttpContext context,
                     CancellationToken cancellationToken)
                 =>
             {
                 var subClaim = context.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
                 if (Guid.TryParse(subClaim, out Guid userId))
                 {
-                    var result = await unitOfWork.CreateCvAndUpdateUsername(createCvDto, userId, cancellationToken);
+                    var result = await service.CreateCvAndUpdateUsername(createCvDto, userId, cancellationToken);
                     return result.IsSuccess ? Results.Ok(result.Data) : Results.BadRequest();
                 }
 
@@ -51,13 +52,6 @@ public static class CvEndpoints
 
             return Results.BadRequest();
         });
-
-        root.MapGet("test", async (IJobApplicationRepository repository) =>
-        {
-            return Results.Ok(await repository.Test());
-        });
-
         
-
     }
 }

@@ -30,6 +30,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+app.AddInfrastructureMiddleware();
 app.AddEndpoints();
 
 app.Run();

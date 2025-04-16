@@ -33,8 +33,12 @@ internal class JobOfferRepository
         return jobOffers;
     }
 
+    public Task DeleteJobOffer(JobOffer jobOffer)
+    {
+        dbContext.Remove(jobOffer);
+        return Task.CompletedTask;
+    }
+
     public async Task<bool> SaveChangesAsync(CancellationToken cancellationToken)
         => await dbContext.SaveChangesAsync(cancellationToken) > 0;
-
-   
 }

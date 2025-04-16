@@ -3,14 +3,16 @@ using Jobfinder.Application.Commons;
 using Jobfinder.Application.Commons.Identity;
 using Jobfinder.Application.Interfaces.Common;
 using Jobfinder.Application.Interfaces.Repositories;
-using Jobfinder.Domain.Commons.Identity;
 using Jobfinder.Domain.Entities;
+using Jobfinder.Domain.Enums;
 using Jobfinder.Infrastructure.Email;
 using Jobfinder.Infrastructure.Identity;
+using Jobfinder.Infrastructure.Middlewares;
 using Jobfinder.Infrastructure.Persistence.Minio;
 using Jobfinder.Infrastructure.Persistence.SqlServer;
 using Jobfinder.Infrastructure.Repositories;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -40,7 +42,8 @@ public static class ServiceCollectionExtension
                     services.AddScoped(iFace, type);
             }
         }
-   
+
+        services.AddScoped<DomainEventsMiddleware>();
         services.AddPersistence(configuration);
         services.AddIdentity(configuration);
         services.AddEmail(configuration);
@@ -128,7 +131,7 @@ public static class ServiceCollectionExtension
     }
 
 
-    public static void AddEmail(this IServiceCollection services, IConfiguration configuration)
+    private static void AddEmail(this IServiceCollection services, IConfiguration configuration)
     {
         services.Configure<EmailConfig>(configuration.GetSection("EmailConfig"));
         services.AddSingleton<IEmailService, EmailService>();
@@ -140,5 +143,10 @@ public static class ServiceCollectionExtension
                 SingleWriter = false
             }));
         services.AddHostedService<EmailBackgroundService>();
+    }
+
+    public static void AddInfrastructureMiddleware(this WebApplication app)
+    {
+        app.UseMiddleware<DomainEventsMiddleware>();
     }
 }

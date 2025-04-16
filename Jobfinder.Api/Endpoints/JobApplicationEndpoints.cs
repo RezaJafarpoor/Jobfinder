@@ -62,7 +62,7 @@ public static class JobApplicationEndpoints
             Guid.TryParse(applicationId, out var appId);
             var jobSeeker = context.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             Guid.TryParse(jobSeeker, out var userId);
-            var result = await service.CancelApplication(jobId, appId, userId);
+            var result = await service.CancelApplication(jobId, appId, userId, cancellationToken);
             return result.IsSuccess ? 
                 Results.NoContent() : 
                 Results.BadRequest(result.Errors);

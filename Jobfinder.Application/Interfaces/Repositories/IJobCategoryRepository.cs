@@ -5,8 +5,8 @@ namespace Jobfinder.Application.Interfaces.Repositories;
 
 public interface IJobCategoryRepository : IScopedService
 {
-    Task<bool> AddCategory(JobCategory jobCategory, CancellationToken cancellationToken);
-    Task<bool> DeleteCategoryById(Guid id);
+    Task AddCategory(JobCategory jobCategory);
+    Task DeleteCategoryById(JobCategory category);
     Task UpdateCategory(JobCategory jobCategory);
     Task<JobCategory?> GetCategoryById(Guid categoryId, CancellationToken cancellationToken);
     Task<List<JobCategory>?> GetCategories(CancellationToken cancellationToken);

@@ -1,13 +1,14 @@
 ﻿using Jobfinder.Application.Commons;
+using Jobfinder.Application.Interfaces.Services;
 using Jobfinder.Domain.Entities;
 using Microsoft.AspNetCore.Identity;
 using System.Threading.Channels;
 
-namespace Jobfinder.Application.Services;
+namespace Jobfinder.Infrastructure.Services;
 
-public class ResetPasswordService
+internal class ResetPasswordService
  (UserManager<User> userManager,
-     Channel<EmailContent> channel)
+     Channel<EmailContent> channel) : IResetPasswordService
 {
 
     public async Task<Response<string>> ForgetPassword(string email, CancellationToken cancellationToken)

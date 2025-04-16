@@ -28,7 +28,7 @@ internal class JobSeekerProfileRepository
         return Task.CompletedTask;
     }
 
-    public async Task<List<JobSeekerProfile>> GetJobSeekers(CancellationToken cancellationToken)
+    public async Task<List<JobSeekerProfile>?> GetJobSeekers(CancellationToken cancellationToken)
     {
         var jobSeekers = await dbContext.JobSeekerProfiles.AsNoTracking().ToListAsync(cancellationToken);
         return jobSeekers;

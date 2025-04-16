@@ -1,4 +1,4 @@
-﻿namespace Jobfinder.Domain.Commons.Identity;
+﻿namespace Jobfinder.Domain.Enums;
 
 public enum Roles
 {

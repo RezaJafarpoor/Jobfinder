@@ -4,10 +4,8 @@ using Jobfinder.Application.Dtos.Cvs;
 using Jobfinder.Application.Dtos.JobApplication;
 using Jobfinder.Application.Dtos.JobOffer;
 using Jobfinder.Application.Interfaces.Repositories;
-using Jobfinder.Application.Interfaces.UnitOfWorks;
 using Jobfinder.Domain.Entities;
 using Jobfinder.Domain.Enums;
-using System.Text;
 using System.Threading.Channels;
 
 namespace Jobfinder.Application.Services;

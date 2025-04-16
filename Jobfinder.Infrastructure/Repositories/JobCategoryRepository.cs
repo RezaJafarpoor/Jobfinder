@@ -10,24 +10,16 @@ internal class JobCategoryRepository
     (ApplicationDbContext dbContext)
     : IJobCategoryRepository
 {
-    public async Task<bool> AddCategory(JobCategory jobCategory, CancellationToken cancellationToken)
+    public  Task AddCategory(JobCategory jobCategory)
     {
-        var category =
-            await dbContext.JobCategories.FirstOrDefaultAsync(jc => jc.Category == jobCategory.Category,
-                cancellationToken);
-        if (category is not null)
-            return false;
         dbContext.Add(jobCategory);
-        return true;
+        return Task.CompletedTask;
     }
 
-    public async Task<bool> DeleteCategoryById(Guid id)
+    public  Task DeleteCategoryById(JobCategory category)
     {
-        var category = await dbContext.JobCategories.FirstOrDefaultAsync(jc => jc.Id == id);
-        if (category is null)
-            return false;
         dbContext.JobCategories.Remove(category);
-        return true;
+        return Task.CompletedTask;
     }
     
     public Task UpdateCategory(JobCategory jobCategory)

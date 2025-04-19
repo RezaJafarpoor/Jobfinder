@@ -1,5 +1,4 @@
-﻿using Jobfinder.Application.Interfaces.Common;
-using Jobfinder.Application.Interfaces.Repositories;
+﻿using Jobfinder.Application.Interfaces.Repositories;
 using Jobfinder.Application.Notification;
 using Jobfinder.Domain.Entities;
 using Jobfinder.Domain.Enums;
@@ -13,6 +12,7 @@ public class UserRegisteredEventHandler
 {
      public async Task Handle(UserRegisteredEvent domainEvent)
      {
+          
           switch (domainEvent.User.UserRole)
           {
                case Roles.Admin:

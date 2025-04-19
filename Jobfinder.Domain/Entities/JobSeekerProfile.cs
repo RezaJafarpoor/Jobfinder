@@ -7,10 +7,14 @@ public class JobSeekerProfile
     public Guid Id { get; set; }
     public string Firstname { get; set; } = string.Empty;
     public string Lastname { get; set; } = string.Empty;
+
     [JsonIgnore]
     public Cv? JobSeekerCv { get; set; }
+
     [JsonIgnore]
     public User User { get; set; } = new();
+
+    public string PictureUrl { get; set; } = string.Empty;
     public Guid UserId { get; set; }
     public List<JobApplication> JobApplications { get; set; } = [];
 

@@ -2,6 +2,7 @@
 using Amazon.S3;
 using Jobfinder.Api.Extensions;
 using Jobfinder.Application.Extensions;
+using Jobfinder.Domain.Interfaces;
 using Jobfinder.Infrastructure.Extensions;
 using Jobfinder.Infrastructure.Seeds;
 
@@ -16,7 +17,11 @@ builder.Services.AddApplicationServices();
 
 var app = builder.Build();
 
-
+using (var scope = app.Services.CreateScope())
+{
+    var seeder = scope.ServiceProvider.GetRequiredService<ISeeder>();
+    await seeder.Seed();
+}
 
 app.UseAuthentication();
 app.UseAuthorization();

@@ -23,6 +23,5 @@ public static class CompanyEndpoints
         
         })
         .RequireAuthorization(AuthPolicies.EmployerOnly.ToString());
-
     }
 }

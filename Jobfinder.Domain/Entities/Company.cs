@@ -11,13 +11,13 @@ public class Company
     public string CompanyName { get; set; } = string.Empty;
     public string WebsiteAddress { get; set; } = string.Empty;
     public Location Location { get; set; } = new();
+    public string PictureUrl { get; set; } = string.Empty;
     public int SizeOfCompany { get; set; }
     public string Description { get; set; } = string.Empty;
     [JsonIgnore] public EmployerProfile Owner { get; set; } = null!;
     public Guid OwnerId { get; set; }
 
     public Company() {}
-
     public Company(EmployerProfile profile,string companyName,string websiteAddress, Location location, int sizeOfCompany, string description)
     {
         Owner = profile;

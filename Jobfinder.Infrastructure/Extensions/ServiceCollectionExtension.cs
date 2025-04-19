@@ -5,12 +5,14 @@ using Jobfinder.Application.Interfaces.Common;
 using Jobfinder.Application.Interfaces.Repositories;
 using Jobfinder.Domain.Entities;
 using Jobfinder.Domain.Enums;
+using Jobfinder.Domain.Interfaces;
 using Jobfinder.Infrastructure.Email;
 using Jobfinder.Infrastructure.Identity;
 using Jobfinder.Infrastructure.Middlewares;
 using Jobfinder.Infrastructure.Persistence.Minio;
 using Jobfinder.Infrastructure.Persistence.SqlServer;
 using Jobfinder.Infrastructure.Repositories;
+using Jobfinder.Infrastructure.Seeds;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
@@ -47,7 +49,8 @@ public static class ServiceCollectionExtension
         services.AddPersistence(configuration);
         services.AddIdentity(configuration);
         services.AddEmail(configuration);
-       
+        services.AddScoped<ISeeder,DbSeed>();
+
     }
     
     

@@ -8,7 +8,7 @@ public interface IJobOfferRepository : IScopedService
     Task CreateJobOffer(JobOffer jobOffer);
     Task UpdateJobOffer(JobOffer jobOffer);
     Task<JobOffer?> GetJobOfferById(Guid jobOfferId, CancellationToken cancellationToken);
-    Task<List<JobOffer>?> GetJobOffers(CancellationToken cancellationToken);
+    Task<List<JobOffer>?> GetJobOffers(int pageNumber,CancellationToken cancellationToken);
     Task<bool> SaveChangesAsync(CancellationToken cancellationToken);
     Task DeleteJobOffer(JobOffer jobOffer);
 }

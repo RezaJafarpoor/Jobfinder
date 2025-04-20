@@ -23,10 +23,13 @@ internal class CvRepository
         return Task.CompletedTask;
     }
 
-    public async Task<List<Cv>?> GetCvs(CancellationToken cancellationToken)
+    public async Task<List<Cv>?> GetCvs(int pageNumber, CancellationToken cancellationToken)
     {
+        int pageSize = 10;
         var cvs = await dbContext.Cvs
             .Include(c => c.JobSeeker)
+            .Skip((pageNumber -1) * pageSize)
+            .Take(pageSize)
             .AsNoTracking().ToListAsync(cancellationToken);
         return cvs;
     }

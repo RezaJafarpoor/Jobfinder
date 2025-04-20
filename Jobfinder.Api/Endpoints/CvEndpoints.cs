@@ -34,9 +34,9 @@ public static class CvEndpoints
             })
         .RequireAuthorization(AuthPolicies.JobSeekerOnly.ToString());
 
-        root.MapGet("cvs", async (ICvRepository cvRepository, CancellationToken cancellationToken ) =>
+        root.MapGet("cvs", async ([FromQuery]int pageNumber, ICvRepository cvRepository, CancellationToken cancellationToken ) =>
         {
-            var cvs = await cvRepository.GetCvs(cancellationToken);
+            var cvs = await cvRepository.GetCvs(pageNumber,cancellationToken);
             return cvs is null ?Results.NotFound()
                 :Results.Ok(cvs.Select(cv => (CvDto)cv));
         });

@@ -16,8 +16,4 @@ public record CvDto
 {
     public static implicit operator CvDto(Cv cv) 
         => new CvDto(cv.Id.ToString(),cv.Location,cv.BirthDay,cv.MaximumExpectedSalary,cv.MinimumExpectedSalary,cv.ServiceStatus);
-    
-
-    
-    
 }

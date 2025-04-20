@@ -26,9 +26,9 @@ public static class JobOfferEndpoints
         })
         .RequireAuthorization(AuthPolicies.EmployerOnly.ToString());
         
-        root.MapGet("jobOffers", async (IJobOfferRepository repository, CancellationToken cancellationToken) =>
+        root.MapGet("jobOffers", async ([FromQuery]int pageNumber,IJobOfferRepository repository, CancellationToken cancellationToken) =>
         {
-            var jobOffers = await repository.GetJobOffers(cancellationToken);
+            var jobOffers = await repository.GetJobOffers(pageNumber,cancellationToken);
             if (jobOffers is null)
                 return Results.NotFound();
 

@@ -27,9 +27,13 @@ internal class JobOfferRepository
         return jobOffer;
     }
 
-    public async Task<List<JobOffer>?> GetJobOffers(CancellationToken cancellationToken)
+    public async Task<List<JobOffer>?> GetJobOffers(int pageNumber,CancellationToken cancellationToken)
     {
-        var jobOffers = await dbContext.JobOffers.AsNoTracking().ToListAsync(cancellationToken);
+        int pageSize = 10;
+        var jobOffers = await dbContext.JobOffers
+            .Skip((pageNumber -1) * pageSize)
+            .Take(pageSize)
+            .AsNoTracking().ToListAsync(cancellationToken);
         return jobOffers;
     }
 

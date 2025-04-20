@@ -10,7 +10,7 @@ using Microsoft.Extensions.Logging;
 
 namespace Jobfinder.Infrastructure.Seeds;
 
-internal class DbSeed(ApplicationDbContext dbContext, Logger<DbSeed> logger) : ISeeder
+internal class DbSeed(ApplicationDbContext dbContext, ILogger<DbSeed> logger) : ISeeder
 {
     public async Task Seed()
     {
@@ -21,6 +21,7 @@ internal class DbSeed(ApplicationDbContext dbContext, Logger<DbSeed> logger) : I
             await SeedEmployer();
             await SeedJobSeeker();
             await dbContext.SaveChangesAsync();   
+            logger.LogCritical(" -----> Seeding Complete");
         }
 
 
@@ -142,9 +143,29 @@ internal class DbSeed(ApplicationDbContext dbContext, Logger<DbSeed> logger) : I
             })
             .RuleFor(j => j.JobName, f => f.Name.JobTitle())
             .RuleFor(j => j.JobDescription, f => f.Name.JobDescriptor())
+            .RuleFor(j => j.JobDetails, f => new JobDetails
+            {
+                ContractType = ContractTypes.FullTime,
+                WorkingDatsAndHours = new WorkingDatsAndHours
+                {
+                    From = DayOfWeek.Saturday,
+                    To = DayOfWeek.Thursday,
+                    StartingHour = 9,
+                    FinishingHour = 17
+                },
+                IsRemote = false,
+                Location = new Location
+                {
+                    Address = f.Address.StreetAddress(),
+                    City = f.Address.City(),
+                    Province = f.Address.State()
+                },
+                MinimumAge = f.Random.Int(18,30),
+                MaximumAge = f.Random.Int(18,50)
+            })
             .RuleFor(j => j.Category, f => new JobCategory
             {
-                Id = default,
+                Id = Guid.NewGuid(),
                 Category = f.Name.JobType(),
             });
         int i = 0;

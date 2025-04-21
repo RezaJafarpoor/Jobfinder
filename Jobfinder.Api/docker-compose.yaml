@@ -1,4 +1,18 @@
 ﻿services:
+  api:
+    build:
+      context: ../
+      dockerfile: Dockerfile
+    ports:
+      - 8080:8080   
+    environment:
+        - ASPNETCORE_ENVIRONMENT=Development
+        - ConnectionStrings__AppDbConnection=Server=database;Database=Jobfinder;User=sa;Password=Reza1234@;TrustServerCertificate=True;
+    depends_on:
+      - database
+      - minio
+      
+        
   database:
     image: mcr.microsoft.com/mssql/server:2022-latest
     container_name: Jobfinder

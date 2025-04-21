@@ -14,14 +14,17 @@ internal class DbSeed(ApplicationDbContext dbContext, ILogger<DbSeed> logger) : 
 {
     public async Task Seed()
     {
+        var connectionString = dbContext.Database.GetConnectionString();
+        logger.LogInformation(connectionString);
+        await Task.Delay(TimeSpan.FromSeconds(10));
         await dbContext.Database.MigrateAsync();
         if (!dbContext.EmployerProfiles.Any())
         { 
-            logger.LogCritical(" -------> Seeding ");
+            logger.LogWarning(" -------> Seeding ");
             await SeedEmployer();
             await SeedJobSeeker();
             await dbContext.SaveChangesAsync();   
-            logger.LogCritical(" -----> Seeding Complete");
+            logger.LogWarning(" -----> Seeding Complete");
         }
 
 
@@ -43,7 +46,7 @@ internal class DbSeed(ApplicationDbContext dbContext, ILogger<DbSeed> logger) : 
                 var password = f.Internet.Password();
                 return passwordHasher.HashPassword(u, password);
             })
-            .RuleFor(u => u.UserRole, _ => Domain.Enums.Roles.Employer);
+            .RuleFor(u => u.UserRole, _ => Roles.Employer);
         var users = faker.Generate(500);
         List<EmployerProfile> employerProfiles = [];
         foreach (var user in users)

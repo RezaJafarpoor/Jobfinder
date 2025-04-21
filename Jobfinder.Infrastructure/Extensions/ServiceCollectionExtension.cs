@@ -59,6 +59,7 @@ public static class ServiceCollectionExtension
     
     private static void AddPersistence(this IServiceCollection services, IConfiguration configuration)
     {
+        
         services.AddOptions<MinioConfig>()
             .Bind(config: configuration.GetSection("MinioConfig"));
         var miniConfig = configuration.GetSection("MinioConfig").Get<MinioConfig>();
